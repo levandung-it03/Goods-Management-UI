@@ -1,0 +1,119 @@
+:root {
+    --font-size: 14px;
+    --border-color: #aaa;
+    --color-fieldset: #4561ff;
+    --color-error-fieldset: #ff2f2f;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 98.5%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+div.form-children-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+}
+
+fieldset,
+div.form-child {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding-left: 10px;
+
+    &:focus-within {
+        border-width: 2px;
+        border-color: var(--color-fieldset);
+        legend {
+            color: var(--color-fieldset);
+        }
+    }
+}
+
+fieldset {
+    legend {
+        font-size: var(--font-size);
+    }
+
+    &.error-fieldset {
+        border-color: var(--color-error-fieldset);
+        legend {
+            color: var(--color-error-fieldset);
+        }
+    }
+}
+
+div.form-child {
+    margin-top: 8px;
+}
+
+select {
+    height: 35px;
+    margin-left: -3px;  //--Fix weird default css bug.
+}
+input,
+textarea {
+    height: 25px;
+}
+input,
+select,
+textarea {
+    font-size: var(--font-size);
+    width: 100%;
+    display: block;
+    padding: 5px;
+    padding-left: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    border: none;
+    &:focus {
+        border: none;
+        outline: none;
+    }
+}
+
+div[class$="-err-msg"] {
+    font-size: var(--font-size);
+    color: var(--color-error-fieldset);
+    padding-left: 10px;
+}
+
+div.submit-btn {
+    font-size: var(--font-size);
+    width: 100%;
+    button[type="submit"] {
+        width: 100%;
+        justify-self: center;
+        display: block;
+        border: 1px solid #fff;
+        background-color: #000;
+        margin: 10px 0;
+        color: #fff;
+        padding: 10px 90px;
+        border-radius: 5px;
+        transition: border-radius ease 0.4s;
+        &:hover {
+            cursor: pointer;
+            border-radius: 20px;
+            background-color: #333;
+        }
+    }
+}

@@ -1,0 +1,140 @@
+:root {
+    --grey-border: #aaa;
+    --tool-btn-size: 20px;
+}
+
+.table-wrapper {
+    margin: 30px;
+
+    font-size: 13px;
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--grey-border);
+    border-radius: 4px;
+    padding: 15px;
+
+    div.table-cell-checkbox {
+        display: block;
+        padding: 0 8px;
+    }
+}
+
+.table-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+}
+
+
+.table-feature {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+
+    .table-title {
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+
+    .table-tool {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: end;
+        align-items: center;
+        .tool-button {
+            position: relative;
+            svg {
+                width: var(--tool-btn-size);
+                height: var(--tool-btn-size);
+                cursor: pointer;
+                margin-right: 8px;
+                padding: 4px;
+                border-radius: 4px;
+                transition: background-color ease 0.3s;
+                &:hover {
+                    background-color: #ddd;
+                }
+            }
+            form {
+                position: absolute;
+                top: calc(var(--tool-btn-size) + 8px);
+                right: 0;
+                width: auto;
+                display: none;
+                box-shadow: 1px 1px 5px 1px #ddd;
+            }
+            form.sort-box {
+                flex-wrap: wrap;
+                flex-direction: row;
+                min-width: 200px;
+                width: auto;
+            }
+        }
+        .filter-box-open,
+        .sort-box-open {
+            .tool-icon {
+                background-color: #ddd;
+            }
+            form {
+                display: flex;
+            }
+        }
+    }
+}
+
+.table-header {
+    width: 100%;
+}
+
+.table-body {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+
+    .table-row {
+        padding: 4px 0;
+        transition: background-color ease 0.1s;
+        &:hover {
+            cursor: pointer;
+            background-color: #ddd;
+        }
+    }
+}
+
+.table-wrapper form.table-adding-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+    padding: 0;
+    border: none;
+    margin-bottom: 10px;
+    .form-children-container {
+        width: auto;
+        position: relative;
+        .form-child {
+            margin-top: 0;
+        }
+        .name1-err-msg {
+            position: absolute;
+            top: 100%;
+        }
+    }
+    .submit-btn {
+        width: auto;
+        button {
+            padding: 10px;
+        }
+    }
+}
