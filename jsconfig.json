@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@reusable/*": ["src/components/reusable/*"],
+            "@ui/*": ["src/components/ui/*"],
+            "@services/*": ["src/services/*"],
+            "@assets/*": ["src/assets/*"],
+            "@src/*": ["src/*"]
+        }
+    }
+}

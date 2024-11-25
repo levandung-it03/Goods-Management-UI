@@ -13,7 +13,7 @@ function validate(val, funcs) {
 export function InputBuilder({validators=[], defaultValue="", ...props }) {
     function Input(name="", updateFormData, defaultValuesFromForm, setValidations) {
         const [data, setData] = useState(defaultValue);
-
+        
         const handleChangeValue = useCallback(e => {
             setData(e.target.value);
             updateFormData && updateFormData(e.target);
@@ -116,6 +116,8 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
     const keyPref = useMemo(() => "form-compo-" + timeAsKey(), []);
     const [formData, setFormData] = useState({});
     const [validations, setValidations] = useState({});
+    console.log('form');
+    
 
     const updateFormData = useCallback(({ name, value }) => {
         setFormData((prevData) => {
@@ -136,6 +138,8 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
         e.preventDefault();
         const validationsResult = Object.values(validations);
         if (!isPreventDefaultMannually && validationsResult.every(v => v === true))
+            {console.log(POST_service);
+            
             POST_service.action({
                 ...formData,
                 ...POST_service.moreParams
@@ -143,7 +147,7 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
                 showToast(response.message, "success");
             }).catch(error => {
                 showToast(error.message, "error");
-            });
+            });}
         else
             showToast("Information still wrong", "error");
     }, [validations, POST_service, formData, isPreventDefaultMannually]);

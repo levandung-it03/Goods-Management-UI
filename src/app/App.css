@@ -1,0 +1,57 @@
+:root {
+    /* Tùy chỉnh */
+    --primary: #fe2c55; 
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    text-rendering: optimizeSpeed;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.v-center {
+    display: flex;
+    align-items: center;
+}
+.h-center {
+    display: flex;
+    justify-content: center;
+}
+
+.gap-10 {
+    gap: 10px;
+}
+
+ul {
+    list-style-type: none; /* Loại bỏ dấu chấm (bullet) */
+    padding: 0; /* Loại bỏ khoảng cách mặc định của danh sách */
+    margin: 0; /* Loại bỏ khoảng cách mặc định của danh sách */
+}
+
+li {
+    margin: 0; /* Loại bỏ khoảng cách mặc định của các mục danh sách */
+}

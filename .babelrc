@@ -1,0 +1,17 @@
+// Để React có thể nhận diện được các import có dùng alias
+{
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "alias": {
+                    "@reusable": "./src/components/reusable",
+                    "@ui": "./src/components/ui",
+                    "@services": "./src/services",
+                    "@assets": "./src/assets",
+                    "@src": "./src"
+                }
+            }
+        ]
+    ]
+}

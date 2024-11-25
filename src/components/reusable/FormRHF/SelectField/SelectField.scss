@@ -1,0 +1,27 @@
+.select-field {
+    select {
+        width: 100%;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        &:has(option[value='']:checked) {
+            color: #aaa;
+        }
+        option {
+            color: #000;
+        }
+        &:disabled {
+            appearance: none;
+        }
+    }
+    &[data-active='true'],
+    &:focus-within {
+        select + label {
+            top: 1px;
+            left: 4%;
+            margin-left: 2px;
+            font-size: 72%;
+            color: rgba(#000, 0.6);
+        }
+    }
+}

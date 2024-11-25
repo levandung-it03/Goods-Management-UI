@@ -1,0 +1,88 @@
+.default-input {
+    display: inline-block;
+    input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background-color: transparent;
+    }
+    input[type='date'] {
+        cursor: pointer;
+        color: transparent;
+        &::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+        }
+    }
+    .field-wrapper {
+        padding: 4px;
+        position: relative;
+        height: 100%;
+        label {
+            position: absolute;
+            left: 4%;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+        svg {
+            cursor: pointer;
+            color: #aaa;
+            width: 2rem;
+            height: 2rem;
+        }
+        fieldset {
+            position: absolute;
+            top: -7px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            pointer-events: none;
+            transition: border-color 0.2s ease;
+        }
+        legend {
+            font-size: 1.4rem;
+            margin-left: 12px;
+            visibility: hidden;
+            max-width: 0;
+            span {
+                white-space: nowrap;
+            }
+        }
+    }
+    &[data-active='true'],
+    &:focus-within {
+        input[type='date'] {
+            color: black;
+        }
+        input + label {
+            top: 0;
+            left: 16px;
+            font-size: 88%;
+            color: rgba(#000, 0.6);
+        }
+        svg {
+            color: black;
+        }
+        legend {
+            padding: 0 2px;
+            max-width: none;
+        }
+    }
+    &.error {
+        fieldset {
+            border-color: red !important;
+        }
+        label {
+            color: red !important;
+        }
+        .error-msg {
+            font-size: 1.4rem;
+            color: red;
+            margin: 4px 0 0 4px;
+        }
+    }
+}
