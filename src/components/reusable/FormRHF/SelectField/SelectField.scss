@@ -4,6 +4,7 @@
         border: none;
         outline: none;
         background-color: transparent;
+        font-size: inherit;
         &:has(option[value='']:checked) {
             color: #aaa;
         }
@@ -11,6 +12,7 @@
             color: #000;
         }
         &:disabled {
+            pointer-events: none;
             appearance: none;
         }
     }
