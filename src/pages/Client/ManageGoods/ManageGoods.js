@@ -1,4 +1,4 @@
-import "../ManageGoods/ManageGoods.scss";
+import "./ManageGoods.scss";
 
 export default function ManageGoods() {
     
