@@ -3,8 +3,8 @@ import { springService } from './apiConfig';
 
 // authService.js
 const cookies = cookieHelpers.getCookies();
-const API_PRIVATE_AUTH_PREFIX = process.env.REACT_APP_API_PRIVATE_AUTH_PREFIX;
-const API_PUBLIC_PREFIX = process.env.REACT_APP_API_PUBLIC_PREFIX;
+const PRI_AUTH_PREFIX_PART = process.env.REACT_APP_SPRING_PRI_AUTH_PREFIX_PART;
+const PUB_AUTH_PREFIX_PART = process.env.REACT_APP_SPRING_PUB_AUTH_PREFIX_PART;
 
 // AuthPrivateService
 export const authPrivateService = {
@@ -13,7 +13,7 @@ export const authPrivateService = {
             const accessToken = cookies['accessToken'];
             const refreshToken = cookies['refreshToken'];
             const response = await springService.post(
-                `${API_PRIVATE_AUTH_PREFIX}/v1/logout`,
+                `${PRI_AUTH_PREFIX_PART}/v1/logout`,
                 { token: accessToken },
                 {
                     headers: {
@@ -37,19 +37,19 @@ export const authPrivateService = {
 export const authPublicService = {
     async login(data) {
         try {
-            const response = {
-                data: {
-                    data: {
-                        accessToken: 'accessToken',
-                        refreshToken: 'refreshToken',
-                    },
-                    httpStatusCode: 200,
-                },
-            };
-            // const response = await springService.post(`${API_PUBLIC_PREFIX}/auth/v1/authenticate`, {
-            //     email: data.email,
-            //     password: data.password,
-            // });
+            // const response = {
+            //     data: {
+            //         data: {
+            //             accessToken: 'accessToken',
+            //             refreshToken: 'refreshToken',
+            //         },
+            //         httpStatusCode: 200,
+            //     },
+            // };
+            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/authenticate`, {
+                email: data.email,
+                password: data.password,
+            });
             const { accessToken, refreshToken } = response.data.data;
             cookieHelpers.upsertCookie('accessToken', accessToken);
             cookieHelpers.upsertCookie('refreshToken', refreshToken);
@@ -62,7 +62,7 @@ export const authPublicService = {
 
     async getRegisterOtp(email) {
         try {
-            const response = await springService.post(`${API_PUBLIC_PREFIX}/auth/v1/get-register-otp`, { email });
+            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/auth/v1/get-register-otp`, { email });
             return response.data;
         } catch (error) {
             console.error(error);
@@ -72,7 +72,7 @@ export const authPublicService = {
 
     async getForgotPasswordOtp(email) {
         try {
-            const response = await springService.post(`${API_PUBLIC_PREFIX}/auth/v1/get-forgot-password-otp`, { email });
+            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/get-forgot-password-otp`, { email });
             return response.data;
         } catch (error) {
             console.error(error);
@@ -82,7 +82,7 @@ export const authPublicService = {
 
     async verifyOtp(formData) {
         try {
-            const response = await springService.post(`${API_PUBLIC_PREFIX}/auth/v1/verify-register-otp`, formData);
+            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/verify-register-otp`, formData);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -92,7 +92,7 @@ export const authPublicService = {
 
     async generateRandomPassword(formData) {
         try {
-            const response = await springService.post(`${API_PUBLIC_PREFIX}/auth/v1/generate-random-password`, formData);
+            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/generate-random-password`, formData);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -102,7 +102,7 @@ export const authPublicService = {
 
     async register(formData) {
         try {
-            const response = await springService.post(`${API_PUBLIC_PREFIX}/auth/v1/register-user`, formData);
+            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/register-user`, formData);
             return response.data;
         } catch (error) {
             console.error(error);

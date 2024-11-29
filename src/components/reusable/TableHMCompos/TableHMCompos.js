@@ -1,9 +1,9 @@
 import './TableHMCompos.scss';
-import { checkIsBlank, timeAsKey, showToast } from "../Utils";
+import { UtilMethods } from "../Utils";
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowDownUp, ListFilter, Pencil, Plus } from 'lucide-react';
-import { Form, SelectBuilder } from "@FormHMCompos";
-import Pagination from "@Pagination";
+import { Form, SelectBuilder } from "../FormHMCompos/FormHMCompos";
+import Pagination from "../Pagination/Pagination";
 import ContextMenu from '../ContextMenu/ContextMenu';
 
 export const FormatterDict = {
@@ -61,7 +61,7 @@ export function Table(props) {
     const handleSelectAll = useCallback((e) => {
         setSelectedRows(prev => {
             const result = {...prev};
-            if (!checkIsBlank(prev[currentPage])) {
+            if (!UtilMethods.checkIsBlank(prev[currentPage])) {
                 if (tableState.length === Object.keys(prev[currentPage]).length)  //--Already has fully value, but select all again (remove)
                     delete result[currentPage];
                 else  //--Having not enough fully rowsData
@@ -83,10 +83,10 @@ export function Table(props) {
         setSelectedRows(prev => {
             const primaryValue = rowData[primaryKeyName];
             const result = {...prev};
-            if (!checkIsBlank(prev[currentPage])) {
-                if (!checkIsBlank(prev[currentPage][primaryValue])) {   //--Already has value, but select again (remove)
+            if (!UtilMethods.checkIsBlank(prev[currentPage])) {
+                if (!UtilMethods.checkIsBlank(prev[currentPage][primaryValue])) {   //--Already has value, but select again (remove)
                     delete result[currentPage][primaryValue];
-                    checkIsBlank(result[currentPage]) && delete result[currentPage];
+                    UtilMethods.checkIsBlank(result[currentPage]) && delete result[currentPage];
                 } else {    //--Haven't had value yet (add)
                     result[currentPage][primaryValue] = true;
                     return result;
@@ -136,10 +136,10 @@ export function Table(props) {
             .then(response => {
                 setTableState(response.data.data);
                 setTotalPages(response.data.totalPages);
-                showToast(response.message, "success");
+                UtilMethods.showToast(response.message, "success");
             })
-            .catch(error => showToast(error.message, "error"));
-    }, [sortData, filterData, currentPage, tableComponents.apiServices.GET_replacedAction]);
+            .catch(error => UtilMethods.showToast(error.message, "error"));
+    }, [sortData, filterData, currentPage, tableComponents.apiServices.GET_service, tableComponents.apiServices.GET_replacedAction]);
 
     return (
         <>
@@ -166,7 +166,7 @@ export function Table(props) {
                 <div className="table-body">
                     {tableState.map((rowData, index) =>
                         <TableRowBuilder
-                            key={"table-row-" + timeAsKey + index}
+                            key={"table-row-" + UtilMethods.timeAsKey + index}
                             rowData={rowData}
                             primaryKeyName={primaryKeyName}
                             columnsInfo={tableComponents.tableInfo.columnsInfo}
@@ -188,7 +188,7 @@ export function Table(props) {
                     {tableModes.hasAddingForm &&
                         <AddingForm
                             className="table-adding-form"
-                            key={"table-adding-form-" + timeAsKey}
+                            key={"table-adding-form-" + UtilMethods.timeAsKey}
                             tableModes={tableModes}
                             addingFormComponents={addingFormComponents}
                         />}
@@ -205,14 +205,14 @@ export function Table(props) {
 }
 
 function TableRowBuilder({
-    //--States
+    //--Unchangable
     primaryKeyName, rowData, columnsInfo, tableModes, UPDATE_service,
     //--State-setters
     updatingRowIdState, handleContextMenu, moreReducers,
-    //--Unchangable
+    //--States
     isUpdatingRow, selectedRows, currentPage, ...props
 }) {
-    const primaryKeyValue = useMemo(() => rowData[primaryKeyName], [primaryKeyName]);
+    const primaryKeyValue = useMemo(() => rowData[primaryKeyName], [primaryKeyName, rowData]);
 
     const buildHeadingCell = useCallback(() => {
         if (tableModes.canUpdatingRow && isUpdatingRow)
@@ -221,10 +221,10 @@ function TableRowBuilder({
             return <input type="checkbox" readOnly checked={!!selectedRows[currentPage] && !!selectedRows[currentPage][primaryKeyValue]} />
         else
             return <span>{primaryKeyValue}</span>
-    }, [isUpdatingRow, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow]);
+    }, [isUpdatingRow, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow, currentPage, primaryKeyValue]);
 
     useEffect(() => {
-        if (checkIsBlank(tableModes.canUpdatingRow))
+        if (UtilMethods.checkIsBlank(tableModes.canUpdatingRow))
             UPDATE_service.moreParams = {
                 ...UPDATE_service.moreParams,
                 [primaryKeyName]: primaryKeyValue   //--Always attach primaryKeyValue when updating-row.
@@ -242,7 +242,7 @@ function TableRowBuilder({
                 defaultValues={rowData}
                 childrenBuildersInfo={columnsInfo.map(columnInfo => columnInfo.updatingFieldBuilder)}
             />
-            : columnsInfo.map((columnInfo, index) => <div className="table-cell" key={"table-cell-" + timeAsKey + index}>
+            : columnsInfo.map((columnInfo, index) => <div className="table-cell" key={"table-cell-" + UtilMethods.timeAsKey + index}>
                 {columnInfo.replacedContent ? columnInfo.replacedContent(rowData) : <span>{rowData[columnInfo.name]}</span>}
             </div>)
         }
@@ -298,7 +298,7 @@ function Tools(props) {
     return (<div className="table-tool center">
         {tableInfo.filterFields &&
             <div className={`tool-button filter-box${isFilterOpen ? '-open' : ''}`}
-                key={"tool-button-filter-" + timeAsKey}>
+                key={"tool-button-filter-" + UtilMethods.timeAsKey}>
                 <ListFilter className="tool-icon" onClick={handleOpenFilterBlock} />
                 <Form
                     className="filter-box"
@@ -311,7 +311,7 @@ function Tools(props) {
         }
         {tableInfo.sortingFields &&
             <div className={`tool-button sort-box${isSortOpen ? '-open' : ''}`}
-                key={"tool-button-sort-" + timeAsKey}>
+                key={"tool-button-sort-" + UtilMethods.timeAsKey}>
                 <ArrowDownUp className="tool-icon" onClick={handleOpenSortBlock} />
                 <Form
                     className="sort-box"

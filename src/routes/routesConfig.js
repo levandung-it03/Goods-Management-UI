@@ -1,4 +1,5 @@
 import AdminPage from '@src/pages/Admin/AdminPage';
+import ManageGoods from '@src/pages/Client/ManageGoods/ManageGoods';
 import LoginPage from '@src/pages/Public/LoginPage/LoginPage';
 import RegisterPage from '@src/pages/Public/RegisterPage/RegisterPage';
 
@@ -14,6 +15,8 @@ const adminRoutes = [
     // { path: '/', component: AdminPage },
 ];
 
-const userRoutes = [];
+const userRoutes = [
+    { path: '/user/manage-goods', component: ManageGoods },
+];
 
 export { publicRoutes, adminRoutes, userRoutes };
