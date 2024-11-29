@@ -184,7 +184,7 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
         )}
         {replacedSubmitBtnBuilder ? replacedSubmitBtnBuilder(formData)
             : <div className="submit-btn">
-                <button type="submit">Submit</button>
+                <button type="submit">Send</button>
             </div>}
     </form>;
 }
