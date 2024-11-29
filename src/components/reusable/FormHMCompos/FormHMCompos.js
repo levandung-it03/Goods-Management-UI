@@ -119,7 +119,7 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
     const keyPref = useMemo(() => "form-compo-" + UtilMethods.timeAsKey(), []);
     const [formData, setFormData] = useState({});
     const [validations, setValidations] = useState({});
-    console.log('form');
+    console.log('form', defaultValues);
     
 
     const updateFormData = useCallback(({ name, value }) => {
@@ -156,7 +156,7 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
     }, [validations, POST_service, formData, isPreventDefaultMannually]);
 
     console.log(formData, validations)
-    return <form {...props} onSubmit={handleSubmit}>
+    return <form {...props} onSubmit={handleSubmit} className="handmade-form">
         {childrenBuildersInfo.map((infoObj, index) =>
             <div className="form-children-container" key={keyPref + index}>
                 {offFieldsets

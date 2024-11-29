@@ -10,6 +10,10 @@ export class UserGoodsService {
                 params: { page, filterFields, sortedField, sortedMode },
                 paramsSerializer: UtilAxios.paramsSerializerToGetWithSortAndFilter,
             });
+            response.data.data.data.forEach(obj => {
+                obj.supplierName = obj.supplier.supplierName;
+                delete obj.supplier;
+            });
             return response.data;
         } catch (error) {
             console.error(error);
