@@ -1,6 +1,6 @@
 import './TableHMCompos.scss';
 import { UtilMethods } from "../Utils";
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowDownUp, ListFilter, Pencil, Plus } from 'lucide-react';
 import { Form, SelectBuilder } from "../FormHMCompos/FormHMCompos";
 import Pagination from "../Pagination/Pagination";
@@ -114,6 +114,7 @@ export function Table(props) {
             menuItems: menuItemsBuilders.map(menuContextBuilder => menuContextBuilder(rowData))
         });
     }, [primaryKeyName, contextMenuComponents, tableModes.canUpdatingRow]);
+    console.log(updatingRowId);
 
     useEffect(() => {
         async function fetchData() {
@@ -143,7 +144,7 @@ export function Table(props) {
 
     return (
         <>
-            <div className="table-wrapper">
+            <div className="handmade-table-wrapper">
                 <div className="table-feature">
                     <div className="table-title">{tableComponents.tableInfo.title}</div>
                     <Tools
@@ -176,6 +177,7 @@ export function Table(props) {
                             currentPage={currentPage}
                             selectedRows={selectedRows}
                             updatingRowIdState={updatingRowId}
+                            setUpdatingRowId={setUpdatingRowId}
                             handleContextMenu={handleContextMenu}
 
                             onClick={e => tableModes.canSelectingRow && handleSelectingRow(e, rowData)}
@@ -185,14 +187,14 @@ export function Table(props) {
                             , {})}
                         />
                     )}
-                    {tableModes.hasAddingForm &&
-                        <AddingForm
-                            className="table-adding-form"
-                            key={"table-adding-form-" + UtilMethods.timeAsKey}
-                            tableModes={tableModes}
-                            addingFormComponents={addingFormComponents}
-                        />}
                 </div>
+                {tableModes.hasAddingForm &&
+                    <AddingForm
+                        className="table-adding-form"
+                        key={"table-adding-form-" + UtilMethods.timeAsKey}
+                        tableModes={tableModes}
+                        addingFormComponents={addingFormComponents}
+                    />}
             </div>
             {tableModes.hasContextMenu && <ContextMenu contextMenu={contextMenu} setContextMenu={setContextMenu} />}
             <Pagination
@@ -204,24 +206,21 @@ export function Table(props) {
     );
 }
 
-function TableRowBuilder({
-    //--Unchangable
+const TableRowBuilder = memo(function TableRowBuilder({
     primaryKeyName, rowData, columnsInfo, tableModes, UPDATE_service,
-    //--State-setters
-    updatingRowIdState, handleContextMenu, moreReducers,
-    //--States
-    isUpdatingRow, selectedRows, currentPage, ...props
+    updatingRowIdState, setUpdatingRowId, handleContextMenu, moreReducers,
+    selectedRows, currentPage, ...props
 }) {
     const primaryKeyValue = useMemo(() => rowData[primaryKeyName], [primaryKeyName, rowData]);
 
     const buildHeadingCell = useCallback(() => {
-        if (tableModes.canUpdatingRow && isUpdatingRow)
-            return undefined;
+        if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState) && updatingRowIdState == rowData[primaryKeyName])
+            return <></>;
         else if (tableModes.canSelectingRow)
             return <input type="checkbox" readOnly checked={!!selectedRows[currentPage] && !!selectedRows[currentPage][primaryKeyValue]} />
         else
             return <span>{primaryKeyValue}</span>
-    }, [isUpdatingRow, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow, currentPage, primaryKeyValue]);
+    }, [updatingRowIdState, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow, currentPage, primaryKeyValue]);
 
     useEffect(() => {
         if (UtilMethods.checkIsBlank(tableModes.canUpdatingRow))
@@ -231,12 +230,26 @@ function TableRowBuilder({
             };
     }, [UPDATE_service, primaryKeyValue, primaryKeyName, tableModes.canUpdatingRow]);
 
+    useEffect(() => {
+        if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState)) {
+            const handleKeyDown = (e) => {
+                if (e.key === 'Escape') setUpdatingRowId(null);
+            };
+            window.addEventListener('keydown', handleKeyDown);
+
+            return () => {
+                window.removeEventListener('keydown', handleKeyDown);
+            };
+        }
+    }, [updatingRowIdState, tableModes.canUpdatingRow, setUpdatingRowId]);
+
     return (<div className="table-row" {...props}>
         <div className="table-cell-checkbox" key="table-heading-cell">
             {buildHeadingCell()}
         </div>
-        {tableModes.canUpdatingRow && isUpdatingRow
+        {tableModes.canUpdatingRow && updatingRowIdState === rowData[primaryKeyName]
             ? <Form
+                className="table-updating-form"
                 offFieldsets={true}
                 POST_service={UPDATE_service}
                 defaultValues={rowData}
@@ -247,9 +260,9 @@ function TableRowBuilder({
             </div>)
         }
     </div>);
-}
+});
 
-function AddingForm({ tableModes, addingFormComponents, ...props }) {
+const AddingForm = memo(function AddingForm({ tableModes, addingFormComponents, ...props }) {
     const [isAddingRow, setIsAddingRow] = useState(false);
 
     useEffect(() => {
@@ -268,17 +281,18 @@ function AddingForm({ tableModes, addingFormComponents, ...props }) {
     return isAddingRow ? (
         <Form
             {...props}
+            className="table-adding-form"
             offFieldsets={true}
             POST_service={addingFormComponents.POST_service}
             childrenBuildersInfo={addingFormComponents.childrenBuildersInfo}
         />
-    ) : <div className="table-row add-row" onClick={() => setIsAddingRow(true)}>
+    ) : <div className="add-row" onClick={() => setIsAddingRow(true)}>
         <div className="table-cell"> <Plus /> </div>
         <div className="table-cell">Add row</div>
     </div>;
-}
+})
 
-function Tools(props) {
+const Tools = memo(function Tools(props) {
     const { setSortData, setFilterData, tableInfo } = props;
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [isSortOpen, setIsSortOpen] = useState(false);
@@ -323,11 +337,11 @@ function Tools(props) {
                             options: [{ value: 1, text: 'Ascending' }, { value: -1, text: 'Descending' }]
                         })},
                     ]}
-                    replacedSubmitBtnBuilder={formData => <div className="sorting-submit-btn">
+                    replacedSubmitBtnBuilder={formData => <div className="sort-submit-btn">
                         <button onClick={e => { e.preventDefault(); setSortData(formData); }}>Confirm Sort</button>
                     </div>}
                 />
             </div>
         }
     </div>);
-}
+})

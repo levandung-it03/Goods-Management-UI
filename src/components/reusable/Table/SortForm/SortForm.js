@@ -1,5 +1,5 @@
-import Form from '@reusable/Form/Form';
-import SelectField from '@reusable/Form/SelectField/SelectField';
+import FormRHF from '@reusable/FormRHF/FormRHF';
+import SelectField from '@reusable/FormRHF/SelectField/SelectField';
 import { ArrowDownUp, X } from 'lucide-react';
 import { memo, useEffect, useRef, useState } from 'react';
 
@@ -25,7 +25,7 @@ function SortForm({ columns, handleSort }) {
     return (
         <div className="tool-button" ref={sortFormRef}>
             <ArrowDownUp className="tool-icon" onClick={() => setIsOpen(!isOpen)} />
-            <Form className={`sort-box${isOpen ? ' open' : ''}`} onSubmit={handleSort}>
+            <FormRHF className={`sort-box${isOpen ? ' open' : ''}`} onSubmit={handleSort}>
                 <div className="sort-header">
                     <span>Sort</span>
                     <X onClick={() => setIsOpen(!isOpen)} />
@@ -47,7 +47,7 @@ function SortForm({ columns, handleSort }) {
                     <ArrowDownUp />
                     <span>Confirm</span>
                 </button>
-            </Form>
+            </FormRHF>
         </div>
     );
 }

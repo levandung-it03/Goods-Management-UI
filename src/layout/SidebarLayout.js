@@ -12,7 +12,7 @@ export function AdminSidebarLayout({ children }) {
                 <SidebarItem icon={<SquareUserRound />} text="User Information" path="/manage-user-info" />
                 <SidebarItem icon={<Images />} text="Slides" path="/manage-slides" />
             </AdminSidebar>
-            <div className="content" style={{ flex: 1 }}>
+            <div className="container" style={{ flex: 1 }}>
                 {children}
             </div>
         </div>

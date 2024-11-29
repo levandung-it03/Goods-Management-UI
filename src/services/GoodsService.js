@@ -1,5 +1,5 @@
-import { UtilAxios } from "@reusable/Utils";
-import { springService } from "@src/configs/AxiosConfig";
+import { UtilAxios } from '@reusable/Utils';
+import { springService } from '@src/configs/AxiosConfig';
 
 const USER_PREFIX_PART = process.env.REACT_APP_SPRING_USER_PREFIX_PART;
 
@@ -9,6 +9,10 @@ export class UserGoodsService {
             const response = await springService.get(`${USER_PREFIX_PART}/v1/get-goods-pages`, {
                 params: { page, filterFields, sortedField, sortedMode },
                 paramsSerializer: UtilAxios.paramsSerializerToGetWithSortAndFilter,
+            });
+            response.data.data.data.forEach((obj) => {
+                obj.supplierName = obj.supplier.supplierName;
+                delete obj.supplier;
             });
             return response.data;
         } catch (error) {

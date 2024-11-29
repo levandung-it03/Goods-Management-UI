@@ -1,4 +1,5 @@
 import { AdminSidebarLayout } from "@src/layout/SidebarLayout";
+import ExportPage from "@src/pages/Client/ExportPage/ExportPage";
 import AdminPage from "@src/pages/Admin/AdminPage";
 import ManageGoods from "@src/pages/Client/ManageGoods/ManageGoods";
 import LoginPage from "@src/pages/Public/LoginPage/LoginPage";
@@ -19,9 +20,10 @@ const adminRoutes = [
 ];
 
 const userRoutes = [
-    { path: "/user/manage-goods", component: ManageGoods },
     { path: "/user", component: HomePage },
     { path: "/user/profile", component: ProfileDialog },
+    { path: "/user/manage-goods", component: ManageGoods },
+    { path: "/user/create-export", component: ExportPage },
 ];
 
 export { publicRoutes, adminRoutes, userRoutes };

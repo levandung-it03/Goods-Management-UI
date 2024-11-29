@@ -1,7 +1,7 @@
 import styles from './Button.module.scss';
-function Button({ text, ...props }) {
+function Button({ text, className = '', ...props }) {
     return (
-        <button {...props} className={`${styles.btn} ui-btn`}>
+        <button {...props} className={`${styles.btn} ui-btn ${className}`}>
             {text}
         </button>
     );

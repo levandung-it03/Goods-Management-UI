@@ -7,6 +7,7 @@ export class UtilMethods {
     static checkIsBlank(val) {
         return val === null
         || val === undefined
+        || (val instanceof String && val.length === 0)
         || (val instanceof Array && val.length === 0)
         || (val instanceof Object && Object.keys(val).length === 0)
         || (val instanceof Number && isNaN(val))
@@ -14,7 +15,7 @@ export class UtilMethods {
     }
     
     static showToast(msg, type) {
-        alert(type + ": " + msg);
+        // alert(type + ": " + msg);
     }
 }
 

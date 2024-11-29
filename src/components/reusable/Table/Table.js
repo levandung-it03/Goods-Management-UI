@@ -3,11 +3,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Plus } from 'lucide-react';
 import FilterForm from './FilterForm/FilterForm';
 import SortForm from './SortForm/SortForm';
-import Form from '@reusable/Form/Form';
 import TableMode from './TableMode/TableMode';
 import TableRow from './TableRow/TableRow';
 import ContextMenu from './ContextMenu/ContextMenu';
 import Pagination from './Pagination/Pagination';
+import FormRHF from '@reusable/FormRHF/FormRHF';
 
 function Table({
     className = '',
@@ -18,13 +18,11 @@ function Table({
     tableDetail,
     noDataText = 'No data available',
 }) {
-    console.log('table');
-
     const { setFilterData, setSortData, setSelectedRows, setCurrentPage, setContextMenu } = tableDetail;
     const { contextMenu, currentPage, totalPages, tableData, tableMode } = tableDetail;
-    const [isAdding, setIsAdding] = useState(false); // Chứa các trường trạng thái như isEditing, isAdding, isInserting,...
+    const [isAdding, setIsAdding] = useState(addRowProps?.().isAdding); // Chứa các trường trạng thái như isEditing, isAdding, isInserting,...
     const { enableFilter, enableSort, enableAdd } = tableMode;
-    const { customForm: customAddRowForm, text: addRowText, ...addRowEvent } = addRowProps || {};
+    const { customForm: customAddRowForm, text: addRowText, ...addRowEvent } = addRowProps?.(setIsAdding) || {};
 
     // Chứa thông tin trạng thái của các row (iSelected, isEditing, isAdding, isInserting,...)
     const [allRowState, setAllRowState] = useState({});
@@ -137,7 +135,7 @@ function Table({
                     </div>
                 </div>
                 <div className="table-body">
-                    <Form className="table-content" onSubmit={(data) => console.log(data)} methods={tableDetail.tableFormMethods}>
+                    <FormRHF className="table-content" onSubmit={(data) => console.log(data)} methods={tableDetail.tableFormMethods}>
                         {tableDetail.fieldArrayMethods.fields.length === 0 && (
                             <div className="table-row no-data v-center">{noDataText}</div>
                         )}
@@ -162,7 +160,7 @@ function Table({
                                 </div>
                             );
                         })}
-                    </Form>
+                    </FormRHF>
                     {enableAdd && addRowProps && (
                         <div className="add-row-wrapper">
                             {isAdding ? (
@@ -170,7 +168,7 @@ function Table({
                                 customAddRowForm ? (
                                     customAddRowForm
                                 ) : (
-                                    <Form
+                                    <FormRHF
                                         className="form-add-row"
                                         ref={addFormRef}
                                         onSubmit={(data) => {
@@ -180,13 +178,13 @@ function Table({
                                     >
                                         <TableMode row={{ rowState: { isAdding: true } }} handleAdd={handleAdd} />
                                         <TableRow columns={columns} row={{ rowState: { isAdding: true } }} setRowState={setRowState} />
-                                    </Form>
+                                    </FormRHF>
                                 )
                             ) : (
                                 <div className="table-row add-row" onClick={() => setIsAdding(true)} {...addRowEvent}>
                                     <div className="table-cell">
                                         <Plus />
-                                        <span>{addRowText}</span>
+                                        {addRowText}
                                     </div>
                                 </div>
                             )}

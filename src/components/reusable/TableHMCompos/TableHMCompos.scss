@@ -1,12 +1,10 @@
 :root {
     --grey-border: #aaa;
-    --tool-btn-size: 20px;
+    --tool-btn-size: 24px;
 }
 
-.table-wrapper {
+.handmade-table-wrapper {
     margin: 30px;
-
-    font-size: 13px;
     width: auto;
     display: flex;
     flex-wrap: wrap;
@@ -23,79 +21,95 @@
     }
 }
 
-.table-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    align-items: center;
-    width: 100%;
-}
 
-
-.table-feature {
+.handmade-table-wrapper .table-feature {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
+    padding: 4px 0;
+}
+.handmade-table-wrapper .table-title {
+    font-weight: 500;
+    font-size: 24px;
+}
 
-    .table-title {
-        font-weight: 500;
-        font-size: 1.5rem;
+.handmade-table-wrapper .table-tool {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    align-items: center;
+}
+
+.handmade-table-wrapper .tool-button {
+    position: relative;
+    svg {
+        width: var(--tool-btn-size);
+        height: var(--tool-btn-size);
+        cursor: pointer;
+        margin-right: 8px;
+        padding: 4px;
+        border-radius: 4px;
+        transition: background-color ease 0.3s;
+        &:hover {
+            background-color: #ddd;
+        }
     }
-
-    .table-tool {
-        display: flex;
+    form {
+        position: absolute;
+        top: calc(var(--tool-btn-size) + 8px);
+        right: 0;
+        width: auto;
+        display: none;
+        box-shadow: 1px 1px 5px 1px #ddd;
+    }
+    form.sort-box {
         flex-wrap: wrap;
-        justify-content: end;
-        align-items: center;
-        .tool-button {
-            position: relative;
-            svg {
-                width: var(--tool-btn-size);
-                height: var(--tool-btn-size);
-                cursor: pointer;
-                margin-right: 8px;
-                padding: 4px;
-                border-radius: 4px;
-                transition: background-color ease 0.3s;
-                &:hover {
-                    background-color: #ddd;
+        flex-direction: row;
+        min-width: 200px;
+        width: auto;
+    }
+}
+.handmade-table-wrapper .filter-box-open,
+.handmade-table-wrapper .sort-box-open {
+    .tool-icon {
+        background-color: #ddd;
+    }
+    form {
+        display: flex;
+        background-color: #fff;
+        .sort-submit-btn,
+            .filter-submit-btn {
+                width: 100%;
+                padding-top: 8px;
+                button {
+                    font-size: 13px;
+                    padding: 8px 0;
+                    width: 100%;
+                    background-color: #000;
+                    color: #fff;
+                    transition: all ease 0.3s;
+                    border: none;
+                    border-radius: 4px;
+                    &:hover {
+                        cursor: pointer;
+                        background-color: #333;
+                        border-radius: 16px;
+                    }
                 }
             }
-            form {
-                position: absolute;
-                top: calc(var(--tool-btn-size) + 8px);
-                right: 0;
-                width: auto;
-                display: none;
-                box-shadow: 1px 1px 5px 1px #ddd;
-            }
-            form.sort-box {
-                flex-wrap: wrap;
-                flex-direction: row;
-                min-width: 200px;
-                width: auto;
-            }
-        }
-        .filter-box-open,
-        .sort-box-open {
-            .tool-icon {
-                background-color: #ddd;
-            }
-            form {
-                display: flex;
-            }
-        }
     }
 }
 
-.table-header {
+.handmade-table-wrapper .table-header {
     width: 100%;
+    .table-row {
+        border-top: 1px solid var(--grey-border);
+    }
 }
 
-.table-body {
+.handmade-table-wrapper .table-body {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -103,7 +117,6 @@
     align-items: center;
 
     .table-row {
-        padding: 4px 0;
         transition: background-color ease 0.1s;
         &:hover {
             cursor: pointer;
@@ -112,7 +125,37 @@
     }
 }
 
-.table-wrapper form.table-adding-form {
+.handmade-table-wrapper .table-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid var(--grey-border);
+}
+
+.handmade-table-wrapper .table-cell {
+    border-left: 1px solid var(--grey-border);
+}
+
+.handmade-table-wrapper .add-row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+    transition: background-color ease 0.1s;
+    &:hover {
+        cursor: pointer;
+        background-color: #ddd;
+    }
+    .table-cell {   
+        border-left: none;
+    }
+}
+
+.handmade-table-wrapper form.table-updating-form,
+.handmade-table-wrapper form.table-adding-form {
     display: flex;
     flex-wrap: wrap;
     justify-content: start;

@@ -23,8 +23,6 @@ const initialData = [];
 */
 
 export function useTable(tableConfig) {
-    console.log('use table');
-
     const configRef = useRef(tableConfig);
     const { data = initialData, pageSize = 10, tableMode = initialTableMode } = configRef.current;
     const [customData, setCustomData] = useState(data);

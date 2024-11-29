@@ -9,7 +9,7 @@
     padding: 0;
 }
 
-form {
+.handmade-form {
     display: flex;
     flex-wrap: wrap;
     width: 98.5%;
@@ -20,7 +20,7 @@ form {
     border-radius: 5px;
 }
 
-div.form-children-container {
+.handmade-form .form-children-container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -28,8 +28,8 @@ div.form-children-container {
     align-items: center;
 }
 
-fieldset,
-div.form-child {
+.handmade-form fieldset,
+.handmade-form .form-child {
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
@@ -37,8 +37,10 @@ div.form-child {
     width: 100%;
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    padding-left: 10px;
-
+    margin-top: 8px;
+    & > * {
+        padding-left: 10px;
+    }
     &:focus-within {
         border-width: 2px;
         border-color: var(--color-fieldset);
@@ -48,7 +50,7 @@ div.form-child {
     }
 }
 
-fieldset {
+.handmade-form fieldset {
     legend {
         font-size: var(--font-size);
     }
@@ -61,21 +63,17 @@ fieldset {
     }
 }
 
-div.form-child {
-    margin-top: 8px;
+.handmade-form select {
+    height: 28px;
+    margin-left: -3px; //--Fix weird default css bug.
 }
-
-select {
-    height: 35px;
-    margin-left: -3px;  //--Fix weird default css bug.
-}
-input,
-textarea {
+.handmade-form input,
+.handmade-form textarea {
     height: 25px;
 }
-input,
-select,
-textarea {
+.handmade-form input,
+.handmade-form select,
+.handmade-form textarea {
     font-size: var(--font-size);
     width: 100%;
     display: block;
@@ -90,16 +88,16 @@ textarea {
     }
 }
 
-div[class$="-err-msg"] {
+.handmade-form div[class$='-err-msg'] {
     font-size: var(--font-size);
     color: var(--color-error-fieldset);
     padding-left: 10px;
 }
 
-div.submit-btn {
+.handmade-form .submit-btn {
     font-size: var(--font-size);
     width: 100%;
-    button[type="submit"] {
+    button[type='submit'] {
         width: 100%;
         justify-self: center;
         display: block;
