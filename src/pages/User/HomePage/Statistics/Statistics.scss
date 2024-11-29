@@ -1,0 +1,33 @@
+/* styles.scss */
+.card-container {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+  }
+  
+  .stat-card {
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  
+    .stat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+  
+    .stat-card-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #333;
+    }
+  
+    .stat-card-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #222;
+    }
+  }
+  

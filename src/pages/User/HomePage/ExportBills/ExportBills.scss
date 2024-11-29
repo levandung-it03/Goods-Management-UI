@@ -1,0 +1,74 @@
+/* styles.scss */
+.card {
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+  
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.card-title .icon {
+  margin-right: 0.5rem;
+}
+
+.bill-list {
+  padding: 1.5rem;
+}
+
+.bill-item {
+  border: 1px solid #ddd;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+}
+
+.bill-list ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.bill-item:hover {
+  background-color: #f9fafb;
+}
+
+.bill-item .header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bill-item .header-card .id {
+  font-weight: 600;
+}
+
+.bill-item .header-card .details {
+  display: flex;
+  align-items: center;
+}
+
+.bill-item .header-card .details .created-time {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-right: 0.5rem;
+}
+
+.bill-item .header-card .details .receiver {
+  font-size: 0.875rem;
+  color: #3b82f6;
+}
