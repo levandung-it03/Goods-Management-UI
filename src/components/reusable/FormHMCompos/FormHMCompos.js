@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { checkIsBlank, timeAsKey, showToast } from "../Utils";
+import { UtilMethods } from "../Utils";
 import "./FormHMCompos.scss";
 
 function validate(val, funcs) {
@@ -23,7 +23,8 @@ export function InputBuilder({validators=[], defaultValue="", ...props }) {
         }, [updateFormData, setValidations, name]);
 
         useEffect(() => {  // Only set data once
-            if (!checkIsBlank(updateFormData) && !checkIsBlank(defaultValuesFromForm[name])) {
+            if (!UtilMethods.checkIsBlank(updateFormData)
+            && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
                 setData(defaultValuesFromForm[name]);
                 updateFormData({ name: name, value: defaultValuesFromForm[name] });
                 setValidations(prev => ({  ...prev,
@@ -56,7 +57,8 @@ export function TextareaBuilder({ validators=[], defaultValue="", ...props}) {
         }, [updateFormData, setValidations, name]);
 
         useEffect(() => {  // Only set data once
-            if (!checkIsBlank(updateFormData) && !checkIsBlank(defaultValuesFromForm[name])) {
+            if (!UtilMethods.checkIsBlank(updateFormData)
+            && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
                 setData(defaultValuesFromForm[name]);
                 updateFormData({ name: name, value: defaultValuesFromForm[name] });
                 setValidations(prev => ({  ...prev,
@@ -77,7 +79,7 @@ export function TextareaBuilder({ validators=[], defaultValue="", ...props}) {
 
 export function SelectBuilder({ options=[], validators=[], defaultValue="", ...props}) {
     function Select(name="", updateFormData, defaultValuesFromForm, setValidations) {
-        const keyPref = useMemo(() => "select-compo-" + timeAsKey(), []);
+        const keyPref = useMemo(() => "select-compo-" + UtilMethods.timeAsKey(), []);
         const [data, setData] = useState(defaultValue);
 
         const handleChangeValue = useCallback(e => {
@@ -90,7 +92,8 @@ export function SelectBuilder({ options=[], validators=[], defaultValue="", ...p
         }, [updateFormData, setValidations, name]);
 
         useEffect(() => {  // Only set data once
-            if (!checkIsBlank(updateFormData) && !checkIsBlank(defaultValuesFromForm[name])) {
+            if (!UtilMethods.checkIsBlank(updateFormData)
+            && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
                 setData(defaultValuesFromForm[name]);
                 updateFormData({ name: name, value: defaultValuesFromForm[name] });
                 setValidations(prev => ({  ...prev,
@@ -113,7 +116,7 @@ export function SelectBuilder({ options=[], validators=[], defaultValue="", ...p
 
 export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFieldsets, isPreventDefaultMannually,
     replacedSubmitBtnBuilder, ...props }) {
-    const keyPref = useMemo(() => "form-compo-" + timeAsKey(), []);
+    const keyPref = useMemo(() => "form-compo-" + UtilMethods.timeAsKey(), []);
     const [formData, setFormData] = useState({});
     const [validations, setValidations] = useState({});
     console.log('form');
@@ -122,7 +125,7 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
     const updateFormData = useCallback(({ name, value }) => {
         setFormData((prevData) => {
             const result = { ...prevData, [name]: value };
-            !checkIsBlank(prevData[name]) && checkIsBlank(result[name]) && delete result[name];
+            !UtilMethods.checkIsBlank(prevData[name]) && UtilMethods.checkIsBlank(result[name]) && delete result[name];
             return result;
         });
     }, [setFormData]);
@@ -132,7 +135,7 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
             ...acc,
             [info.name]: true
         }), {}));
-    },[]);
+    },[childrenBuildersInfo]);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
@@ -144,12 +147,12 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
                 ...formData,
                 ...POST_service.moreParams
             }).then(response => {
-                showToast(response.message, "success");
+                UtilMethods.showToast(response.message, "success");
             }).catch(error => {
-                showToast(error.message, "error");
+                UtilMethods.showToast(error.message, "error");
             });}
         else
-            showToast("Information still wrong", "error");
+        UtilMethods.showToast("Information still wrong", "error");
     }, [validations, POST_service, formData, isPreventDefaultMannually]);
 
     console.log(formData, validations)
@@ -184,15 +187,15 @@ function TestPage() {
     const [preventDefaultState, setPreventDefaultState] = useState(true);
     
     const childrenBuildersInfo = [
-        { name: "name1", legend: "Name 1", builder: InputBuilder({ name: "name1", type: "text", validators: [
+        { name: "name1", legend: "Name 1", builder: InputBuilder({ type: "text", validators: [
             v => Number.parseInt(v) > 0 || "Must be negative",
             v => v % 2 === 0 || "Must be a multiple of 2"
         ], required: true, autoComplete: "off" })},
-        { name: "name2", legend: "Name 2", builder: SelectBuilder({ name: "name2", options: [
+        { name: "name2", legend: "Name 2", builder: SelectBuilder({ options: [
             {value: 1, text: 1},
             {value: 2, text: 2},
         ] })},
-        { name: "name3", legend: "Name 3", builder: TextareaBuilder({ name: "name3", defaultValue: "4" })},
+        { name: "name3", legend: "Name 3", builder: TextareaBuilder({ defaultValue: "4" })},
         { name: "name4", legend: "Name 4", builder: () => <button className="delete-btn" onClick={e => {
             setPreventDefaultState(true);
             e.preventDefault();

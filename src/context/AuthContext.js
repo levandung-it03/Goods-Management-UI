@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }) => {
     // Hàm đăng nhập
     const login = async (formData) => {
         try {
-            const { data } = await authPublicService.login(formData.email, formData.password);
+            console.log(formData)
+            const { data } = await authPublicService.login({ email: formData.email, password: formData.password });
             const { accessToken, refreshToken } = data;
             setAuth({ accessToken, refreshToken });
             navigate('/'); // Chuyển đến trang chính sau khi đăng nhập

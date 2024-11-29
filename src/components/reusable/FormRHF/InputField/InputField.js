@@ -2,6 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import CheckBoxInput from './CheckBoxInput/CheckBoxInput';
 import DefaultInput from './DefaultInput/DefaultInput';
+import './InputField.scss';
 
 const defaultFormatters = {};
 
