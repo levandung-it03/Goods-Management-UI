@@ -22,11 +22,11 @@ export function InputBuilder({validators=[], defaultValue="", ...props }) {
             }));
         }, [updateFormData, setValidations, name]);
 
-        useEffect(() => {  // Only set data once            
-            if (!UtilMethods.checkIsBlank(updateFormData)
-            && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
-                console.log(defaultValuesFromForm[name]);
-                // [name]);
+        useEffect(() => {  // Only set data once
+            if (updateFormData
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm)
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
+                setData(defaultValuesFromForm[name]);
                 updateFormData({ name: name, value: defaultValuesFromForm[name] });
                 setValidations(prev => ({  ...prev,
                     [name]: validators.length === 0 || validate(defaultValuesFromForm[name], validators)
@@ -35,6 +35,8 @@ export function InputBuilder({validators=[], defaultValue="", ...props }) {
         }, [updateFormData, defaultValuesFromForm, name, setValidations]);
 
         return <input
+            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm)
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name]) ? defaultValuesFromForm[name] : ""}
             {...props}
             name={name}
             value={data}
@@ -58,8 +60,9 @@ export function TextareaBuilder({ validators=[], defaultValue="", ...props}) {
         }, [updateFormData, setValidations, name]);
 
         useEffect(() => {  // Only set data once
-            if (!UtilMethods.checkIsBlank(updateFormData)
-            && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
+            if (updateFormData
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm)
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
                 setData(defaultValuesFromForm[name]);
                 updateFormData({ name: name, value: defaultValuesFromForm[name] });
                 setValidations(prev => ({  ...prev,
@@ -69,6 +72,8 @@ export function TextareaBuilder({ validators=[], defaultValue="", ...props}) {
         }, [updateFormData, defaultValuesFromForm, name, setValidations]);
 
         return <textarea
+            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm)
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name]) ? defaultValuesFromForm[name] : ""}
             {...props}
             name={name}
             value={data}
@@ -93,8 +98,9 @@ export function SelectBuilder({ options=[], validators=[], defaultValue="", ...p
         }, [updateFormData, setValidations, name]);
 
         useEffect(() => {  // Only set data once
-            if (!UtilMethods.checkIsBlank(updateFormData)
-            && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
+            if (updateFormData
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm)
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
                 setData(defaultValuesFromForm[name]);
                 updateFormData({ name: name, value: defaultValuesFromForm[name] });
                 setValidations(prev => ({  ...prev,
@@ -104,6 +110,8 @@ export function SelectBuilder({ options=[], validators=[], defaultValue="", ...p
         }, [updateFormData, defaultValuesFromForm, name, setValidations]);
 
         return <select
+            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm)
+                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name]) ? defaultValuesFromForm[name] : ""}
             {...props}
             name={name}
             value={data}
@@ -116,7 +124,7 @@ export function SelectBuilder({ options=[], validators=[], defaultValue="", ...p
 }
 
 export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFieldsets, isPreventDefaultMannually,
-    replacedSubmitBtnBuilder, ...props }) {
+    replacedSubmitBtnBuilder, className, ...props }) {
     const keyPref = useMemo(() => "form-compo-" + UtilMethods.timeAsKey(), []);
     const [formData, setFormData] = useState({});
     const [validations, setValidations] = useState({});
@@ -157,7 +165,7 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
     }, [validations, POST_service, formData, isPreventDefaultMannually]);
 
     console.log(formData, validations)
-    return <form {...props} onSubmit={handleSubmit} className="handmade-form">
+    return <form {...props} onSubmit={handleSubmit} className={"handmade-form " + className}>
         {childrenBuildersInfo.map((infoObj, index) =>
             <div className="form-children-container" key={keyPref + index}>
                 {offFieldsets

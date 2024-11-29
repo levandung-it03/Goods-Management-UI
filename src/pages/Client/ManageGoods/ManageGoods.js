@@ -68,9 +68,9 @@ export default function ManageGoods() {
                 tableComponents={tableComponents}
                 addingFormComponents={addingFormComponents}
                 contextMenuComponents={contextMenuComponents}
-                tableModes={FormatterDict.TableModes(false, true, true, true, true)}
+                tableModes={FormatterDict.TableModes(true, true, true, true, true)}
             />
             <Dialog dialogProps={dialogProps} setDialogProps={setDialogProps} />
         </div>
-    );   
+    );
 }

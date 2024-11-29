@@ -187,14 +187,14 @@ export function Table(props) {
                             , {})}
                         />
                     )}
-                    {tableModes.hasAddingForm &&
-                        <AddingForm
-                            className="table-adding-form"
-                            key={"table-adding-form-" + UtilMethods.timeAsKey}
-                            tableModes={tableModes}
-                            addingFormComponents={addingFormComponents}
-                        />}
                 </div>
+                {tableModes.hasAddingForm &&
+                    <AddingForm
+                        className="table-adding-form"
+                        key={"table-adding-form-" + UtilMethods.timeAsKey}
+                        tableModes={tableModes}
+                        addingFormComponents={addingFormComponents}
+                    />}
             </div>
             {tableModes.hasContextMenu && <ContextMenu contextMenu={contextMenu} setContextMenu={setContextMenu} />}
             <Pagination
@@ -214,8 +214,8 @@ const TableRowBuilder = memo(function TableRowBuilder({
     const primaryKeyValue = useMemo(() => rowData[primaryKeyName], [primaryKeyName, rowData]);
 
     const buildHeadingCell = useCallback(() => {
-        if (tableModes.canUpdatingRow && UtilMethods.checkIsBlank(updatingRowIdState))
-            return undefined;
+        if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState) && updatingRowIdState == rowData[primaryKeyName])
+            return <></>;
         else if (tableModes.canSelectingRow)
             return <input type="checkbox" readOnly checked={!!selectedRows[currentPage] && !!selectedRows[currentPage][primaryKeyValue]} />
         else
@@ -249,6 +249,7 @@ const TableRowBuilder = memo(function TableRowBuilder({
         </div>
         {tableModes.canUpdatingRow && updatingRowIdState === rowData[primaryKeyName]
             ? <Form
+                className="table-updating-form"
                 offFieldsets={true}
                 POST_service={UPDATE_service}
                 defaultValues={rowData}
@@ -280,11 +281,12 @@ const AddingForm = memo(function AddingForm({ tableModes, addingFormComponents, 
     return isAddingRow ? (
         <Form
             {...props}
+            className="table-adding-form"
             offFieldsets={true}
             POST_service={addingFormComponents.POST_service}
             childrenBuildersInfo={addingFormComponents.childrenBuildersInfo}
         />
-    ) : <div className="table-row add-row" onClick={() => setIsAddingRow(true)}>
+    ) : <div className="add-row" onClick={() => setIsAddingRow(true)}>
         <div className="table-cell"> <Plus /> </div>
         <div className="table-cell">Add row</div>
     </div>;
@@ -335,7 +337,7 @@ const Tools = memo(function Tools(props) {
                             options: [{ value: 1, text: 'Ascending' }, { value: -1, text: 'Descending' }]
                         })},
                     ]}
-                    replacedSubmitBtnBuilder={formData => <div className="sorting-submit-btn">
+                    replacedSubmitBtnBuilder={formData => <div className="sort-submit-btn">
                         <button onClick={e => { e.preventDefault(); setSortData(formData); }}>Confirm Sort</button>
                     </div>}
                 />
