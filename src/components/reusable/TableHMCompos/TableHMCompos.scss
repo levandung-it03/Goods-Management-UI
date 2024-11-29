@@ -3,7 +3,7 @@
     --tool-btn-size: 20px;
 }
 
-.table-wrapper {
+.handmade-table-wrapper {
     margin: 30px;
 
     font-size: 13px;
@@ -23,7 +23,7 @@
     }
 }
 
-.table-row {
+.handmade-table-wrapper .table-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
@@ -32,7 +32,7 @@
 }
 
 
-.table-feature {
+.handmade-table-wrapper .table-feature {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -91,11 +91,11 @@
     }
 }
 
-.table-header {
+.handmade-table-wrapper .table-header {
     width: 100%;
 }
 
-.table-body {
+.handmade-table-wrapper .table-body {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -112,7 +112,7 @@
     }
 }
 
-.table-wrapper form.table-adding-form {
+.handmade-table-wrapper .table-wrapper form.table-adding-form {
     display: flex;
     flex-wrap: wrap;
     justify-content: start;

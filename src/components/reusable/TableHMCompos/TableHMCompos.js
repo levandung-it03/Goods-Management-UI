@@ -144,7 +144,7 @@ export function Table(props) {
 
     return (
         <>
-            <div className="table-wrapper">
+            <div className="handmade-table-wrapper">
                 <div className="table-feature">
                     <div className="table-title">{tableComponents.tableInfo.title}</div>
                     <Tools

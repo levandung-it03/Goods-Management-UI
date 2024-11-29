@@ -13,7 +13,7 @@ function validate(val, funcs) {
 export function InputBuilder({validators=[], defaultValue="", ...props }) {
     function Input(name="", updateFormData, defaultValuesFromForm, setValidations) {
         const [data, setData] = useState(defaultValue);
-        
+
         const handleChangeValue = useCallback(e => {
             setData(e.target.value);
             updateFormData && updateFormData(e.target);
@@ -22,10 +22,11 @@ export function InputBuilder({validators=[], defaultValue="", ...props }) {
             }));
         }, [updateFormData, setValidations, name]);
 
-        useEffect(() => {  // Only set data once
+        useEffect(() => {  // Only set data once            
             if (!UtilMethods.checkIsBlank(updateFormData)
             && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
-                setData(defaultValuesFromForm[name]);
+                console.log(defaultValuesFromForm[name]);
+                // [name]);
                 updateFormData({ name: name, value: defaultValuesFromForm[name] });
                 setValidations(prev => ({  ...prev,
                     [name]: validators.length === 0 || validate(defaultValuesFromForm[name], validators)
