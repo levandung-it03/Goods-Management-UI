@@ -1,6 +1,6 @@
 import UserSidebar from '@ui/Sidebar/UserSidebar/UserSidebar';
 import SidebarItem from '@ui/Sidebar/SidebarItem/SidebarItem';
-import { Package, PackageMinus, PackagePlus, UserRoundPen } from 'lucide-react';
+import { Package, PackageMinus, PackagePlus, UserRoundPen, Users } from 'lucide-react';
 import AdminSidebar from '@ui/Sidebar/AdminSidebar/AdminSidebar';
 
 const sidebarStyles = { display: 'flex', width: '100vw', height: '100vh', overflow: 'hidden' };
@@ -25,6 +25,7 @@ export function AdminSidebarLayout({ children }) {
     return (
         <div style={sidebarStyles}>
             <AdminSidebar>
+                <SidebarItem icon={<Users />} text="Manage Clients" path='/admin/clients' />
                 <SidebarItem icon={<Package />} text="Manage Goods" path={['/', '/user/manage-goods']} />
                 <SidebarItem icon={<PackageMinus />} text="Create Export Bill" path="/user/create-export" />
             </AdminSidebar>

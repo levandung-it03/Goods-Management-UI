@@ -1,15 +1,20 @@
 import { ChevronFirst, ChevronLast, LogOut } from 'lucide-react';
-import { useState, Children, cloneElement, useCallback } from 'react';
+import { useState, Children, cloneElement, useCallback, useEffect } from 'react';
 import { useAuth } from '@src/hooks/useAuth';
 import '../Sidebar.scss';
 import { cookieHelpers } from '@src/utils/helpers';
 import { UtilAxios } from '@reusable/Utils';
+import { AdminService } from "@services/adminService"
 
 function AdminSidebar({ children }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const { logout } = useAuth();
     const jwtClaims = UtilAxios.checkAndReadBase64Token(cookieHelpers.getCookies().accessToken);
     const { name = 'Quang', email = 'vgbao1231@gmail.com' } = jwtClaims.sub;
+	const [adminInformation, setAdminInformation] = useState({
+		firstName: 'First name',
+		lastName: 'Last name',
+	});
 
     // Handle log out
     const handleLogout = useCallback(async () => {
@@ -19,6 +24,20 @@ function AdminSidebar({ children }) {
             console.log(error);
         }
     }, [logout]);
+
+	const fetchAdminInformation = async () => {
+		if (!jwtClaims) return;
+
+		const response = await AdminService.getAdminInformation();
+		console.log("🚀 ~ fetchAdminInformation ~ response:", response)
+		if (!response.data) return;
+
+		setAdminInformation(response.data);
+	}
+
+    useEffect(() => {
+		fetchAdminInformation();
+    }, [])
 
     return (
         <aside className="sidebar">
@@ -39,10 +58,10 @@ function AdminSidebar({ children }) {
             </div>
             <div className="divider"></div>
             <div className="profile-container center">
-                <div className="avatar center">{name[0].toUpperCase()}</div>
+                <div className="avatar center">{adminInformation.firstName[0].toUpperCase()}</div>
                 <div className={`info${isExpanded ? ' expand' : ''}`}>
-                    <p className="name">{name}</p>
-                    <p className="email">{email}</p>
+                    <p className="name">{`${adminInformation.lastName} ${adminInformation.firstName}`}</p>
+                    <p className="email">{jwtClaims.sub}</p>
                 </div>
             </div>
         </aside>

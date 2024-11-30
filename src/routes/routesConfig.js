@@ -3,6 +3,7 @@ import ManageGoods from '@src/pages/Client/ManageGoods/ManageGoods';
 import LoginPage from '@src/pages/Public/LoginPage/LoginPage';
 import RegisterPage from '@src/pages/Public/RegisterPage/RegisterPage';
 import HomePage from '@src/pages/Client/HomePage/HomePage';
+import AdminPage from '@src/pages/Admin/AdminPage';
 import { AdminSidebarLayout, UserSidebarLayout } from '@src/layout/SidebarLayout';
 import ImportPage from '@src/pages/Client/ImportPage/ImportPage';
 
@@ -14,7 +15,8 @@ const publicRoutes = [
 ];
 
 const adminRoutes = [
-    // { path: "/", component: AdminPage, layout: AdminSidebarLayout },
+    { path: "/admin", component: AdminPage, layout: AdminSidebarLayout },
+    { path: "/admin/clients", component: ManageGoods, layout: AdminSidebarLayout },
 ];
 
 const userRoutes = [
