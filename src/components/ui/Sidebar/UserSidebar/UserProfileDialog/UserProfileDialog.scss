@@ -1,0 +1,26 @@
+.profile-form {
+    .title {
+        font-size: 2.6rem;
+        font-weight: 600;
+    }
+    .name-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+    .input-field,
+    .select-field {
+        margin-top: 20px;
+        .field-wrapper {
+            min-height: 32px;
+        }
+    }
+    input {
+        padding-left: 8px;
+    }
+    select {
+        padding-left: 4px;
+    }
+    .ui-btn {
+        margin: 20px auto 0 auto;
+    }
+}

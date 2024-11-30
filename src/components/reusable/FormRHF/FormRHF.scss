@@ -1,3 +1,4 @@
+.default-input,
 .select-field,
 .multi-select-field {
     display: inline-block;
@@ -31,8 +32,8 @@
             transition: border-color 0.2s ease;
         }
         legend {
-            font-size: 1.2rem;
-            margin-left: 4%;
+            font-size: 1.4rem;
+            margin-left: 12px;
             visibility: hidden;
             max-width: 0;
             span {
@@ -46,8 +47,8 @@
             color: black;
         }
         legend {
+            padding: 0 2px;
             max-width: none;
-            padding-left: 2px;
         }
     }
     &.error {

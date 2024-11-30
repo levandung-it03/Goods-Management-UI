@@ -21,6 +21,18 @@ export class UserGoodsService {
         }
     }
 
+    static async getSimpleGoodsPages({ goodsName, page }) {
+        try {
+            const response = await springService.get(`${USER_PREFIX_PART}/v1/get-simple-goods-pages`, {
+                params: { goodsName, page },
+            });
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error.response ? error.response.data : error;
+        }
+    }
+
     static async updateGoods(formData) {
         try {
             const response = await springService.put(`${USER_PREFIX_PART}/v1/update-goods`, formData);

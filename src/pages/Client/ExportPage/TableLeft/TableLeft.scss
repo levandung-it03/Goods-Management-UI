@@ -15,6 +15,9 @@
             .table-row:not(.no-data):hover {
                 background-color: #eee;
             }
+            .no-data {
+                font-size: 1.6rem;
+            }
         }
     }
 
@@ -62,6 +65,9 @@
                 .table-row {
                     min-height: 24px;
                 }
+            }
+            .pagination {
+                margin: 10px;
             }
         }
     }

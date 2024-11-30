@@ -66,9 +66,10 @@ export class AxiosInterceptors {
                         error.config.headers['Authorization'] = newAccessToken;
                         error.config._retry = true;
                         return springService(error.config);
-                    } else UtilCookie.clear();
+                        // } else UtilCookie.clear();
+                    }
                 } catch (e) {
-                    UtilCookie.clear();
+                    // UtilCookie.clear();
                 }
             }
             error.config._retry = true;

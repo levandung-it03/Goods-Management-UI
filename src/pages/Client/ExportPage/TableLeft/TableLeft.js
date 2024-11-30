@@ -3,7 +3,7 @@ import { useTable } from '@src/hooks/useTable';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './TableLeft.scss';
 import { capitalizeWords } from '@src/utils/formatters';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Trash2 } from 'lucide-react';
 import Button from '@ui/Button/Button';
 
 function TableLeft({ setGoodsIds, setData }) {
@@ -16,7 +16,8 @@ function TableLeft({ setGoodsIds, setData }) {
             enableAdd: true,
         },
     });
-    const { toggleSelectRow, setTableCustomData } = tableDetail;
+    const { selectedData } = tableDetail;
+    const { toggleSelectRow, setSelectedRows, setTableCustomData, setContextMenu } = tableDetail;
 
     const columns = useMemo(
         () => [
@@ -43,11 +44,49 @@ function TableLeft({ setGoodsIds, setData }) {
         (row) => {
             const handleClick = () => toggleSelectRow(row);
 
+            const handleContextMenu = (e) => {
+                e.preventDefault();
+                setContextMenu({
+                    isShown: true,
+                    x: e.pageX,
+                    y: e.pageY,
+                    menuItems: [
+                        {
+                            text: 'Unselect All Row',
+                            icon: <Trash2 />,
+                            action: () => setSelectedRows({}),
+                        },
+                        {
+                            text: 'Delete Row',
+                            icon: <Trash2 />,
+                            action: () => {
+                                toggleSelectRow(row, false);
+                                setTableCustomData((prev) => {
+                                    return prev.filter((r) => r.goodsId !== row.rowData.goodsId);
+                                });
+                            },
+                        },
+                        {
+                            text: 'Delete Selected Row',
+                            icon: <Trash2 />,
+                            action: () => {
+                                console.log(selectedData);
+                                setSelectedRows({});
+                                setTableCustomData((prev) => {
+                                    return prev.filter((row) => !selectedData.some((selectedRow) => selectedRow.goodsId === row.goodsId));
+                                });
+                            },
+                        },
+                    ],
+                });
+            };
+
             return {
                 onClick: handleClick,
+                onContextMenu: handleContextMenu,
             };
         },
-        [toggleSelectRow],
+        [toggleSelectRow, setContextMenu, setTableCustomData, selectedData, setSelectedRows],
     );
 
     const addRowProps = useCallback(
@@ -62,15 +101,15 @@ function TableLeft({ setGoodsIds, setData }) {
     );
 
     const handleLockTable = useCallback(() => {
-        setGoodsIds(tableDetail.selectedData.map((row) => row.goodsId));
+        setGoodsIds(selectedData.map((row) => row.goodsId));
         setIsLock(true);
-    }, [tableDetail.selectedData, setGoodsIds]);
+    }, [selectedData, setGoodsIds]);
 
     const handleUpdateGoods = useCallback(() => {
-        console.log(tableDetail.selectedData);
+        console.log(selectedData);
         setIsLock(false);
         setData([]);
-    }, [tableDetail.selectedData, setData]);
+    }, [selectedData, setData]);
 
     return (
         <>
@@ -146,16 +185,17 @@ function TableAdd({ setTableCustomData, setIsAdding }) {
         const fetchData = async () => {
             // api cần goodsName và page (get-simple-goods-pages)
             console.log(inputValue, currentPage);
-
             const response = {
                 data: currentPage === 1 ? data1 : data2,
                 totalPages: 2,
             };
+
+            // const response = await UserGoodsService.getSimpleGoodsPages({ goodsName: inputValue, page: currentPage });
             setTableData(response.data);
             setTotalPages(response.totalPages);
         };
-        fetchData();
-    }, [inputValue, currentPage, setTotalPages, setTableData]);
+        isOpen && fetchData();
+    }, [isOpen, inputValue, currentPage, setTotalPages, setTableData]);
 
     useEffect(() => {
         if (isOpen) {
@@ -226,13 +266,6 @@ const data1 = [
         goodsId: 4,
         price: 60.0,
     },
-    {
-        goodsName: 'Bluetooth Speaker',
-        warehouseName: 'Audio Hub',
-        supplierName: 'SoundTech Inc.',
-        goodsId: 5,
-        price: 120.0,
-    },
 ];
 
 const data2 = [
@@ -240,36 +273,29 @@ const data2 = [
         goodsName: 'LED Monitor 24inch',
         warehouseName: 'Display Warehouse',
         supplierName: 'Vision Electronics',
-        goodsId: 6,
+        goodsId: 5,
         price: 150.0,
     },
     {
         goodsName: 'Wireless Mouse',
         warehouseName: 'Accessories Depot',
         supplierName: 'TechGear Supplies',
-        goodsId: 7,
+        goodsId: 6,
         price: 25.0,
     },
     {
         goodsName: 'Office Chair',
         warehouseName: 'Furniture Hub',
         supplierName: 'Comfort Seating Ltd.',
-        goodsId: 8,
+        goodsId: 7,
         price: 120.0,
     },
     {
         goodsName: 'Power Bank 10000mAh',
         warehouseName: 'Energy Storage',
         supplierName: 'Portable Energy Inc.',
-        goodsId: 9,
+        goodsId: 8,
         price: 40.0,
-    },
-    {
-        goodsName: 'Smartphone Stand',
-        warehouseName: 'Gadget Zone',
-        supplierName: 'Phone Accessories Co.',
-        goodsId: 10,
-        price: 15.0,
     },
 ];
 

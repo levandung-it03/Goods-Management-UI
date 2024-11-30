@@ -1,29 +1,27 @@
-import { AdminSidebarLayout } from "@src/layout/SidebarLayout";
-import ExportPage from "@src/pages/Client/ExportPage/ExportPage";
-import AdminPage from "@src/pages/Admin/AdminPage";
-import ManageGoods from "@src/pages/Client/ManageGoods/ManageGoods";
-import LoginPage from "@src/pages/Public/LoginPage/LoginPage";
-import RegisterPage from "@src/pages/Public/RegisterPage/RegisterPage";
-import HomePage from "@src/pages/Client/HomePage/HomePage";
-import ProfileDialog from "@src/pages/Client/Profile/Profile";
+import ExportPage from '@src/pages/Client/ExportPage/ExportPage';
+import ManageGoods from '@src/pages/Client/ManageGoods/ManageGoods';
+import LoginPage from '@src/pages/Public/LoginPage/LoginPage';
+import RegisterPage from '@src/pages/Public/RegisterPage/RegisterPage';
+import HomePage from '@src/pages/Client/HomePage/HomePage';
+import { AdminSidebarLayout, UserSidebarLayout } from '@src/layout/SidebarLayout';
+import ImportPage from '@src/pages/Client/ImportPage/ImportPage';
 
 const publicRoutes = [
     // Example
     // { path: '/login', component: Page, layout: SidebarLayout },
-    { path: "/login", component: LoginPage },
-    { path: "/register", component: RegisterPage },
+    { path: '/login', component: LoginPage },
+    { path: '/register', component: RegisterPage },
 ];
 
 const adminRoutes = [
-    { path: "/", component: AdminPage, layout: AdminSidebarLayout },
-    // { path: '/', component: AdminPage },
+    // { path: "/", component: AdminPage, layout: AdminSidebarLayout },
 ];
 
 const userRoutes = [
-    { path: "/user", component: HomePage },
-    { path: "/user/profile", component: ProfileDialog },
-    { path: "/user/manage-goods", component: ManageGoods },
-    { path: "/user/create-export", component: ExportPage },
+    { path: '/', component: HomePage, layout: UserSidebarLayout },
+    { path: '/user/manage-goods', component: ManageGoods, layout: UserSidebarLayout },
+    { path: '/user/create-import', component: ImportPage, layout: UserSidebarLayout },
+    { path: '/user/create-export', component: ExportPage, layout: AdminSidebarLayout },
 ];
 
 export { publicRoutes, adminRoutes, userRoutes };

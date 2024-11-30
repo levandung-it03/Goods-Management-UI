@@ -72,9 +72,9 @@ export function useTable(tableConfig) {
     );
 
     const toggleSelectRow = useCallback(
-        (row) => {
+        (row, checked) => {
             setSelectedRows((prev) => {
-                if (!(prev[currentPage] || {}).hasOwnProperty(row.rowIndex)) {
+                if (checked ?? !(prev[currentPage] || {}).hasOwnProperty(row.rowIndex)) {
                     prev[currentPage] = { ...(prev[currentPage] || {}), [row.rowIndex]: row.rowData };
                 } else {
                     delete prev[currentPage][row.rowIndex];

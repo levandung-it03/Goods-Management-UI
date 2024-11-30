@@ -9,7 +9,7 @@ function ExportPage() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        const url = `https://3fba-2001-ee0-5006-a220-6c73-c71-dc0c-4b18.ngrok-free.app/api/private/user/v1/flux-goods-quantity?goodsFromWarehouseIds=${goodsIds.join(
+        const url = `https://3f98-58-187-140-67.ngrok-free.app/api/private/user/v1/flux-goods-quantity?goodsFromWarehouseIds=${goodsIds.join(
             ',',
         )}`;
         const headers = new Headers({
