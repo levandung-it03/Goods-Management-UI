@@ -19,10 +19,9 @@
     &[data-active='true'],
     &:focus-within {
         select + label {
-            top: 1px;
-            left: 4%;
-            margin-left: 2px;
-            font-size: 72%;
+            top: 0;
+            left: 16px;
+            font-size: 86%;
             color: rgba(#000, 0.6);
         }
     }

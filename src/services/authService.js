@@ -1,5 +1,5 @@
-import { cookieHelpers } from '@src/utils/helpers';
-import { springService } from './apiConfig';
+import { cookieHelpers } from "@src/utils/helpers";
+import { springService } from "./apiConfig";
 
 // authService.js
 const cookies = cookieHelpers.getCookies();
@@ -10,8 +10,8 @@ const PUB_AUTH_PREFIX_PART = process.env.REACT_APP_SPRING_PUB_AUTH_PREFIX_PART;
 export const authPrivateService = {
     async logout() {
         try {
-            const accessToken = cookies['accessToken'];
-            const refreshToken = cookies['refreshToken'];
+            const accessToken = cookies["accessToken"];
+            const refreshToken = cookies["refreshToken"];
             const response = await springService.post(
                 `${PRI_AUTH_PREFIX_PART}/v1/logout`,
                 { token: accessToken },
@@ -19,7 +19,7 @@ export const authPrivateService = {
                     headers: {
                         Authorization: `Bearer ${refreshToken}`,
                     },
-                },
+                }
             );
             return response.data;
         } catch (error) {
@@ -27,8 +27,8 @@ export const authPrivateService = {
             throw error.response ? error.response.data : error;
         } finally {
             // Luôn xóa token trong mọi trường hợp (thành công hoặc lỗi)
-            cookieHelpers.removeCookie('accessToken');
-            cookieHelpers.removeCookie('refreshToken');
+            cookieHelpers.removeCookie("accessToken");
+            cookieHelpers.removeCookie("refreshToken");
         }
     },
 };
@@ -46,13 +46,16 @@ export const authPublicService = {
             //         httpStatusCode: 200,
             //     },
             // };
-            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/authenticate`, {
-                email: data.email,
-                password: data.password,
-            });
+            const response = await springService.post(
+                `${PUB_AUTH_PREFIX_PART}/v1/authenticate`,
+                {
+                    email: data.email,
+                    password: data.password,
+                }
+            );
             const { accessToken, refreshToken } = response.data.data;
-            cookieHelpers.upsertCookie('accessToken', accessToken);
-            cookieHelpers.upsertCookie('refreshToken', refreshToken);
+            cookieHelpers.upsertCookie("accessToken", accessToken);
+            cookieHelpers.upsertCookie("refreshToken", refreshToken);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -62,7 +65,10 @@ export const authPublicService = {
 
     async getRegisterOtp(email) {
         try {
-            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/auth/v1/get-register-otp`, { email });
+            const response = await springService.post(
+                `${PUB_AUTH_PREFIX_PART}/auth/v1/get-register-otp`,
+                { email }
+            );
             return response.data;
         } catch (error) {
             console.error(error);
@@ -72,7 +78,10 @@ export const authPublicService = {
 
     async getForgotPasswordOtp(email) {
         try {
-            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/get-forgot-password-otp`, { email });
+            const response = await springService.post(
+                `${PUB_AUTH_PREFIX_PART}/v1/get-forgot-password-otp`,
+                { email }
+            );
             return response.data;
         } catch (error) {
             console.error(error);
@@ -82,7 +91,10 @@ export const authPublicService = {
 
     async verifyOtp(formData) {
         try {
-            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/verify-register-otp`, formData);
+            const response = await springService.post(
+                `${PUB_AUTH_PREFIX_PART}/v1/verify-register-otp`,
+                formData
+            );
             return response.data;
         } catch (error) {
             console.error(error);
@@ -92,7 +104,10 @@ export const authPublicService = {
 
     async generateRandomPassword(formData) {
         try {
-            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/generate-random-password`, formData);
+            const response = await springService.post(
+                `${PUB_AUTH_PREFIX_PART}/v1/generate-random-password`,
+                formData
+            );
             return response.data;
         } catch (error) {
             console.error(error);
@@ -102,7 +117,10 @@ export const authPublicService = {
 
     async register(formData) {
         try {
-            const response = await springService.post(`${PUB_AUTH_PREFIX_PART}/v1/register-user`, formData);
+            const response = await springService.post(
+                `${PUB_AUTH_PREFIX_PART}/v1/register-user`,
+                formData
+            );
             return response.data;
         } catch (error) {
             console.error(error);

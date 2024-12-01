@@ -37,9 +37,10 @@
     width: 100%;
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    padding-left: 10px;
     margin-top: 8px;
-
+    & > * {
+        padding-left: 10px;
+    }
     &:focus-within {
         border-width: 2px;
         border-color: var(--color-fieldset);
@@ -64,7 +65,7 @@
 
 .handmade-form select {
     height: 28px;
-    margin-left: -3px;  //--Fix weird default css bug.
+    margin-left: -3px; //--Fix weird default css bug.
 }
 .handmade-form input,
 .handmade-form textarea {
@@ -87,7 +88,7 @@
     }
 }
 
-.handmade-form div[class$="-err-msg"] {
+.handmade-form div[class$='-err-msg'] {
     font-size: var(--font-size);
     color: var(--color-error-fieldset);
     padding-left: 10px;
@@ -96,7 +97,7 @@
 .handmade-form .submit-btn {
     font-size: var(--font-size);
     width: 100%;
-    button[type="submit"] {
+    button[type='submit'] {
         width: 100%;
         justify-self: center;
         display: block;

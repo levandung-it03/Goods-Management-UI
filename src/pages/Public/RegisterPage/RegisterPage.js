@@ -139,7 +139,7 @@ function InfoForm({ back }) {
             <div className={'title'}>Information</div>
             <InputField
                 name="lastName"
-                label="LastName"
+                label="Last Name"
                 validators={{
                     required: (v) => (checkIsBlank(v) ? 'Last Name is required' : null),
                 }}
@@ -149,7 +149,7 @@ function InfoForm({ back }) {
             />
             <InputField
                 name="firstName"
-                label="FirstName"
+                label="First Name"
                 validators={{
                     required: (v) => (checkIsBlank(v) ? 'First Name is required' : null),
                 }}

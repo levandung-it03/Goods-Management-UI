@@ -1,6 +1,8 @@
-input:disabled {
-    pointer-events: none;
-}
-input {
-    font-size: inherit;
+.input-field {
+    input:disabled {
+        pointer-events: none;
+    }
+    input {
+        font-size: inherit;
+    }
 }

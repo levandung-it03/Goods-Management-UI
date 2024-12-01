@@ -1,0 +1,75 @@
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+  
+  .modal-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 3rem;
+    width: 100%;
+    max-width: 52rem; /* Max width for modal */
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .modal-close-btn {
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .modal-close-btn:hover {
+    color: #4b5563;
+  }
+  
+  .modal-body {
+    margin-top: 1rem;
+  }
+  
+  .modal-body p {
+    margin-bottom: 1rem;
+  }
+  
+  .modal-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .modal-table th, .modal-table td {
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  .modal-table th {
+    background-color: #f3f4f6;
+  }
+  
+  .modal-table tr {
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }

@@ -1,9 +1,9 @@
 import { cloneElement, memo, useEffect, useRef, useState } from 'react';
 import { ListFilter, X } from 'lucide-react';
-import Form from '../../Form/Form';
-import InputField from '@reusable/Form/InputField/InputField';
-import SelectField from '@reusable/Form/SelectField/SelectField';
-import MultiSelectField from '@reusable/Form/MultiSelectField/MultiSelectField';
+import InputField from '@reusable/FormRHF/InputField/InputField';
+import SelectField from '@reusable/FormRHF/SelectField/SelectField';
+import MultiSelectField from '@reusable/FormRHF/MultiSelectField/MultiSelectField';
+import FormRHF from '@reusable/FormRHF/FormRHF';
 
 function FilterForm({ columns, handleFilter }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ function FilterForm({ columns, handleFilter }) {
     return (
         <div className="tool-button" ref={filterFormRef}>
             <ListFilter className="tool-icon" onClick={() => setIsOpen(!isOpen)} />
-            <Form className={`filter-box${isOpen ? ' open' : ''}`} onSubmit={handleFilter}>
+            <FormRHF className={`filter-box${isOpen ? ' open' : ''}`} onSubmit={handleFilter}>
                 <div className="filter-header">
                     <span>Filter</span>
                     <X onClick={() => setIsOpen(!isOpen)} />
@@ -48,7 +48,7 @@ function FilterForm({ columns, handleFilter }) {
                     <ListFilter />
                     <span>Confirm</span>
                 </button>
-            </Form>
+            </FormRHF>
         </div>
     );
 }

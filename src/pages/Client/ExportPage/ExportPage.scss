@@ -1,0 +1,58 @@
+.export-page {
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 5px;
+    }
+    .title {
+        font-size: 3rem;
+        font-weight: bold;
+    }
+    .content {
+        flex: 1;
+        display: flex;
+        .table-left,
+        .table-right {
+            flex: 1;
+            margin: 0;
+            .ui-btn {
+                height: 40px;
+                width: 240px;
+                font-size: 1.8rem;
+                margin: 20px auto 62px auto;
+            }
+            > .table-wrapper {
+                flex: 1;
+                margin: 20px 20px 0 20px;
+                padding: 0;
+                > .table {
+                    border: 1px solid;
+                    border-color: #aaa;
+                    .table-mode {
+                        display: none;
+                    }
+                    .table-content {
+                        flex: 1;
+                    }
+                }
+                > .pagination {
+                    margin-top: 20px;
+                    margin-bottom: 0;
+                    padding: 8px 0;
+                    border: 1px solid #aaa;
+                }
+            }
+            .table-row {
+                min-height: 34px;
+                span {
+                    padding-left: 20px;
+                }
+            }
+        }
+    }
+}
