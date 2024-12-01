@@ -1,5 +1,6 @@
 import { UtilAxios } from '@reusable/Utils';
 import { springService } from '@src/configs/AxiosConfig';
+import { formatArrayToTime } from '@src/utils/formatters';
 
 const ADMIN_PREFIX_PART = process.env.REACT_APP_SPRING_ADMIN_PREFIX_PART;
 
@@ -22,10 +23,10 @@ export class AdminService {
                 params: { page, filterFields, sortedField, sortedMode },
                 paramsSerializer: UtilAxios.paramsSerializerToGetWithSortAndFilter,
             });
-            response.data.data.data.forEach((obj) => {
-                obj.supplierName = obj.supplier.supplierName;
-                delete obj.supplier;
-            });
+            response.data.data.data.forEach((d) => {
+                d.createdAt = formatArrayToTime(d.createdTime);
+                d.status = d.active ? "Active" : "Inactive";
+            })
             
             console.log("🚀 ~ AdminService ~ getClientPage ~ response.data:", response.data)
             return response.data;
