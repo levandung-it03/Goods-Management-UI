@@ -2,9 +2,7 @@ import { useMemo, useState } from 'react';
 import './AdminPage.scss';
 import { FormatterDict, Table } from '@reusable/TableHMCompos/TableHMCompos';
 import { InputBuilder } from '@reusable/FormHMCompos/FormHMCompos';
-import { UserGoodsService } from '@services/GoodsService';
 import { AdminService } from '@services/adminService';
-import { UtilMethods } from '@reusable/Utils';
 import Dialog from '@reusable/Dialog/Dialog';
 
 function AdminPage() {
@@ -45,10 +43,10 @@ function AdminPage() {
                     ],
                 },
                 // TODO: add api services
-                // apiServices: {
-                //     GET_service: { action: UserGoodsService.getGoodsPages },
-                //     UPDATE_service: { action: UserGoodsService.updateGoods },
-                // },
+                apiServices: {
+                    GET_service: { action: AdminService.getClientPage },
+                    // UPDATE_service: { action: UserGoodsService.updateGoods },
+                },
             }),
         [],
     );
