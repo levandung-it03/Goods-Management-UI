@@ -10,7 +10,6 @@ function AdminSidebar({ children }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const { logout } = useAuth();
     const jwtClaims = UtilAxios.checkAndReadBase64Token(cookieHelpers.getCookies().accessToken);
-    const { name = 'Quang', email = 'vgbao1231@gmail.com' } = jwtClaims.sub;
 	const [adminInformation, setAdminInformation] = useState({
 		firstName: 'First name',
 		lastName: 'Last name',

@@ -14,4 +14,16 @@ export class AdminService {
             throw error.response ? error.response.data : error;
         }
     }
+
+    static async createClient(formData) {
+        console.log("🚀 ~ AdminService ~ createClient ~ formData:", formData)
+        
+        try {
+            const response = await springService.post(`${ADMIN_PREFIX_PART}/v1/create-new-client`, formData);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error.response ? error.response.data : error;
+        }
+    }
 }
