@@ -1,0 +1,51 @@
+.manage-warehouse .handmade-table-wrapper {
+    .table-header,
+    .table-body {
+        .table-row {
+            .table-cell-checkbox {
+                display: flex;
+                justify-content: center;
+                width: 66px;
+            }
+            .table-cell {
+                font-size: 15px;
+                padding: 6px 0 6px 6px;
+                &:nth-of-type(2),
+                &:nth-of-type(3),
+                &:nth-of-type(4) {
+                    flex: 1;
+                }
+                
+            }
+            .handmade-form.table-updating-form {
+                width: 100%;
+                gap: 8px;
+                margin: 6px 0;
+                .form-children-container {
+                    flex: 1;
+                }
+                .submit-btn {
+                    order: -1;
+                    padding: 0 2px 0 8px;
+                    button {
+                        padding: 4px 10px;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+    .table-feature {
+        .sort-box-open,
+        .filter-box-open {
+            form {
+                width: 240px;
+            }
+        }
+    }
+    .add-row {
+        padding-left: 8px;
+        gap: 10px;
+        color: #ccc;
+    }
+}

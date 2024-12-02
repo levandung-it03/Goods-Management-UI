@@ -109,6 +109,7 @@ export function Table(props) {
                 if (filterData && Object.keys(filterData).length !== 0)
                     request.filterFields = filterData;
                 if (sortData && Object.keys(sortData).length !== 0) {
+                    console.log(sortData)
                     request.sortedField = sortData.sortedField;
                     request.sortedMode = sortData.sortedMode;
                 }
@@ -139,7 +140,6 @@ export function Table(props) {
             menuItems: menuItemsBuilders.map(menuContextBuilder => menuContextBuilder(rowData, fetchTableData))
         });
     }, [primaryKeyName, contextMenuComponents, tableModes.canUpdatingRow]);
-    console.log(updatingRowId);
 
     useEffect(() => {
         fetchTableData();
@@ -348,7 +348,7 @@ const Tools = memo(function Tools(props) {
                 <Form
                     className="sort-box"
                     childrenBuildersInfo={[
-                        { name: "sortedFiled", legend: "Sorted Field", builder: SelectBuilder({ name: "sortedFiled",
+                        { name: "sortedField", legend: "Sorted Field", builder: SelectBuilder({ name: "sortedField",
                             options: tableInfo.sortingFields.map(info => ({ value: info.name, text: info.sortingLabel }))
                         })},
                         { name: "sortedMode", legend: "Sorted Mode", builder: SelectBuilder({ name: "sortedMode",
@@ -356,7 +356,9 @@ const Tools = memo(function Tools(props) {
                         })},
                     ]}
                     replacedSubmitBtnBuilder={formData => <div className="sort-submit-btn">
-                        <button onClick={e => { e.preventDefault(); setSortData(formData); }}>Confirm Sort</button>
+                        <button onClick={e => { e.preventDefault(); setSortData(prev => ({
+                            ...prev, ...formData
+                        })); }}>Confirm Sort</button>
                     </div>}
                 />
             </div>

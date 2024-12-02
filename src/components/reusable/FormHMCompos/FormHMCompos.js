@@ -106,12 +106,15 @@ export function SelectBuilder({ options=[], validators=[], defaultValue="", ...p
                 setValidations(prev => ({  ...prev,
                     [name]: validators.length === 0 || validate(defaultValuesFromForm[name], validators)
                 }));
-            };
+            }
+            else 
+                updateFormData({ name: name, value: options[0].value });
         }, [updateFormData, defaultValuesFromForm, name, setValidations]);
-
+        
         return <select
-            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm)
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name]) ? defaultValuesFromForm[name] : ""}
+            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm) && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])
+                ? defaultValuesFromForm[name]
+                : options[0].value}
             {...props}
             name={name}
             value={data}

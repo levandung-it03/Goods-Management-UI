@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import "./ManageSupplier.scss";
 import { FormatterDict, Table } from "@reusable/TableHMCompos/TableHMCompos";
-import { InputBuilder, SelectBuilder } from "@reusable/FormHMCompos/FormHMCompos";
+import { InputBuilder } from "@reusable/FormHMCompos/FormHMCompos";
 import Dialog from "@reusable/Dialog/Dialog";
 import { UserSupplierService } from "@services/SupplierService";
 import { UtilMethods } from "@reusable/Utils";
@@ -9,7 +9,7 @@ import { Trash } from "lucide-react";
 
 export default function ManageSupplier() {
     const [dialogProps, setDialogProps] = useState({ isOpen: false, title: '', body: null });
-    const primaryKeyName = useMemo(() => "supplierId", []);
+    const primaryKeyName = useMemo(() => "supplierId");
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
             title: "Manage Supplier Table",
