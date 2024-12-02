@@ -99,24 +99,7 @@ export function Table(props) {
         });
     }, [currentPage, primaryKeyName]);
 
-    const handleContextMenu = useCallback((e, rowData) => {
-        e.preventDefault();
-        const menuItemsBuilders = [];
-        if (tableModes.canUpdatingRow)
-            menuItemsBuilders.push(rowData => (
-                { text: 'Update Row Info', icon: <Pencil />, action: () => setUpdatingRowId(rowData[primaryKeyName]) })
-            );
-        menuItemsBuilders.push(...contextMenuComponents.menuBuilders);
-        setContextMenu({
-            isShown: true,
-            x: e.pageX,
-            y: e.pageY,
-            menuItems: menuItemsBuilders.map(menuContextBuilder => menuContextBuilder(rowData))
-        });
-    }, [primaryKeyName, contextMenuComponents, tableModes.canUpdatingRow]);
-    console.log(updatingRowId);
-
-    useEffect(() => {
+    const fetchTableData = useCallback(() => {
         async function fetchData() {
             if (tableComponents.apiServices.GET_replacedAction) {
                 const params = tableComponents.apiServices.GET_replacedAction.moreParams;
@@ -137,10 +120,30 @@ export function Table(props) {
             .then(response => {
                 setTableState(response.data.data);
                 setTotalPages(response.data.totalPages);
-                UtilMethods.showToast(response.message, "success");
             })
-            .catch(error => UtilMethods.showToast(error.message, "error"));
+            .catch(error => console.log("TableHMError: " + error));
     }, [sortData, filterData, currentPage, tableComponents.apiServices.GET_service, tableComponents.apiServices.GET_replacedAction]);
+
+    const handleContextMenu = useCallback((e, rowData) => {
+        e.preventDefault();
+        const menuItemsBuilders = [];
+        if (tableModes.canUpdatingRow)
+            menuItemsBuilders.push((rowData, fetchTableData) => (
+                { text: 'Update Row Info', icon: <Pencil />, action: () => setUpdatingRowId(rowData[primaryKeyName]) }
+            ));
+        menuItemsBuilders.push(...contextMenuComponents.menuBuilders);
+        setContextMenu({
+            isShown: true,
+            x: e.pageX,
+            y: e.pageY,
+            menuItems: menuItemsBuilders.map(menuContextBuilder => menuContextBuilder(rowData, fetchTableData))
+        });
+    }, [primaryKeyName, contextMenuComponents, tableModes.canUpdatingRow]);
+    console.log(updatingRowId);
+
+    useEffect(() => {
+        fetchTableData();
+    }, [sortData, filterData, currentPage]);
 
     return (
         <>
@@ -179,6 +182,7 @@ export function Table(props) {
                             updatingRowIdState={updatingRowId}
                             setUpdatingRowId={setUpdatingRowId}
                             handleContextMenu={handleContextMenu}
+                            fetchTableData={fetchTableData}
 
                             onClick={e => tableModes.canSelectingRow && handleSelectingRow(e, rowData)}
                             onContextMenu={e => handleContextMenu(e, rowData)}
@@ -194,6 +198,7 @@ export function Table(props) {
                         key={"table-adding-form-" + UtilMethods.timeAsKey}
                         tableModes={tableModes}
                         addingFormComponents={addingFormComponents}
+                        fetchTableData={fetchTableData}
                     />}
             </div>
             {tableModes.hasContextMenu && <ContextMenu contextMenu={contextMenu} setContextMenu={setContextMenu} />}
@@ -208,27 +213,26 @@ export function Table(props) {
 
 const TableRowBuilder = memo(function TableRowBuilder({
     primaryKeyName, rowData, columnsInfo, tableModes, UPDATE_service,
-    updatingRowIdState, setUpdatingRowId, handleContextMenu, moreReducers,
+    updatingRowIdState, setUpdatingRowId, handleContextMenu, moreReducers, fetchTableData,
     selectedRows, currentPage, ...props
 }) {
-    const primaryKeyValue = useMemo(() => rowData[primaryKeyName], [primaryKeyName, rowData]);
-
     const buildHeadingCell = useCallback(() => {
         if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState) && updatingRowIdState == rowData[primaryKeyName])
             return <></>;
         else if (tableModes.canSelectingRow)
-            return <input type="checkbox" readOnly checked={!!selectedRows[currentPage] && !!selectedRows[currentPage][primaryKeyValue]} />
+            return <input type="checkbox" readOnly
+                checked={!!selectedRows[currentPage] && !!selectedRows[currentPage][rowData[primaryKeyName]]} />
         else
-            return <span>{primaryKeyValue}</span>
-    }, [updatingRowIdState, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow, currentPage, primaryKeyValue]);
+            return <></>
+    }, [updatingRowIdState, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow, currentPage, rowData[primaryKeyName]]);
 
     useEffect(() => {
         if (UtilMethods.checkIsBlank(tableModes.canUpdatingRow))
             UPDATE_service.moreParams = {
                 ...UPDATE_service.moreParams,
-                [primaryKeyName]: primaryKeyValue   //--Always attach primaryKeyValue when updating-row.
+                [primaryKeyName]: rowData[primaryKeyName]   //--Always attach primaryKeyValue when updating-row.
             };
-    }, [UPDATE_service, primaryKeyValue, primaryKeyName, tableModes.canUpdatingRow]);
+    }, [UPDATE_service, rowData[primaryKeyName], primaryKeyName, tableModes.canUpdatingRow]);
 
     useEffect(() => {
         if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState)) {
@@ -251,7 +255,14 @@ const TableRowBuilder = memo(function TableRowBuilder({
             ? <Form
                 className="table-updating-form"
                 offFieldsets={true}
-                POST_service={UPDATE_service}
+                POST_service={{
+                    ...UPDATE_service,
+                    action: async formData => {
+                        await UPDATE_service.action(formData);
+                        setUpdatingRowId(null);
+                        fetchTableData();
+                    }
+                }}
                 defaultValues={rowData}
                 childrenBuildersInfo={columnsInfo.map(columnInfo => columnInfo.updatingFieldBuilder)}
             />
@@ -262,7 +273,7 @@ const TableRowBuilder = memo(function TableRowBuilder({
     </div>);
 });
 
-const AddingForm = memo(function AddingForm({ tableModes, addingFormComponents, ...props }) {
+const AddingForm = memo(function AddingForm({ tableModes, addingFormComponents, fetchTableData, ...props }) {
     const [isAddingRow, setIsAddingRow] = useState(false);
 
     useEffect(() => {
@@ -283,7 +294,14 @@ const AddingForm = memo(function AddingForm({ tableModes, addingFormComponents, 
             {...props}
             className="table-adding-form"
             offFieldsets={true}
-            POST_service={addingFormComponents.POST_service}
+            POST_service={{
+                ...addingFormComponents.apiServices.POST_service,
+                action: async formData => {
+                    setIsAddingRow(false);
+                    await addingFormComponents.apiServices.POST_service.action(formData);
+                    fetchTableData();
+                }
+            }}
             childrenBuildersInfo={addingFormComponents.childrenBuildersInfo}
         />
     ) : <div className="add-row" onClick={() => setIsAddingRow(true)}>

@@ -5,21 +5,20 @@ import { InputBuilder, SelectBuilder } from "@reusable/FormHMCompos/FormHMCompos
 import Dialog from "@reusable/Dialog/Dialog";
 import { UserSupplierService } from "@services/SupplierService";
 import { UtilMethods } from "@reusable/Utils";
+import { Trash } from "lucide-react";
 
 export default function ManageSupplier() {
     const [dialogProps, setDialogProps] = useState({ isOpen: false, title: '', body: null });
-
+    const primaryKeyName = useMemo(() => "supplierId", []);
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
             title: "Manage Supplier Table",
-            primaryKeyName: "supplierId",
+            primaryKeyName: primaryKeyName,
             columnsInfo: [
                 FormatterDict.ColumnInfo('supplierId', 'Supplier Id', { name: "supplierId", builder: InputBuilder({ type: "text", readOnly: true }) }),
                 FormatterDict.ColumnInfo('supplierName', 'Supplier Name', { name: "supplierName", builder: InputBuilder({ type: "text", validators: [
                     v => !UtilMethods.checkIsBlank(v) || "Value is required",
                 ] }) }),
-                FormatterDict.ColumnInfo('supplierName', 'Supplier Name', { name: "supplierName",
-                    builder: InputBuilder({ type: "text", readOnly: true }) }),
             ],
             filterFields: [
                 FormatterDict.FilterField('supplierId', 'Supplier Id', InputBuilder({ type: "number" })),
@@ -48,6 +47,12 @@ export default function ManageSupplier() {
     }), []);
 
     const contextMenuComponents = useMemo(() => FormatterDict.ContextMenuComponents([
+        (rowData, fetchTableData) => (
+            { text: 'Delete Supplier', icon: <Trash />, action: async () => {
+                await UserSupplierService.deleteSupplier(rowData[primaryKeyName]);
+                fetchTableData();
+            } }
+        )
     ]), []);
 
     return (

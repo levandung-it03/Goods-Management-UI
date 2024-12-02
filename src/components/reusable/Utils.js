@@ -15,7 +15,7 @@ export class UtilMethods {
     }
     
     static showToast(msg, type) {
-        // alert(type + ": " + msg);
+        alert(type + ": " + msg);
     }
 }
 

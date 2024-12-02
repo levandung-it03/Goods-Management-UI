@@ -6,6 +6,7 @@ import HomePage from '@src/pages/Client/HomePage/HomePage';
 import AdminPage from '@src/pages/Admin/AdminPage';
 import { AdminSidebarLayout, UserSidebarLayout } from '@src/layout/SidebarLayout';
 import ImportPage from '@src/pages/Client/ImportPage/ImportPage';
+import ManageSupplier from '@src/pages/Client/ManageSupplier/ManageSupplier';
 
 const publicRoutes = [
     // Example
@@ -22,6 +23,7 @@ const adminRoutes = [
 const userRoutes = [
     { path: '/', component: HomePage, layout: UserSidebarLayout },
     { path: '/user/manage-goods', component: ManageGoods, layout: UserSidebarLayout },
+    { path: '/user/manage-supplier', component: ManageSupplier, layout: UserSidebarLayout },
     { path: '/user/create-import', component: ImportPage, layout: UserSidebarLayout },
     { path: '/user/create-export', component: ExportPage, layout: AdminSidebarLayout },
 ];
