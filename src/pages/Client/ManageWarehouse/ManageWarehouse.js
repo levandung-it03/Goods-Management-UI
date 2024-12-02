@@ -1,15 +1,13 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import "./ManageWarehouse.scss";
 import { FormatterDict, Table } from "@reusable/TableHMCompos/TableHMCompos";
 import { InputBuilder } from "@reusable/FormHMCompos/FormHMCompos";
-import Dialog from "@reusable/Dialog/Dialog";
 import { UserWarehouseService } from "@services/WarehouseService";
 import { UtilMethods } from "@reusable/Utils";
 import { Trash } from "lucide-react";
 
 export default function ManageWarehouse() {
-    const [dialogProps, setDialogProps] = useState({ isOpen: false, title: '', body: null });
-    const primaryKeyName = useMemo(() => "warehouseId");
+    const primaryKeyName = useMemo(() => "warehouseId", []);
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
             title: "Manage Warehouse Table",
@@ -38,7 +36,7 @@ export default function ManageWarehouse() {
             GET_service: { action: UserWarehouseService.getWarehousePages },
             UPDATE_service: { action: UserWarehouseService.updateWarehouse },
         },
-    }), []);
+    }), [primaryKeyName]);
 
     const addingFormComponents = useMemo(() => FormatterDict.AddingFormComponents({
         apiServices: {
@@ -61,7 +59,7 @@ export default function ManageWarehouse() {
                 fetchTableData();
             } }
         ),
-    ]), []);
+    ]), [primaryKeyName]);
 
     return (
         <div className="manage-warehouse">
@@ -71,7 +69,6 @@ export default function ManageWarehouse() {
                 contextMenuComponents={contextMenuComponents}
                 tableModes={FormatterDict.TableModes(true, true, true, true, true)}
             />
-            <Dialog dialogProps={dialogProps} setDialogProps={setDialogProps} />
         </div>
     );
 }

@@ -1,16 +1,15 @@
-import { useMemo } from "react";
-import "./ManageSupplier.scss";
+import { useMemo, memo } from "react";
+import "./SupplierDialog.scss";
 import { FormatterDict, Table } from "@reusable/TableHMCompos/TableHMCompos";
 import { InputBuilder } from "@reusable/FormHMCompos/FormHMCompos";
 import { UserSupplierService } from "@services/SupplierService";
 import { UtilMethods } from "@reusable/Utils";
-import { Trash } from "lucide-react";
 
-export default function ManageSupplier() {
+function SupplierDialog({ setSupplierInputState, onClose }) {
     const primaryKeyName = useMemo(() => "supplierId", []);
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
-            title: "Manage Supplier Table",
+            title: "Supplier Dialog To Select",
             primaryKeyName: primaryKeyName,
             columnsInfo: [
                 FormatterDict.ColumnInfo('supplierId', 'Supplier Id', { name: "supplierId", builder: InputBuilder({ type: "text", readOnly: true }) }),
@@ -29,38 +28,22 @@ export default function ManageSupplier() {
         },
         apiServices: {
             GET_service: { action: UserSupplierService.getSupplierPages },
-            UPDATE_service: { action: UserSupplierService.updateSupplier },
         },
-    }), [primaryKeyName]);
-
-    const addingFormComponents = useMemo(() => FormatterDict.AddingFormComponents({
-        apiServices: {
-            POST_service: { action: UserSupplierService.addSupplier },
-        },
-        childrenBuildersInfo: [
-            { name: "supplierName", builder: InputBuilder({ type: "text", validators: [
-                v => !UtilMethods.checkIsBlank(v) || "Value is required",
-            ] }) },
-        ],
-    }), []);
-
-    const contextMenuComponents = useMemo(() => FormatterDict.ContextMenuComponents([
-        (rowData, fetchTableData) => (
-            { text: 'Delete Supplier', icon: <Trash />, action: async () => {
-                await UserSupplierService.deleteSupplier(rowData[primaryKeyName]);
-                fetchTableData();
-            } }
-        )
-    ]), [primaryKeyName]);
+        moreReducers: [
+            FormatterDict.TableRowMoreReducer("onClick", (e, rowData) => {
+                setSupplierInputState(rowData);
+                onClose();
+            })
+        ]
+    }), [primaryKeyName, setSupplierInputState]);
 
     return (
-        <div className="manage-supplier">
+        <div className="supplier-dialog">
             <Table
                 tableComponents={tableComponents}
-                addingFormComponents={addingFormComponents}
-                contextMenuComponents={contextMenuComponents}
-                tableModes={FormatterDict.TableModes(true, true, true, true, true)}
+                tableModes={FormatterDict.TableModes(false, false, false, false, false)}
             />
         </div>
     );
 }
+export default memo(SupplierDialog);

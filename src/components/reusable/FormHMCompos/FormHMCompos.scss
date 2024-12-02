@@ -63,16 +63,18 @@
     }
 }
 
-.handmade-form select {
+.handmade-form .form-child select {
     height: 28px;
 }
-.handmade-form input,
-.handmade-form textarea {
+.handmade-form .form-child input,
+.handmade-form .form-child span,
+.handmade-form .form-child textarea {
     height: 25px;
 }
-.handmade-form input,
-.handmade-form select,
-.handmade-form textarea {
+.handmade-form .form-child input,
+.handmade-form .form-child span,
+.handmade-form .form-child select,
+.handmade-form .form-child textarea {
     font-size: var(--font-size);
     width: 100%;
     display: block;
@@ -81,13 +83,14 @@
     border-radius: 7px;
     cursor: pointer;
     border: none;
+    background-color: #fff;
     &:focus {
         border: none;
         outline: none;
     }
 }
 
-.handmade-form div[class$='-err-msg'] {
+.handmade-form .form-child div[class$='-err-msg'] {
     font-size: var(--font-size);
     color: var(--color-error-fieldset);
     padding-left: 10px;

@@ -1,8 +1,8 @@
 import './TableHMCompos.scss';
 import { UtilMethods } from "../Utils";
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { ArrowDownUp, ListFilter, Pencil, Plus } from 'lucide-react';
-import { Form, SelectBuilder } from "../FormHMCompos/FormHMCompos";
+import Form, { SelectBuilder } from "../FormHMCompos/FormHMCompos";
 import Pagination from "../Pagination/Pagination";
 import ContextMenu from '../ContextMenu/ContextMenu';
 
@@ -41,7 +41,7 @@ export const FormatterDict = {
     },
     FilterField: (name = "name", label = "Name", formChildBuilder = ()=>{}) => ({ name, legend: label, builder: formChildBuilder }),
     SortingField: (name = "name", sortingLabel = "Name") => ({ name, sortingLabel }),
-    TableRowMoreReducer: (eventName = "onClick", reducer = ()=>{}) => ({ eventName, reducer })
+    TableRowMoreReducer: (eventName = "onClick", reducer = (e, rowData)=>{}) => ({ eventName, reducer })
 }
 
 export function Table(props) {
@@ -109,7 +109,6 @@ export function Table(props) {
                 if (filterData && Object.keys(filterData).length !== 0)
                     request.filterFields = filterData;
                 if (sortData && Object.keys(sortData).length !== 0) {
-                    console.log(sortData)
                     request.sortedField = sortData.sortedField;
                     request.sortedMode = sortData.sortedMode;
                 }
@@ -132,18 +131,20 @@ export function Table(props) {
             menuItemsBuilders.push((rowData, fetchTableData) => (
                 { text: 'Update Row Info', icon: <Pencil />, action: () => setUpdatingRowId(rowData[primaryKeyName]) }
             ));
-        menuItemsBuilders.push(...contextMenuComponents.menuBuilders);
-        setContextMenu({
-            isShown: true,
-            x: e.pageX,
-            y: e.pageY,
-            menuItems: menuItemsBuilders.map(menuContextBuilder => menuContextBuilder(rowData, fetchTableData))
-        });
-    }, [primaryKeyName, contextMenuComponents, tableModes.canUpdatingRow]);
+        if (tableModes.hasContextMenu) {
+            menuItemsBuilders.push(...contextMenuComponents.menuBuilders);
+            setContextMenu({
+                isShown: true,
+                x: e.pageX,
+                y: e.pageY,
+                menuItems: menuItemsBuilders.map(menuContextBuilder => menuContextBuilder(rowData, fetchTableData))
+            });
+        }
+    }, [primaryKeyName, contextMenuComponents, tableModes, fetchTableData]);
 
     useEffect(() => {
         fetchTableData();
-    }, [sortData, filterData, currentPage]);
+    }, [sortData, filterData, currentPage, fetchTableData]);
 
     return (
         <>
@@ -163,7 +164,8 @@ export function Table(props) {
                                 checked={!!selectedRows[currentPage] && tableState.length === Object.keys(selectedRows[currentPage]).length}/>
                         </div>}
                         {!tableComponents.tableInfo.offHeaders && tableComponents.tableInfo.columnsInfo.map((columnInfo, index) =>
-                            <div key={index} className="table-cell">{columnInfo.headerLabel}</div>
+                            UtilMethods.checkIsBlank(columnInfo.headerLabel) ? <></> :
+                                <div key={index} className="table-cell">{columnInfo.headerLabel}</div>
                         )}
                     </div>
                 </div>
@@ -217,14 +219,16 @@ const TableRowBuilder = memo(function TableRowBuilder({
     selectedRows, currentPage, ...props
 }) {
     const buildHeadingCell = useCallback(() => {
-        if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState) && updatingRowIdState == rowData[primaryKeyName])
+        if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState) && updatingRowIdState === rowData[primaryKeyName])
             return <></>;
         else if (tableModes.canSelectingRow)
-            return <input type="checkbox" readOnly
-                checked={!!selectedRows[currentPage] && !!selectedRows[currentPage][rowData[primaryKeyName]]} />
+            return <div className="table-cell-checkbox" key="table-heading-cell">
+                <input type="checkbox" readOnly
+                    checked={!!selectedRows[currentPage] && !!selectedRows[currentPage][rowData[primaryKeyName]]} />
+            </div>;
         else
             return <></>
-    }, [updatingRowIdState, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow, currentPage, rowData[primaryKeyName]]);
+    }, [updatingRowIdState, selectedRows, tableModes.canSelectingRow, tableModes.canUpdatingRow, currentPage, rowData, primaryKeyName]);
 
     useEffect(() => {
         if (UtilMethods.checkIsBlank(tableModes.canUpdatingRow))
@@ -232,7 +236,7 @@ const TableRowBuilder = memo(function TableRowBuilder({
                 ...UPDATE_service.moreParams,
                 [primaryKeyName]: rowData[primaryKeyName]   //--Always attach primaryKeyValue when updating-row.
             };
-    }, [UPDATE_service, rowData[primaryKeyName], primaryKeyName, tableModes.canUpdatingRow]);
+    }, [UPDATE_service, rowData, primaryKeyName, tableModes.canUpdatingRow]);
 
     useEffect(() => {
         if (tableModes.canUpdatingRow && !UtilMethods.checkIsBlank(updatingRowIdState)) {
@@ -248,9 +252,7 @@ const TableRowBuilder = memo(function TableRowBuilder({
     }, [updatingRowIdState, tableModes.canUpdatingRow, setUpdatingRowId]);
 
     return (<div className="table-row" {...props}>
-        <div className="table-cell-checkbox" key="table-heading-cell">
-            {buildHeadingCell()}
-        </div>
+        {buildHeadingCell()}
         {tableModes.canUpdatingRow && updatingRowIdState === rowData[primaryKeyName]
             ? <Form
                 className="table-updating-form"
@@ -266,9 +268,10 @@ const TableRowBuilder = memo(function TableRowBuilder({
                 defaultValues={rowData}
                 childrenBuildersInfo={columnsInfo.map(columnInfo => columnInfo.updatingFieldBuilder)}
             />
-            : columnsInfo.map((columnInfo, index) => <div className="table-cell" key={"table-cell-" + UtilMethods.timeAsKey + index}>
-                {columnInfo.replacedContent ? columnInfo.replacedContent(rowData) : <span>{rowData[columnInfo.name]}</span>}
-            </div>)
+            : columnsInfo.map((columnInfo, index) => UtilMethods.checkIsBlank(rowData[columnInfo.name]) ? <></> :
+                <div className="table-cell" key={"table-cell-" + UtilMethods.timeAsKey + index}>
+                    {columnInfo.replacedContent ? columnInfo.replacedContent(rowData) : <span>{rowData[columnInfo.name]}</span>}
+                </div>)
         }
     </div>);
 });
