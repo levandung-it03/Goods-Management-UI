@@ -9,19 +9,18 @@ import GoodsTrendChart from "./GoodsTrendChart/GoodsTrendChart";
 export default function HomePage() {
     return (
         <div className="homepage-container">
-            <div className="hero-section">
-                <div className="hero-content">
-                    <h1 className="hero-heading">
-                        Welcome to Product Management
-                    </h1>
-                    <p className="hero-subheading">
-                        Efficiently manage your inventory and track goods
-                        movement
-                    </p>
-                </div>
-            </div>
-
             <div className="container">
+                <div className="hero-section">
+                    <div className="hero-content">
+                        <h1 className="hero-heading">
+                            Welcome to Product Management
+                        </h1>
+                        <p className="hero-subheading">
+                            Efficiently manage your inventory and track goods
+                            movement
+                        </p>
+                    </div>
+                </div>
                 <header className="dashboard-header">
                     <h2 className="dashboard-title">Dashboard</h2>
                 </header>
@@ -32,8 +31,12 @@ export default function HomePage() {
                     <ExportBills />
                     <ImportBills />
                 </div>
-                <InventoryChart />
-                <GoodsTrendChart />
+                <div className="inventory-chart">
+                    <InventoryChart />
+                </div>
+                <div className="goods-trend-chart">
+                    <GoodsTrendChart />
+                </div>
             </div>
         </div>
     );
