@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BillDetailsModal } from "../BillDetailsModal/BillDetailsModal";
 import { DashboardService } from "@services/DashBoardService";
 import "./ExportBills.scss"; // Đảm bảo import SCSS file
-import { formatArrayToTime } from "@src/utils/formatters";
+import { formatArrayToDate } from "@src/utils/formatters";
 
 export default function ExportBills() {
     const [selectedBill, setSelectedBill] = useState(null);
@@ -66,7 +66,7 @@ export default function ExportBills() {
                                 <span className="id">{bill.exportBillId}</span>
                                 <div className="details">
                                     <span className="created-time">
-                                        {formatArrayToTime(bill.createdTime)}
+                                        {formatArrayToDate(bill.createdTime)}
                                     </span>
                                     <span className="receiver">
                                         {bill.receiverName}

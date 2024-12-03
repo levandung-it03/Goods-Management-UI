@@ -54,6 +54,7 @@ export default function GoodsTrendChart() {
                 startDate,
                 endDate
             );
+            console.log(result.data);
             setChartData(result.data); // Giả sử result.data là dữ liệu bạn muốn hiển thị trên biểu đồ
         } catch (error) {
             console.error("Error fetching inventory chart data:", error);
@@ -126,13 +127,13 @@ export default function GoodsTrendChart() {
                         <Legend />
                         <Line
                             type="monotone"
-                            dataKey="export"
+                            dataKey="quantityExported"
                             name="Export"
                             stroke="#2563eb"
                         />
                         <Line
                             type="monotone"
-                            dataKey="import"
+                            dataKey="quantityImported"
                             name="Import"
                             stroke="#16a34a"
                         />
