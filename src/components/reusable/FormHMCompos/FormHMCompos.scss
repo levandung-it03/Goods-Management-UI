@@ -63,18 +63,26 @@
     }
 }
 
-.handmade-form .form-child select {
+.handmade-form .form-child select,
+.handmade-form fieldset select {
     height: 28px;
 }
 .handmade-form .form-child input,
 .handmade-form .form-child span,
-.handmade-form .form-child textarea {
+.handmade-form .form-child textarea,
+.handmade-form fieldset input,
+.handmade-form fieldset span,
+.handmade-form fieldset textarea {
     height: 25px;
 }
 .handmade-form .form-child input,
 .handmade-form .form-child span,
 .handmade-form .form-child select,
-.handmade-form .form-child textarea {
+.handmade-form .form-child textarea,
+.handmade-form fieldset input,
+.handmade-form fieldset span,
+.handmade-form fieldset select,
+.handmade-form fieldset textarea {
     font-size: var(--font-size);
     width: 100%;
     display: block;
@@ -90,7 +98,8 @@
     }
 }
 
-.handmade-form .form-child div[class$='-err-msg'] {
+.handmade-form .form-child div[class$='-err-msg'],
+.handmade-form fieldset div[class$='-err-msg'] {
     font-size: var(--font-size);
     color: var(--color-error-fieldset);
     padding-left: 10px;

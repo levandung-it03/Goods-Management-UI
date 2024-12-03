@@ -1,0 +1,26 @@
+.warehouse-goods-dialog .handmade-table-wrapper {
+    width: 70vw;
+    .table-header,
+    .table-body {
+        .table-row {
+            .table-cell-checkbox {
+                display: flex;
+                justify-content: center;
+                width: 66px;
+            }
+            .table-cell {
+                font-size: 15px;
+                padding: 6px 0 6px 6px;
+                flex: 1;
+            }
+        }
+    }
+    .table-feature {
+        .sort-box-open,
+        .filter-box-open {
+            form {
+                width: 240px;
+            }
+        }
+    }
+}

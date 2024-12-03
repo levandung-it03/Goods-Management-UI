@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState } from 'react';
 import './ManageGoods.scss';
 import { FormatterDict, Table } from '@reusable/TableHMCompos/TableHMCompos';
 import { InputBuilder, SpanMockInputBuilder } from '@reusable/FormHMCompos/FormHMCompos';
@@ -6,7 +6,8 @@ import Dialog from '@reusable/Dialog/Dialog';
 import { UserGoodsService } from '@services/GoodsService';
 import { UtilMethods } from '@reusable/Utils';
 import SupplierDialog from './SupplierDialog';
-import { Trash } from 'lucide-react';
+import WarehouseGoodsDialog from './WarehouseGoodsDialog';
+import { Book, Trash } from 'lucide-react';
 
 export default function ManageGoods() {
     const [dialogContent, setDialogContent] = useState(null);
@@ -99,7 +100,7 @@ export default function ManageGoods() {
                     required: true, readOnly: true, 
                     onClick: e => {
                         setDialogContent(<SupplierDialog setSupplierInputState={rowData => {
-                            setUpdatingSupplierId(rowData.supplierId);
+                            setAddingSupplierId(rowData.supplierId);
                             e.target.innerText = rowData.supplierName;
                         }} />);
                     }
@@ -114,6 +115,10 @@ export default function ManageGoods() {
                 await UserGoodsService.deleteGoods(rowData[primaryKeyName]);
                 fetchTableData();
             } }
+        ),
+        (rowData, fetchTableData) => (
+            { text: 'See Goods From Warehouse', icon: <Book />, action: async () =>
+                setDialogContent(<WarehouseGoodsDialog goodsId={rowData[primaryKeyName]} />) }
         )
     ]), [primaryKeyName]);
 

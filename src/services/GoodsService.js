@@ -33,6 +33,25 @@ export class UserGoodsService {
         }
     }
 
+    static async getGoodsFromWarehousePages({ page, filterFields, sortedField, sortedMode, goodsId }) {
+        try {
+            const response = await springService.get(`${USER_PREFIX_PART}/v1/get-goods-from-warehouse-pages`, {
+                params: { page, filterFields, sortedField, sortedMode, id: goodsId },
+                paramsSerializer: UtilAxios.paramsSerializerToGetWithSortAndFilter,
+            });
+            response.data.data.data.forEach((obj) => {
+                obj.warehouseId = obj.warehouse.warehouseId;
+                obj.warehouseName = obj.warehouse.warehouseName;
+                obj.address = obj.warehouse.address;
+                delete obj.warehouse;
+            });
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error.response ? error.response.data : error;
+        }
+    }
+
     static async updateGoods(formData) {
         try {
             const response = await springService.put(`${USER_PREFIX_PART}/v1/update-goods`, formData);
