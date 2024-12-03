@@ -32,6 +32,7 @@
                 padding: 0;
                 > .table {
                     border: 1px solid;
+                    border-bottom: none;
                     border-color: #aaa;
                     .table-mode {
                         display: none;
@@ -51,6 +52,13 @@
                 min-height: 34px;
                 span {
                     padding-left: 20px;
+                }
+            }
+            .pagination {
+                margin: 10px 0;
+                .page-button {
+                    width: 28px;
+                    height: 28px;
                 }
             }
         }

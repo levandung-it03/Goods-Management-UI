@@ -20,9 +20,15 @@ function Table({
 }) {
     const { setFilterData, setSortData, setSelectedRows, setCurrentPage, setContextMenu } = tableDetail;
     const { contextMenu, currentPage, totalPages, tableData, tableMode } = tableDetail;
-    const [isAdding, setIsAdding] = useState(addRowProps?.().isAdding); // Chứa các trường trạng thái như isEditing, isAdding, isInserting,...
+    const [isAdding, setIsAdding] = useState(addRowProps?.().defaultIsAdding); // Chứa các trường trạng thái như isEditing, isAdding, isInserting,...
     const { enableFilter, enableSort, enableAdd } = tableMode;
-    const { customForm: customAddRowForm, text: addRowText, ...addRowEvent } = addRowProps?.(setIsAdding) || {};
+    const {
+        customForm: customAddRowForm,
+        text: addRowText,
+        defaultIsAdding,
+        methods: addMethods,
+        ...addRowEvent
+    } = addRowProps?.(setIsAdding) || {};
 
     // Chứa thông tin trạng thái của các row (iSelected, isEditing, isAdding, isInserting,...)
     const [allRowState, setAllRowState] = useState({});
@@ -85,7 +91,7 @@ function Table({
 
     const addFormRef = useRef();
     const handleAdd = useCallback(() => {
-        addFormRef.current.requestSubmit();
+        addFormRef.current && addFormRef.current.requestSubmit();
     }, [addFormRef]);
 
     const handleRowSubmit = useCallback(
@@ -104,14 +110,18 @@ function Table({
         if (isAdding) {
             const handleKeyDown = (e) => {
                 if (e.key === 'Escape') {
-                    setIsAdding();
+                    if (window.confirm('The action has not been performed yet. Are you sure you want to exit?')) {
+                        setIsAdding(false);
+                    }
+                } else if (e.key === 'Enter') {
+                    handleAdd();
                 }
             };
             window.addEventListener('keydown', handleKeyDown);
 
             return () => window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [isAdding]);
+    }, [isAdding, handleAdd]);
 
     return (
         <div className={`table-wrapper ${className}`}>
@@ -172,9 +182,10 @@ function Table({
                                         className="form-add-row"
                                         ref={addFormRef}
                                         onSubmit={(data) => {
-                                            addRowProps.onSubmit(data);
+                                            addRowProps().onSubmit(data);
                                             setIsAdding(false);
                                         }}
+                                        methods={addMethods}
                                     >
                                         <TableMode row={{ rowState: { isAdding: true } }} handleAdd={handleAdd} />
                                         <TableRow columns={columns} row={{ rowState: { isAdding: true } }} setRowState={setRowState} />

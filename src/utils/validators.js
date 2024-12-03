@@ -16,3 +16,9 @@ export const checkIsEmail = (val) => {
 export const checkMinLength = (val, minLen) => val.trim().length < minLen;
 
 export const checkMinValue = (val, minVal) => Number(val) < minVal;
+export const checkMaxValue = (val, maxVal) => Number(val) > maxVal;
+
+export const checkIsPhoneNumber = (val) => {
+    const regex = /^(?:\+?84|0)(?:\d){9}$/;
+    return regex.test(val.trim());
+};
