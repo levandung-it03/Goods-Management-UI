@@ -14,7 +14,7 @@ import { UserImportService } from '@services/ImportService';
 import { useNavigate } from 'react-router-dom';
 
 function ImportPage() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const addMethods = useForm();
     const tableDetail = useTable({
         data: [],
@@ -102,7 +102,10 @@ function ImportPage() {
     }, [setTableCustomData, addMethods, tableData]);
 
     const handleSubmit = useCallback(async () => {
-        console.log(tableData);
+        if (tableData.length === 0) {
+            alert('Please add goods and warehouses to import before submitting');
+            return;
+        }
         try {
             const formData = {
                 importedWarehouseGoods: tableData.map((r) => ({
@@ -114,7 +117,7 @@ function ImportPage() {
             const response = await UserImportService.createImportBill(formData);
             if (response.httpStatusCode === 200) {
                 alert(response.message);
-                navigate('/')
+                navigate('/');
             }
         } catch (error) {
             console.log('Error create export bill');
@@ -126,7 +129,7 @@ function ImportPage() {
             <div className="title center">Create Bill Of Importing Goods</div>
             <div className="content flex-col">
                 <Table columns={columns} createRowProps={createRowProps} addRowProps={addRowProps} tableDetail={tableDetail} />
-                <Button text="Submit" onClick={handleSubmit} />
+                <Button disabled={tableData.length === 0} text="Submit" onClick={handleSubmit} />
             </div>
         </div>
     );

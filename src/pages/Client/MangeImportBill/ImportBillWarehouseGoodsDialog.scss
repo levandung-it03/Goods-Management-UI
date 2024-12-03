@@ -1,26 +1,40 @@
-.import-bill-warehouse-goods-dialog .handmade-table-wrapper {
-    width: 70vw;
-    .table-header,
-    .table-body {
-        .table-row {
-            .table-cell-checkbox {
-                display: flex;
-                justify-content: center;
-                width: 66px;
+.import-bill-warehouse-goods-dialog {
+    display: flex;
+    flex-direction: column;
+    .handmade-table-wrapper {
+        width: 70vw;
+        margin-bottom: 10px;
+        .table-header,
+        .table-body {
+            .table-row {
+                .table-cell-checkbox {
+                    display: flex;
+                    justify-content: center;
+                    width: 66px;
+                }
+                .table-cell {
+                    font-size: 15px;
+                    padding: 6px 0 6px 6px;
+                    flex: 1;
+                }
             }
-            .table-cell {
-                font-size: 15px;
-                padding: 6px 0 6px 6px;
-                flex: 1;
+        }
+        .table-feature {
+            .sort-box-open,
+            .filter-box-open {
+                form {
+                    width: 240px;
+                }
             }
         }
     }
-    .table-feature {
-        .sort-box-open,
-        .filter-box-open {
-            form {
-                width: 240px;
-            }
-        }
+    .total-price {
+        order: 1;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-left: 40px;
+    }
+    .pagination {
+        order: 2;
     }
 }

@@ -51,4 +51,14 @@ export class UserImportService {
             throw error.response ? error.response.data : error;
         }
     }
+    
+    static async getTotalImportPrice(importBillId) {
+        try {
+            const response = await springService.get(`${USER_PREFIX_PART}/v1/create-import-bill`, importBillId); // Fix Later
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error.response ? error.response.data : error;
+        }
+    }
 }

@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './ImportBillWarehouseGoodsDialog.scss';
 import { FormatterDict, Table } from '@reusable/TableHMCompos/TableHMCompos';
 import { InputBuilder } from '@reusable/FormHMCompos/FormHMCompos';
 import { UserImportService } from '@services/ImportService';
+import { formatCurrency } from '@src/utils/formatters';
 
 export default function ImportBillWarehouseGoodsDialog({ importBillId }) {
     const primaryKeyName = "warehouseGoodsId";
@@ -46,12 +47,27 @@ export default function ImportBillWarehouseGoodsDialog({ importBillId }) {
         },
     }), [primaryKeyName, importBillId]);
 
+    const [totalPrice, setTotalPrice] = useState(1000000)
+    useEffect(()=>{
+        const fetchTotalrice = async()=>{
+            try {
+                // call api
+                // const response = await UserImportService.getTotalImportPrice(importBillId)
+                // setTotalPrice(response.data.totalPrice)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchTotalrice()
+    },[importBillId])
+
     return (
         <div className="import-bill-warehouse-goods-dialog">
             <Table
                 tableComponents={tableComponents}
                 tableModes={FormatterDict.TableModes(false, false, false, false, false)}
             />
+            <div className="total-price">Total Import Price: {formatCurrency(totalPrice)}đ</div>
         </div>
     );
 }

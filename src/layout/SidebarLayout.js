@@ -1,6 +1,6 @@
 import UserSidebar from '@ui/Sidebar/UserSidebar/UserSidebar';
 import SidebarItem from '@ui/Sidebar/SidebarItem/SidebarItem';
-import { House, Package, PackageMinus, PackagePlus, Truck, UserCheck, Users } from 'lucide-react';
+import { ClipboardCopy, ClipboardPaste, House, Package, PackageMinus, PackagePlus, Truck, UserCheck, Users } from 'lucide-react';
 import AdminSidebar from '@ui/Sidebar/AdminSidebar/AdminSidebar';
 
 const sidebarStyles = { display: 'flex', width: '100vw', height: '100vh', overflow: 'hidden' };
@@ -13,7 +13,9 @@ export function UserSidebarLayout({ children }) {
                 <SidebarItem icon={<Package />} text="Manage Goods" path="/user/manage-goods" />
                 <SidebarItem icon={<UserCheck />} text="Manage Supplier" path="/user/manage-supplier" />
                 <SidebarItem icon={<Truck />} text="Manage Warehouse" path="/user/manage-warehouse" />
+                <SidebarItem icon={<ClipboardPaste />} text="Manage Export Bill" path="/user/manage-export-bill" />
                 <SidebarItem icon={<PackageMinus />} text="Create Export Bill" path="/user/create-export" />
+                <SidebarItem icon={<ClipboardCopy />} text="Manage Import Bill" path="/user/manage-import-bill" />
                 <SidebarItem icon={<PackagePlus />} text="Create Import Bill" path="/user/create-import" />
             </UserSidebar>
             <div className="container" style={{ flex: 1 }}>
@@ -26,7 +28,7 @@ export function UserSidebarLayout({ children }) {
 export function AdminSidebarLayout({ children }) {
     return (
         <div style={sidebarStyles}>
-            <AdminSidebar/>
+            <AdminSidebar />
 
             <div className="container" style={{ flex: 1 }}>
                 {children}
