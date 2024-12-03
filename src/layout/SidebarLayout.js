@@ -25,7 +25,6 @@ export function AdminSidebarLayout({ children }) {
     return (
         <div style={sidebarStyles}>
             <AdminSidebar>
-                <SidebarItem icon={<Users />} text="Manage Clients" path='/admin/clients' />
                 <SidebarItem icon={<Package />} text="Manage Goods" path={['/', '/user/manage-goods']} />
                 <SidebarItem icon={<PackageMinus />} text="Create Export Bill" path="/user/create-export" />
             </AdminSidebar>

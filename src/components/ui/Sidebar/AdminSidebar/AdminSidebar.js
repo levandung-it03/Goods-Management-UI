@@ -28,7 +28,6 @@ function AdminSidebar({ children }) {
 		if (!jwtClaims) return;
 
 		const response = await AdminService.getAdminInformation();
-		console.log("🚀 ~ fetchAdminInformation ~ response:", response)
 		if (!response.data) return;
 
 		setAdminInformation(response.data);
