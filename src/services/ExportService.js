@@ -54,7 +54,7 @@ export class UserExportService {
 
     static async getTotalExportPrice(exportBillId) {
         try {
-            const response = await springService.get(`${USER_PREFIX_PART}/v1/create-import-bill`, exportBillId); // Fix Later
+            const response = await springService.get(`${USER_PREFIX_PART}/v1/total-export-bill/${exportBillId}`);
             return response.data;
         } catch (error) {
             console.error(error);

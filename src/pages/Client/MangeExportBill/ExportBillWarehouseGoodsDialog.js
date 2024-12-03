@@ -52,8 +52,8 @@ export default function ExportBillWarehouseGoodsDialog({ exportBillId }) {
         const fetchTotalrice = async()=>{
             try {
                 // call api
-                // const response = await UserImportService.getTotalImportPrice(exportBillId)
-                // setTotalPrice(response.data.totalPrice)
+                const response = await UserExportService.getTotalImportPrice(exportBillId)
+                setTotalPrice(response.data.totalPrice)
             } catch (error) {
                 console.log(error);
             }
