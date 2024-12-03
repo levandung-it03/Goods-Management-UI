@@ -3,7 +3,7 @@ import InputField from '@reusable/FormRHF/InputField/InputField';
 import SelectField from '@reusable/FormRHF/SelectField/SelectField';
 import { ProfileService } from '@services/ProfileService';
 import { trimWords } from '@src/utils/formatters';
-import { checkIsBlank } from '@src/utils/validators';
+import { checkIsBlank, checkIsPhoneNumber } from '@src/utils/validators';
 import Button from '@ui/Button/Button';
 import './UserProfileDialog.scss';
 
@@ -48,7 +48,13 @@ function UserProfileDialog({ userProfile, onClose }) {
                     }}
                 />
             </div>
-            <InputField name="phone" label="Phone" />
+            <InputField
+                name="phone"
+                label="Phone"
+                validators={{
+                    phoneNumber: (v) => (!checkIsPhoneNumber(v) ? 'Phone number is not valid' : null),
+                }}
+            />
             <InputField name="dob" type="date" label="Date of Birth" />
             <SelectField
                 name="gender"

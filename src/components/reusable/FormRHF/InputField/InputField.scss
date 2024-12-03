@@ -1,4 +1,8 @@
 .input-field {
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
     input:disabled {
         pointer-events: none;
     }

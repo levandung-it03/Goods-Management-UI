@@ -26,7 +26,7 @@ const userRoutes = [
     { path: '/user/manage-supplier', component: ManageSupplier, layout: UserSidebarLayout },
     { path: '/user/manage-warehouse', component: ManageWarehouse, layout: UserSidebarLayout },
     { path: '/user/create-import', component: ImportPage, layout: UserSidebarLayout },
-    { path: '/user/create-export', component: ExportPage, layout: AdminSidebarLayout },
+    { path: '/user/create-export', component: ExportPage, layout: UserSidebarLayout },
 ];
 
 export { publicRoutes, adminRoutes, userRoutes };

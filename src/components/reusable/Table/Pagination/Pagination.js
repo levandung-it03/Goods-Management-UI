@@ -26,7 +26,12 @@ function Pagination({ currentPage = 1, setCurrentPage, totalPages = 1 }) {
 
     return (
         <div className="pagination center">
-            <button className="page-button center" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+            <button
+                className="page-button center"
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+            >
                 <ChevronLeft />
             </button>
             {pagesArray.map((page, index) => {
@@ -34,6 +39,7 @@ function Pagination({ currentPage = 1, setCurrentPage, totalPages = 1 }) {
                     <button
                         className={`page-button center${page === currentPage ? ' active' : ''}`}
                         key={index}
+                        type="button"
                         onClick={() => setCurrentPage(page)}
                     >
                         {page}
@@ -42,7 +48,12 @@ function Pagination({ currentPage = 1, setCurrentPage, totalPages = 1 }) {
                     <span key={index}>...</span>
                 );
             })}
-            <button className="page-button center" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+            <button
+                className="page-button center"
+                type="button"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+            >
                 <ChevronRight />
             </button>
         </div>

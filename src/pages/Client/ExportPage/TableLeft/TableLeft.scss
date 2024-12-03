@@ -25,7 +25,6 @@
         height: 34px;
         display: flex;
         align-items: center;
-        border-top: 1px solid #aaa;
         padding: 0 10px;
         input {
             background-color: transparent;
@@ -55,19 +54,17 @@
         left: -1px;
         right: -1px;
         z-index: 1;
-        border: 1px solid #333;
+        border: 1px solid #aaa;
         background-color: #fff;
         .table-wrapper {
             padding: 0;
             margin: 0;
             .table {
-                border-color: #333;
+                border-color: #aaa;
                 .table-row {
                     min-height: 24px;
+                    border-bottom: 1px solid #ccc;
                 }
-            }
-            .pagination {
-                margin: 10px;
             }
         }
     }

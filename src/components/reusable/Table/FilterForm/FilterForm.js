@@ -31,7 +31,7 @@ function FilterForm({ columns, handleFilter }) {
                 </div>
                 <div className="filter-body">
                     {columns.map((col, index) => {
-                        const cellComponent = cloneElement(col.cell({}), { name: col.accessorKey });
+                        const cellComponent = col.cell ? cloneElement(col.cell(), { name: col.accessorKey }) : <span></span>;
                         const validComponents = [InputField, SelectField, MultiSelectField];
 
                         return (

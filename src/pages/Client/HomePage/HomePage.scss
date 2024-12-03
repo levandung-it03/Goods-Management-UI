@@ -1,6 +1,8 @@
 /* src/styles/homepage.scss */
 
 .homepage-container {
+    overflow-y: auto;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     row-gap: 32px;
@@ -65,11 +67,10 @@
         }
     }
 
-    .profile-dialog {
-        /* Add styles for ProfileDialog component here if needed */
+    .inventory-chart {
+        margin-top: 16px;
     }
-
-    .statistics {
-        /* Add styles for Statistics component here if needed */
+    .goods-trend-chart {
+        margin-top: 16px;
     }
 }

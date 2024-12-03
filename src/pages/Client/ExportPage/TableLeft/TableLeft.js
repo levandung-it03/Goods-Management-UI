@@ -5,45 +5,31 @@ import './TableLeft.scss';
 import { capitalizeWords } from '@src/utils/formatters';
 import { ChevronDown, Trash2 } from 'lucide-react';
 import Button from '@ui/Button/Button';
+import { UserGoodsService } from '@services/GoodsService';
 
-function TableLeft({ setGoodsIds, setData }) {
+function TableLeft({ setData }) {
     const [isLock, setIsLock] = useState(false);
     const tableDetail = useTable({
         data: [],
         pageSize: 11,
         tableMode: {
-            enableSelect: true,
             enableAdd: true,
         },
     });
-    const { selectedData } = tableDetail;
-    const { toggleSelectRow, setSelectedRows, setTableCustomData, setContextMenu } = tableDetail;
+    const { tableData } = tableDetail;
+    const { setTableCustomData, setContextMenu } = tableDetail;
 
     const columns = useMemo(
         () => [
-            {
-                header: 'Goods Name',
-                accessorKey: 'goodsName',
-                cell: (rowData) => <span>{rowData.goodsName}</span>,
-            },
-            {
-                header: 'Warehouse Name',
-                accessorKey: 'warehouseName',
-                cell: (rowData) => <span>{rowData.warehouseName}</span>,
-            },
-            {
-                header: 'Supplier Name',
-                accessorKey: 'supplierName',
-                cell: (rowData) => <span>{rowData.supplierName}</span>,
-            },
+            { header: 'Goods Name', accessorKey: 'goodsName' },
+            { header: 'Warehouse Name', accessorKey: 'warehouseName' },
+            { header: 'Supplier Name', accessorKey: 'supplierName' },
         ],
         [],
     );
 
     const createRowProps = useCallback(
         (row) => {
-            const handleClick = () => toggleSelectRow(row);
-
             const handleContextMenu = (e) => {
                 e.preventDefault();
                 setContextMenu({
@@ -52,28 +38,11 @@ function TableLeft({ setGoodsIds, setData }) {
                     y: e.pageY,
                     menuItems: [
                         {
-                            text: 'Unselect All Row',
-                            icon: <Trash2 />,
-                            action: () => setSelectedRows({}),
-                        },
-                        {
                             text: 'Delete Row',
                             icon: <Trash2 />,
                             action: () => {
-                                toggleSelectRow(row, false);
                                 setTableCustomData((prev) => {
-                                    return prev.filter((r) => r.goodsId !== row.rowData.goodsId);
-                                });
-                            },
-                        },
-                        {
-                            text: 'Delete Selected Row',
-                            icon: <Trash2 />,
-                            action: () => {
-                                console.log(selectedData);
-                                setSelectedRows({});
-                                setTableCustomData((prev) => {
-                                    return prev.filter((row) => !selectedData.some((selectedRow) => selectedRow.goodsId === row.goodsId));
+                                    return prev.filter((r) => r.warehouseGoodsId !== row.rowData.warehouseGoodsId);
                                 });
                             },
                         },
@@ -82,34 +51,28 @@ function TableLeft({ setGoodsIds, setData }) {
             };
 
             return {
-                onClick: handleClick,
                 onContextMenu: handleContextMenu,
             };
         },
-        [toggleSelectRow, setContextMenu, setTableCustomData, selectedData, setSelectedRows],
+        [setContextMenu, setTableCustomData],
     );
 
-    const addRowProps = useCallback(
-        (setIsAdding) => {
-            return {
-                isAdding: true,
-                customForm: <TableAdd setTableCustomData={setTableCustomData} setIsAdding={setIsAdding} />,
-                text: 'Add employee',
-            };
-        },
-        [setTableCustomData],
-    );
+    const addRowProps = useCallback(() => {
+        return {
+            defaultIsAdding: true,
+            customForm: <TableAdd setTableCustomData={setTableCustomData} />,
+        };
+    }, [setTableCustomData]);
 
     const handleLockTable = useCallback(() => {
-        setGoodsIds(selectedData.map((row) => row.goodsId));
         setIsLock(true);
-    }, [selectedData, setGoodsIds]);
+        setData(tableData);
+    }, [tableData, setData]);
 
     const handleUpdateGoods = useCallback(() => {
-        console.log(selectedData);
         setIsLock(false);
         setData([]);
-    }, [selectedData, setData]);
+    }, [setData]);
 
     return (
         <>
@@ -129,7 +92,7 @@ function TableLeft({ setGoodsIds, setData }) {
     );
 }
 
-function TableAdd({ setTableCustomData, setIsAdding }) {
+function TableAdd({ setTableCustomData }) {
     const [inputValue, setInputValue] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const tableRef = useRef();
@@ -143,21 +106,9 @@ function TableAdd({ setTableCustomData, setIsAdding }) {
 
     const columns = useMemo(
         () => [
-            {
-                header: 'Goods Name',
-                accessorKey: 'goodsName',
-                cell: (rowData) => <span>{rowData.goodsName}</span>,
-            },
-            {
-                header: 'Warehouse Name',
-                accessorKey: 'warehouseName',
-                cell: (rowData) => <span>{rowData.warehouseName}</span>,
-            },
-            {
-                header: 'Supplier Name',
-                accessorKey: 'supplierName',
-                cell: (rowData) => <span>{rowData.supplierName}</span>,
-            },
+            { header: 'Goods Name', accessorKey: 'goodsName' },
+            { header: 'Warehouse Name', accessorKey: 'warehouseName' },
+            { header: 'Supplier Name', accessorKey: 'supplierName' },
         ],
         [],
     );
@@ -166,8 +117,7 @@ function TableAdd({ setTableCustomData, setIsAdding }) {
         (row) => {
             const handleClick = () => {
                 setTableCustomData((prev) => {
-                    if (prev.every((r) => r.goodsId !== row.rowData.goodsId)) {
-                        // setIsAdding(false);
+                    if (prev.every((r) => r.warehouseGoodsId !== row.rowData.warehouseGoodsId)) {
                         return [...prev, row.rowData];
                     }
                     return prev;
@@ -183,16 +133,9 @@ function TableAdd({ setTableCustomData, setIsAdding }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            // api cần goodsName và page (get-simple-goods-pages)
-            console.log(inputValue, currentPage);
-            const response = {
-                data: currentPage === 1 ? data1 : data2,
-                totalPages: 2,
-            };
-
-            // const response = await UserGoodsService.getSimpleGoodsPages({ goodsName: inputValue, page: currentPage });
-            setTableData(response.data);
-            setTotalPages(response.totalPages);
+            const response = await UserGoodsService.getSimpleWarehouseGoodsPages({ name: inputValue, page: currentPage });
+            setTotalPages(response.data.totalPages);
+            setTableData(response.data.data);
         };
         isOpen && fetchData();
     }, [isOpen, inputValue, currentPage, setTotalPages, setTableData]);
@@ -236,67 +179,5 @@ function TableAdd({ setTableCustomData, setIsAdding }) {
         </div>
     );
 }
-
-const data1 = [
-    {
-        goodsName: 'Electric Kettle',
-        warehouseName: 'Main Storage',
-        supplierName: 'Home Appliances Co.',
-        goodsId: 1,
-        price: 35.5,
-    },
-    {
-        goodsName: 'Gaming Keyboard RGB',
-        warehouseName: 'Tech Warehouse',
-        supplierName: 'Gadget Supplies Ltd.',
-        goodsId: 2,
-        price: 80.0,
-    },
-    {
-        goodsName: 'Air Conditioner 1.5HP',
-        warehouseName: 'Cooling Depot',
-        supplierName: 'Climate Systems',
-        goodsId: 3,
-        price: 450.0,
-    },
-    {
-        goodsName: 'Rice Cooker 2L',
-        warehouseName: 'Kitchen Storage',
-        supplierName: 'Cookware Distributors',
-        goodsId: 4,
-        price: 60.0,
-    },
-];
-
-const data2 = [
-    {
-        goodsName: 'LED Monitor 24inch',
-        warehouseName: 'Display Warehouse',
-        supplierName: 'Vision Electronics',
-        goodsId: 5,
-        price: 150.0,
-    },
-    {
-        goodsName: 'Wireless Mouse',
-        warehouseName: 'Accessories Depot',
-        supplierName: 'TechGear Supplies',
-        goodsId: 6,
-        price: 25.0,
-    },
-    {
-        goodsName: 'Office Chair',
-        warehouseName: 'Furniture Hub',
-        supplierName: 'Comfort Seating Ltd.',
-        goodsId: 7,
-        price: 120.0,
-    },
-    {
-        goodsName: 'Power Bank 10000mAh',
-        warehouseName: 'Energy Storage',
-        supplierName: 'Portable Energy Inc.',
-        goodsId: 8,
-        price: 40.0,
-    },
-];
 
 export default TableLeft;

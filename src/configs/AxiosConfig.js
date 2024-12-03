@@ -31,8 +31,11 @@ export class AxiosInterceptors {
     static authorizedRequest = {
         request: (config) => {
             config.headers = { ...config.headers, ...AxiosActions.defaultHeaders };
-            if (UtilMethods.checkIsBlank(config.headers['Authorization']))
-                config.headers['Authorization'] = AxiosActions.getStoredAuthToken('accessToken');
+            if (UtilMethods.checkIsBlank(config.headers['Authorization'])) {
+                const accessToken = AxiosActions.getStoredAuthToken('accessToken');
+                if (!UtilMethods.checkIsBlank(accessToken)) config.headers['Authorization'] = accessToken;
+            }
+
             return config;
         },
         catching: (error) => Promise.reject(error),

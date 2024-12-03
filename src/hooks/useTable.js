@@ -39,6 +39,7 @@ export function useTable(tableConfig) {
             // phân trang cho customData (fetchData ko dùng)
             rows: customData.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize),
         },
+        mode: 'all',
     });
     const { control, reset, getValues } = tableFormMethods;
     const fieldArrayMethods = useFieldArray({ control: control, name: 'rows' });
@@ -61,7 +62,7 @@ export function useTable(tableConfig) {
         (arg) => {
             const newCustomData = typeof arg === 'function' ? arg(customDataRef.current) : arg;
             customDataRef.current = newCustomData;
-            setCustomData(newCustomData);
+            setCustomData(arg);
 
             const start = (currentPage - 1) * pageSize;
             const end = start + pageSize;
