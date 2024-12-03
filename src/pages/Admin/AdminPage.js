@@ -21,7 +21,7 @@ function AdminPage() {
                         }),
                         FormatterDict.ColumnInfo('status', 'Status', {
                             name: 'status',
-                            builder: InputBuilder({ type: 'text', readOnly: true }),
+                            builder: InputBuilder({ type: 'text' }),
                         }),
                         FormatterDict.ColumnInfo('email', 'Email', {
                             name: 'email',
@@ -31,6 +31,36 @@ function AdminPage() {
                             name: 'createdAt',
                             builder: InputBuilder({ type: 'text', readOnly: true }),
                         }),
+                        FormatterDict.ColumnInfo('firstName', 'First name', {
+                            name: 'firstName',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('lastName', 'Last name', {
+                            name: 'lastName',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('gender', 'Gender', {
+                            name: 'gender',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('dateOfBirth', 'Date of birth', {
+                            name: 'dateOfBirth',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('phone', 'Phone', {
+                            name: 'phone',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        // TODO: change icon for update status column
+                        FormatterDict.ColumnInfo('statusUpdateBtn', '', null, 
+                            (rowData) => 
+                            <button onClick={() => {
+                                console.log("user id: ", rowData["userId"])
+                                console.log("data: ", rowData)
+                            }}>
+                                Activate
+                            </button>
+                        ),
                     ],
                     filterFields: [
                         FormatterDict.FilterField('userId', 'Id', InputBuilder({ type: 'number' })),

@@ -1,6 +1,6 @@
 import { UtilAxios } from '@reusable/Utils';
 import { springService } from '@src/configs/AxiosConfig';
-import { formatArrayToTime } from '@src/utils/formatters';
+import { formatArrayToTime, formatArrayToDate } from '@src/utils/formatters';
 
 const ADMIN_PREFIX_PART = process.env.REACT_APP_SPRING_ADMIN_PREFIX_PART;
 
@@ -26,6 +26,8 @@ export class AdminService {
             response.data.data.data.forEach((d) => {
                 d.createdAt = formatArrayToTime(d.createdTime);
                 d.status = d.active ? "Active" : "Inactive";
+                d.dateOfBirth = formatArrayToDate(d.dob);
+                // console.log("debug: ", formatArrayToDate(d.dob));
             })
             
             console.log("🚀 ~ AdminService ~ getClientPage ~ response.data:", response.data)
@@ -37,6 +39,7 @@ export class AdminService {
     }
 
     static async createClient(formData) {
+        console.log("🚀 ~ AdminService ~ createClient ~ formData:", formData)
         try {
             const response = await springService.post(`${ADMIN_PREFIX_PART}/v1/create-new-client`, formData);
             return response.data;

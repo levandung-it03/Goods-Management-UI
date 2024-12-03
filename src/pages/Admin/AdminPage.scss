@@ -5,27 +5,50 @@
             .table-cell-checkbox {
                 display: flex;
                 justify-content: center;
-                width: 66px;
+                width: 50px;
             }
             .table-cell {
                 font-size: 15px;
                 padding: 6px 0 6px 6px;
                 &:nth-of-type(2) {
                     flex: none;
-                    width: 100px;
+                    width: 70px;
                 }
                 &:nth-of-type(3) {
                     flex: none;
-                    width: 150px;
+                    width: 70px;
                 }
                 &:nth-of-type(4) {
                     flex: none;
-                    width: 700px;
+                    width: 200px;
                 }
-
-                // &:nth-of-type(5) {
+                &:nth-of-type(5) {
+                    flex: none;
+                    width: 170px;
+                }
+                &:nth-of-type(6) {
+                    flex: none;
+                    width: 150px;
+                }
+                &:nth-of-type(7) {
+                    flex: none;
+                    width: 250px;
+                }
+                &:nth-of-type(8) {
+                    flex: none;
+                    width: 80px;
+                }
+                &:nth-of-type(9) {
+                    flex: none;
+                    width: 100px;
+                }
+                &:nth-of-type(10) {
+                    flex: none;
+                    width: 150px;
+                }
+                // &:nth-of-type(11) {
                 //     flex: none;
-                //     width: 180px;
+                //     width: 100px;
                 // }
             }
             .handmade-form.table-updating-form {
