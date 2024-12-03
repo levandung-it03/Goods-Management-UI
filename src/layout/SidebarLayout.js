@@ -26,10 +26,8 @@ export function UserSidebarLayout({ children }) {
 export function AdminSidebarLayout({ children }) {
     return (
         <div style={sidebarStyles}>
-            <AdminSidebar>
-                <SidebarItem icon={<Package />} text="Manage Goods" path={['/', '/user/manage-goods']} />
-                <SidebarItem icon={<PackageMinus />} text="Create Export Bill" path="/user/create-export" />
-            </AdminSidebar>
+            <AdminSidebar/>
+
             <div className="container" style={{ flex: 1 }}>
                 {children}
             </div>
