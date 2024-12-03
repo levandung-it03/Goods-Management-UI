@@ -17,6 +17,14 @@ export class UtilMethods {
     static showToast(msg, type) {
         alert(type + ": " + msg);
     }
+
+    static formatResponseLocalDate(dateAsArr) {
+        return dateAsArr ? dateAsArr.map(n => String(n).padStart(2, '0')).join('-') : dateAsArr;
+    };
+    
+    static formatResponseLocalDateTime(timeAsArr) {
+        return timeAsArr ? new Date(...timeAsArr).toISOString().split(".")[0] : timeAsArr;
+    };
 }
 
 export class UtilCookie {

@@ -1,4 +1,4 @@
-.supplier-dialog .handmade-table-wrapper {
+.import-bill-warehouse-goods-dialog .handmade-table-wrapper {
     width: 70vw;
     .table-header,
     .table-body {
@@ -11,11 +11,7 @@
             .table-cell {
                 font-size: 15px;
                 padding: 6px 0 6px 6px;
-                &:nth-of-type(1),
-                &:nth-of-type(2) {
-                    flex: 1;
-                }
-                
+                flex: 1;
             }
         }
     }

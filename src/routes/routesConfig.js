@@ -8,6 +8,8 @@ import { AdminSidebarLayout, UserSidebarLayout } from '@src/layout/SidebarLayout
 import ImportPage from '@src/pages/Client/ImportPage/ImportPage';
 import ManageSupplier from '@src/pages/Client/ManageSupplier/ManageSupplier';
 import ManageWarehouse from '@src/pages/Client/ManageWarehouse/ManageWarehouse';
+import ManageImportBill from '@src/pages/Client/MangeImportBill/ManageImportBills';
+import ManageExportBill from '@src/pages/Client/MangeExportBill/ManageExportBills';
 
 const publicRoutes = [
     // Example
@@ -26,6 +28,8 @@ const userRoutes = [
     { path: '/user/manage-goods', component: ManageGoods, layout: UserSidebarLayout },
     { path: '/user/manage-supplier', component: ManageSupplier, layout: UserSidebarLayout },
     { path: '/user/manage-warehouse', component: ManageWarehouse, layout: UserSidebarLayout },
+    { path: '/user/manage-import-bill', component: ManageImportBill, layout: UserSidebarLayout },
+    { path: '/user/manage-export-bill', component: ManageExportBill, layout: UserSidebarLayout },
     { path: '/user/create-import', component: ImportPage, layout: UserSidebarLayout },
     { path: '/user/create-export', component: ExportPage, layout: UserSidebarLayout },
 ];
