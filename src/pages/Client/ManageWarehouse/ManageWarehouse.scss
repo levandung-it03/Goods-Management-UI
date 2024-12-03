@@ -1,4 +1,4 @@
-.manage-supplier .handmade-table-wrapper {
+.manage-warehouse .handmade-table-wrapper {
     .table-header,
     .table-body {
         .table-row {
@@ -11,7 +11,8 @@
                 font-size: 15px;
                 padding: 6px 0 6px 6px;
                 &:nth-of-type(2),
-                &:nth-of-type(3) {
+                &:nth-of-type(3),
+                &:nth-of-type(4) {
                     flex: 1;
                 }
                 

@@ -39,7 +39,7 @@
     border-radius: 5px;
     margin-top: 8px;
     & > * {
-        padding-left: 10px;
+        margin-left: 10px;
     }
     &:focus-within {
         border-width: 2px;
@@ -63,17 +63,26 @@
     }
 }
 
-.handmade-form select {
+.handmade-form .form-child select,
+.handmade-form fieldset select {
     height: 28px;
-    margin-left: -3px; //--Fix weird default css bug.
 }
-.handmade-form input,
-.handmade-form textarea {
+.handmade-form .form-child input,
+.handmade-form .form-child span,
+.handmade-form .form-child textarea,
+.handmade-form fieldset input,
+.handmade-form fieldset span,
+.handmade-form fieldset textarea {
     height: 25px;
 }
-.handmade-form input,
-.handmade-form select,
-.handmade-form textarea {
+.handmade-form .form-child input,
+.handmade-form .form-child span,
+.handmade-form .form-child select,
+.handmade-form .form-child textarea,
+.handmade-form fieldset input,
+.handmade-form fieldset span,
+.handmade-form fieldset select,
+.handmade-form fieldset textarea {
     font-size: var(--font-size);
     width: 100%;
     display: block;
@@ -82,13 +91,15 @@
     border-radius: 7px;
     cursor: pointer;
     border: none;
+    background-color: #fff;
     &:focus {
         border: none;
         outline: none;
     }
 }
 
-.handmade-form div[class$='-err-msg'] {
+.handmade-form .form-child div[class$='-err-msg'],
+.handmade-form fieldset div[class$='-err-msg'] {
     font-size: var(--font-size);
     color: var(--color-error-fieldset);
     padding-left: 10px;

@@ -1,6 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, createElement, memo } from "react";
 import { UtilMethods } from "../Utils";
 import "./FormHMCompos.scss";
+import InputHMCompo from "./InputHMCompo";
+import SelectHMCompo from "./SelectHMCompo";
+import TextareaHMCompo from "./TextareaHMCompo";
+import SpanMockInputCompo from "./SpanMockInputCompo";
 
 function validate(val, funcs) {
     for (var func of funcs) {
@@ -10,127 +14,28 @@ function validate(val, funcs) {
     return true;
 }
 
+export function SpanMockInputBuilder({ defaultValue="", ...props }) {
+    return { defaultValue, plainComponent: SpanMockInputCompo, childProps: props };
+}
+
 export function InputBuilder({validators=[], defaultValue="", ...props }) {
-    function Input(name="", updateFormData, defaultValuesFromForm, setValidations) {
-        const [data, setData] = useState(defaultValue);
-
-        const handleChangeValue = useCallback(e => {
-            setData(e.target.value);
-            updateFormData && updateFormData(e.target);
-            setValidations(prev => ({ ...prev,
-                [name]: validators.length === 0 || validate(e.target.value, validators)
-            }));
-        }, [updateFormData, setValidations, name]);
-
-        useEffect(() => {  // Only set data once
-            if (updateFormData
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm)
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
-                setData(defaultValuesFromForm[name]);
-                updateFormData({ name: name, value: defaultValuesFromForm[name] });
-                setValidations(prev => ({  ...prev,
-                    [name]: validators.length === 0 || validate(defaultValuesFromForm[name], validators)
-                }));
-            };
-        }, [updateFormData, defaultValuesFromForm, name, setValidations]);
-
-        return <input
-            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm)
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name]) ? defaultValuesFromForm[name] : ""}
-            {...props}
-            name={name}
-            value={data}
-            onChange={handleChangeValue}
-        />
-    };
-    return Input;
+    return { validators, defaultValue, plainComponent: InputHMCompo, childProps: props };
 }
 
 export function TextareaBuilder({ validators=[], defaultValue="", ...props}) {
-    function TextArea(name="", updateFormData, defaultValuesFromForm, setValidations) {
-        const [data, setData] = useState(defaultValue);
-
-        const handleChangeValue = useCallback(e => {
-            setData(e.target.value);
-            updateFormData && updateFormData(e.target);
-            setValidations(prev => ({
-                ...prev,
-                [name]: validators.length === 0 || validate(e.target.value, validators)
-            }));
-        }, [updateFormData, setValidations, name]);
-
-        useEffect(() => {  // Only set data once
-            if (updateFormData
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm)
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
-                setData(defaultValuesFromForm[name]);
-                updateFormData({ name: name, value: defaultValuesFromForm[name] });
-                setValidations(prev => ({  ...prev,
-                    [name]: validators.length === 0 || validate(defaultValuesFromForm[name], validators)
-                }));
-            };
-        }, [updateFormData, defaultValuesFromForm, name, setValidations]);
-
-        return <textarea
-            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm)
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name]) ? defaultValuesFromForm[name] : ""}
-            {...props}
-            name={name}
-            value={data}
-            onChange={handleChangeValue}
-        ></textarea>
-    };
-    return TextArea;
+    return { validators, defaultValue, plainComponent: TextareaHMCompo, childProps: props };
 }
 
 export function SelectBuilder({ options=[], validators=[], defaultValue="", ...props}) {
-    function Select(name="", updateFormData, defaultValuesFromForm, setValidations) {
-        const keyPref = useMemo(() => "select-compo-" + UtilMethods.timeAsKey(), []);
-        const [data, setData] = useState(defaultValue);
-
-        const handleChangeValue = useCallback(e => {
-            setData(e.target.value);
-            updateFormData && updateFormData(e.target);
-            setValidations(prev => ({
-                ...prev,
-                [name]: validators.length === 0 || validate(e.target.value, validators)
-            }));
-        }, [updateFormData, setValidations, name]);
-
-        useEffect(() => {  // Only set data once
-            if (updateFormData
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm)
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name])) {
-                setData(defaultValuesFromForm[name]);
-                updateFormData({ name: name, value: defaultValuesFromForm[name] });
-                setValidations(prev => ({  ...prev,
-                    [name]: validators.length === 0 || validate(defaultValuesFromForm[name], validators)
-                }));
-            };
-        }, [updateFormData, defaultValuesFromForm, name, setValidations]);
-
-        return <select
-            defaultValue={!UtilMethods.checkIsBlank(defaultValuesFromForm)
-                && !UtilMethods.checkIsBlank(defaultValuesFromForm[name]) ? defaultValuesFromForm[name] : ""}
-            {...props}
-            name={name}
-            value={data}
-            onChange={handleChangeValue}
-        >
-            {options.map((option, index) => <option key={keyPref + index} value={option.value}>{option.text}</option>)}
-        </select>;
-    };
-    return Select;
+    return { validators, defaultValue, plainComponent: SelectHMCompo, childProps: {...props, options } };
 }
 
-export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFieldsets, isPreventDefaultMannually,
+const Form = function Form({ POST_service, defaultValues, childrenBuildersInfo, offFieldsets, isPreventDefaultMannually,
     replacedSubmitBtnBuilder, className, ...props }) {
     const keyPref = useMemo(() => "form-compo-" + UtilMethods.timeAsKey(), []);
     const [formData, setFormData] = useState({});
     const [validations, setValidations] = useState({});
-    console.log('form', defaultValues);
     
-
     const updateFormData = useCallback(({ name, value }) => {
         setFormData((prevData) => {
             const result = { ...prevData, [name]: value };
@@ -144,50 +49,50 @@ export function Form({ POST_service, defaultValues, childrenBuildersInfo, offFie
             ...acc,
             [info.name]: true
         }), {}));
-    },[childrenBuildersInfo]);
+    }, [childrenBuildersInfo]);
 
-    const handleSubmit = useCallback((e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
         const validationsResult = Object.values(validations);
-        if (!isPreventDefaultMannually && validationsResult.every(v => v === true))
-            {console.log(POST_service);
-            
-            POST_service.action({
+        if (!isPreventDefaultMannually && validationsResult.every(v => v === true)) {console.log(POST_service);
+            await POST_service.action({
                 ...formData,
                 ...POST_service.moreParams
-            }).then(response => {
-                UtilMethods.showToast(response.message, "success");
-            }).catch(error => {
-                UtilMethods.showToast(error.message, "error");
-            });}
-        else
-        UtilMethods.showToast("Information still wrong", "error");
+            })
+        }
     }, [validations, POST_service, formData, isPreventDefaultMannually]);
 
-    console.log(formData, validations)
+    console.log(defaultValues, formData, validations);
     return <form {...props} onSubmit={handleSubmit} className={"handmade-form " + className}>
-        {childrenBuildersInfo.map((infoObj, index) =>
-            <div className="form-children-container" key={keyPref + index}>
+        {childrenBuildersInfo.map((infoObj, index) => {
+            const { validators, defaultValue, plainComponent, childProps } = infoObj.builder;
+            const builderProps = {
+                name: infoObj.name,
+                defaultValuesFromForm: defaultValues,
+                validators, defaultValue,
+                updateFormData, setValidations, validate,
+                ...childProps
+            };
+            return <div className="form-children-container" key={keyPref + index}>
                 {offFieldsets
-                    ? <div className="form-child">
-                        {infoObj.builder(infoObj.name, updateFormData, defaultValues, setValidations)}
-                    </div>
+                    ? <div className="form-child"> {createElement(plainComponent, builderProps)} </div>
                     : <fieldset className={validations[infoObj.name] === true ? "" : "error-fieldset"}>
                         <legend>{infoObj.legend}</legend>
-                        {infoObj.builder(infoObj.name, updateFormData, defaultValues, setValidations)}
+                        {createElement(plainComponent, builderProps)}
                     </fieldset>
                 }
                 <div className={infoObj.name + "-err-msg"}>
                     <span>{validations[infoObj.name]}</span>
                 </div>
-            </div>
-        )}
+            </div>;
+        })}
         {replacedSubmitBtnBuilder ? replacedSubmitBtnBuilder(formData)
             : <div className="submit-btn">
                 <button type="submit">Send</button>
             </div>}
     </form>;
 }
+export default memo(Form);
 
 /*
 //--Example
