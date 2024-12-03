@@ -11,8 +11,10 @@ import Pagination from '@reusable/Table/Pagination/Pagination';
 import { useForm } from 'react-hook-form';
 import { UserWarehouseService } from '@services/WarehouseService';
 import { UserImportService } from '@services/ImportService';
+import { useNavigate } from 'react-router-dom';
 
 function ImportPage() {
+    const navigate = useNavigate()
     const addMethods = useForm();
     const tableDetail = useTable({
         data: [],
@@ -112,6 +114,7 @@ function ImportPage() {
             const response = await UserImportService.createImportBill(formData);
             if (response.httpStatusCode === 200) {
                 alert(response.message);
+                navigate('/')
             }
         } catch (error) {
             console.log('Error create export bill');

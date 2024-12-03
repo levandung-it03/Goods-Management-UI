@@ -13,11 +13,7 @@ function UserSidebar({ children }) {
     const [dialogContent, setDialogContent] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const jwtClaims = UtilAxios.checkAndReadBase64Token(cookieHelpers.getCookies().accessToken);
-    const { name = 'Quang', email = 'vgbao1231@gmail.com' } = jwtClaims.sub;
-    const [userProfile, setUserProfile] = useState({
-        firstName: 'Bao',
-        lastName: 'Vo',
-    });
+    const [userProfile, setUserProfile] = useState();
     const { logout } = useAuth();
 
     // Handle log out
@@ -29,7 +25,10 @@ function UserSidebar({ children }) {
         }
     }, [logout]);
 
-    const handleOpenProfileDialog = useCallback(() => setDialogContent(<UserProfileDialog userProfile={userProfile} />), [userProfile]);
+    const handleOpenProfileDialog = useCallback(
+        () => setDialogContent(<UserProfileDialog userProfile={{ ...userProfile, email: jwtClaims.sub }} />),
+        [userProfile],
+    );
 
     // Khi modal mở, gọi API lấy dữ liệu
     useEffect(() => {
@@ -48,9 +47,11 @@ function UserSidebar({ children }) {
             }
         };
         fetchUserProfile();
-    }, []);
+    }, [dialogContent]);
 
-    return (
+    return !userProfile ? (
+        <div></div> // Loading
+    ) : (
         <aside className="sidebar">
             <div className="logo-container center">
                 <div className={`logo${isExpanded ? ' expand' : ''}`}>
@@ -69,10 +70,12 @@ function UserSidebar({ children }) {
             </div>
             <div className="divider"></div>
             <div className="profile-container center" onClick={handleOpenProfileDialog}>
-                <div className="avatar center">{name[0].toUpperCase()}</div>
+                <div className="avatar center">{userProfile.firstName[0].toUpperCase()}</div>
                 <div className={`info${isExpanded ? ' expand' : ''}`}>
-                    <p className="name">{name}</p>
-                    <p className="email">{email}</p>
+                    <p className="name">
+                        {userProfile.lastName} {userProfile.firstName}
+                    </p>
+                    <p className="email">{jwtClaims.sub}</p>
                 </div>
             </div>
             <Dialog dialogContent={dialogContent} setDialogContent={setDialogContent} />

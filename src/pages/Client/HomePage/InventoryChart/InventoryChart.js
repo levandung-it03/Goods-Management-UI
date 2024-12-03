@@ -44,9 +44,13 @@ export default function InventoryChart() {
         : [];
 
     // Add random colors if there are more items than available colors
-    const extendedColors = sortedData.map(
-        (_, index) => COLORS[index % COLORS.length] || getRandomColor()
-    );
+    const extendedColors = sortedData.map((_, index) => {
+        if (index < COLORS.length) {
+            return COLORS[index];
+        } else {
+            return getRandomColor(); // Tạo màu ngẫu nhiên khi không đủ
+        }
+    });
 
     useEffect(() => {
         const fetchData = async () => {

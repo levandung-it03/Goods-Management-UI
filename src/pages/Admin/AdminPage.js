@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './AdminPage.scss';
 import { FormatterDict, Table } from '@reusable/TableHMCompos/TableHMCompos';
 import { InputBuilder } from '@reusable/FormHMCompos/FormHMCompos';
@@ -6,7 +6,31 @@ import { AdminService } from '@services/adminService';
 import Dialog from '@reusable/Dialog/Dialog';
 
 function AdminPage() {
+    const [totalClients, setTotalClients] = useState(10);
+    const [totalActiveClients, setTotalActiveClients] = useState(7);
+    const [totalInactiveClients, setTotalInactiveClients] = useState(3);
     const [dialogProps, setDialogProps] = useState({ isOpen: false, title: '', body: null });
+
+    const fetchTotalClient = async () => {
+        const data = await AdminService.getTotalClients();
+        setTotalClients(data.data);
+    }
+    
+    const fetchTotalActiveClient = async () => {
+        const data = await AdminService.getTotalActiveClients();
+        setTotalActiveClients(data.data);
+    }
+    
+    const fetchTotalInactiveClient = async () => {
+        const data = await AdminService.getTotalInactiveClients();
+        setTotalInactiveClients(data.data);
+    }
+
+    useEffect(() => {
+        fetchTotalClient();
+        fetchTotalActiveClient();
+        fetchTotalInactiveClient();
+    }, []);
 
     const tableComponents = useMemo(
         () =>
@@ -19,10 +43,27 @@ function AdminPage() {
                             name: 'userId',
                             builder: InputBuilder({ type: 'text', readOnly: true }),
                         }),
-                        FormatterDict.ColumnInfo('status', 'Status', {
-                            name: 'status',
-                            builder: InputBuilder({ type: 'text', readOnly: true }),
-                        }),
+                        FormatterDict.ColumnInfo('status', 'Status', null, 
+                            (rowData) => 
+                            <button
+                                onClick={async () => {
+                                    const newStatus = (rowData["status"] === "Active" ? "Inactive" : "Active");
+                                    rowData["status"] = newStatus;
+                                    alert("User status updated")
+                                    await AdminService.updateClientStatus(rowData["userId"], newStatus);
+                                    await fetchTotalActiveClient();
+                                    await fetchTotalInactiveClient();
+                                }}
+                                style={{
+                                    padding: "5px",
+                                    width: "90%",
+                                    background: "white",
+                                    border: "1px solid black"
+                                }}
+                            >
+                                {rowData["status"]}
+                            </button>
+                        ),
                         FormatterDict.ColumnInfo('email', 'Email', {
                             name: 'email',
                             builder: InputBuilder({ type: 'text', readOnly: true }),
@@ -31,21 +72,45 @@ function AdminPage() {
                             name: 'createdAt',
                             builder: InputBuilder({ type: 'text', readOnly: true }),
                         }),
+                        FormatterDict.ColumnInfo('firstName', 'First name', {
+                            name: 'firstName',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('lastName', 'Last name', {
+                            name: 'lastName',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('gender', 'Gender', {
+                            name: 'gender',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('dateOfBirth', 'Date of birth', {
+                            name: 'dateOfBirth',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        FormatterDict.ColumnInfo('phone', 'Phone', {
+                            name: 'phone',
+                            builder: InputBuilder({ type: 'text' }),
+                        }),
+                        
                     ],
                     filterFields: [
                         FormatterDict.FilterField('userId', 'Id', InputBuilder({ type: 'number' })),
                         FormatterDict.FilterField('status', 'Status', InputBuilder({ type: 'text' })),
                         FormatterDict.FilterField('email', 'Email', InputBuilder({ type: 'text' })),
+                        FormatterDict.FilterField('firstName', 'First name', InputBuilder({ type: 'text' })),
+                        FormatterDict.FilterField('lastName', 'Last name', InputBuilder({ type: 'text' })),
+                        FormatterDict.FilterField('phone', 'Phone', InputBuilder({ type: 'text' })),
+                        FormatterDict.FilterField('gender', 'Gender', InputBuilder({ type: 'text' })),
+                        FormatterDict.FilterField('dob', 'Date of birth', InputBuilder({ type: 'text' })),
                     ],
                     sortingFields: [
                         FormatterDict.SortingField('userId', 'Id'),
                         FormatterDict.SortingField('email', 'Email'),
                     ],
                 },
-                // TODO: add api services
                 apiServices: {
                     GET_service: { action: AdminService.getClientPage },
-                    // UPDATE_service: { action: UserGoodsService.updateGoods },
                 },
             }),
         [],
@@ -91,6 +156,41 @@ function AdminPage() {
                             ]
                         })
                     },
+                    { 
+                        name: 'firstName',
+                        builder: InputBuilder({
+                            type: 'text',
+                            placeholder: 'First name',
+                        })
+                    },
+                    { 
+                        name: 'lastName',
+                        builder: InputBuilder({
+                            type: 'text',
+                            placeholder: 'Last name',
+                        })
+                    },
+                    { 
+                        name: 'gender',
+                        builder: InputBuilder({
+                            type: 'text',
+                            placeholder: 'Gender (Male/Female)',
+                        })
+                    },
+                    { 
+                        name: 'dob',
+                        builder: InputBuilder({
+                            type: 'date',
+                            placeholder: 'Date of birth (yyyy-MM-dd)',
+                        })
+                    },
+                    { 
+                        name: 'phone',
+                        builder: InputBuilder({
+                            type: 'text',
+                            placeholder: 'Phone',
+                        })
+                    },
                 ],
             }),
         [],
@@ -99,14 +199,30 @@ function AdminPage() {
     const contextMenuComponents = useMemo(() => FormatterDict.ContextMenuComponents([]), []);
 
     return (
-        <div className="client-list">
-            <Table
-                tableComponents={tableComponents}
-                addingFormComponents={addingFormComponents}
-                contextMenuComponents={contextMenuComponents}
-                tableModes={FormatterDict.TableModes(true, true, false, true, true)}
-            />
-            <Dialog dialogProps={dialogProps} setDialogProps={setDialogProps} />
+        <div className='client-container'>
+            <div className="client-statistics">
+                <div className="statistics-item">
+                    <span className="label">Total Clients</span>
+                    <span className="value">{totalClients}</span>
+                </div>
+                <div className="statistics-item">
+                    <span className="label">Active Clients</span>
+                    <span className="value">{totalActiveClients}</span>
+                </div>
+                <div className="statistics-item">
+                    <span className="label">Inactive Clients</span>
+                    <span className="value">{totalInactiveClients}</span>
+                </div>
+            </div>
+            <div className="client-list">
+                <Table
+                    tableComponents={tableComponents}
+                    addingFormComponents={addingFormComponents}
+                    contextMenuComponents={contextMenuComponents}
+                    tableModes={FormatterDict.TableModes(true, false, false, true, true)}
+                />
+                <Dialog dialogProps={dialogProps} setDialogProps={setDialogProps} />
+            </div>
         </div>
     );
 }

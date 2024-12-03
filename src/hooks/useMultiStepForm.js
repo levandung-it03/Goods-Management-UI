@@ -22,6 +22,7 @@ export function useMultistepForm(steps, initialData = {}) {
         currentStep: cloneElement(steps[currentStepIndex], { formData, next, back }),
         isFirstStep: currentStepIndex === 0,
         isLastStep: currentStepIndex === steps.length - 1,
+        setFormData,
         formData,
         goTo,
         next,

@@ -22,10 +22,10 @@ export class UserGoodsService {
         }
     }
 
-    static async getSimpleGoodsPages({ goodsName, page }) {
+    static async getSimpleGoodsPages({ name, page }) {
         try {
             const response = await springService.get(`${USER_PREFIX_PART}/v1/get-simple-goods-pages`, {
-                params: { goodsName, page },
+                params: { name, page },
             });
             return response.data;
         } catch (error) {
@@ -52,7 +52,7 @@ export class UserGoodsService {
             throw error.response ? error.response.data : error;
         }
     }
-    
+
     static async getSimpleWarehouseGoodsPages({ name, page }) {
         try {
             const response = await springService.get(`${USER_PREFIX_PART}/v1/get-simple-warehouse-goods-pages`, {

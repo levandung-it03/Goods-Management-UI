@@ -1,26 +1,42 @@
-.profile-form {
+.profile-dialog {
     .title {
         font-size: 2.6rem;
         font-weight: 600;
+        margin: 0 10px 10px 0px;
     }
-    .name-wrapper {
-        display: flex;
-        gap: 10px;
-    }
-    .input-field,
-    .select-field {
-        margin-top: 20px;
-        .field-wrapper {
-            min-height: 32px;
+    .profile-tab {
+        .name-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+        .input-field,
+        .select-field {
+            margin-top: 20px;
+            .field-wrapper {
+                min-height: 40px;
+            }
+        }
+        input {
+            padding-left: 8px;
+        }
+        select {
+            padding-left: 4px;
+        }
+        .ui-btn {
+            margin: 20px auto 0 auto;
         }
     }
-    input {
-        padding-left: 8px;
-    }
-    select {
-        padding-left: 4px;
-    }
-    .ui-btn {
-        margin: 20px auto 0 auto;
+    .change-password-tab {
+        min-width: 24vw;
+        .input-field {
+            margin-top: 10px;
+            .field-wrapper {
+                padding: 0 10px;
+                min-height: 40px;
+            }
+        }
+        .ui-btn {
+            margin: 20px auto 0 auto;
+        }
     }
 }

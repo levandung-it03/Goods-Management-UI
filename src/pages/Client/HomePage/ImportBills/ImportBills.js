@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BillDetailsModal } from "../BillDetailsModal/BillDetailsModal";
 import "./ImportBills.scss"; // Đảm bảo import SCSS file
 import { DashboardService } from "@services/DashBoardService";
-import { formatArrayToTime } from "@src/utils/formatters";
+import { formatArrayToDate } from "@src/utils/formatters";
 export default function ImportBills() {
     const [selectedBill, setSelectedBill] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,7 +63,7 @@ export default function ImportBills() {
                             <div className="card-item-header">
                                 <span className="id">{bill.importBillId}</span>
                                 <span className="time">
-                                    {formatArrayToTime(bill.createdTime)}
+                                    {formatArrayToDate(bill.createdTime)}
                                 </span>
                             </div>
                         </li>

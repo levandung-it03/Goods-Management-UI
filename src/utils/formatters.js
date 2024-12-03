@@ -19,5 +19,17 @@ export const formatTime = (time) => {
 
 // arrayOfTimeL [2024, 11, 30, 17, 25, 50]
 export const formatArrayToTime = (arrayOfTime) => {
-    return `${arrayOfTime[2]}/${arrayOfTime[1]}/${arrayOfTime[0]} ${arrayOfTime[3]}:${arrayOfTime[4]}:${arrayOfTime[5]}`;
+    const day = +arrayOfTime[2] < 10 ? `0${arrayOfTime[2]}` : `${arrayOfTime[2]}`
+    const month = +arrayOfTime[1] < 10 ? `0${arrayOfTime[1]}` : `${arrayOfTime[1]}`
+    const hour = +arrayOfTime[3] < 10 ? `0${arrayOfTime[3]}` : `${arrayOfTime[3]}`
+    const minute = +arrayOfTime[4] < 10 ? `0${arrayOfTime[4]}` : `${arrayOfTime[4]}`
+    const second = +arrayOfTime[5] < 10 ? `0${arrayOfTime[5]}` : `${arrayOfTime[5]}`
+    return `${day}/${month}/${arrayOfTime[0]} ${hour}:${minute}:${second}`;
 };
+
+export const formatArrayToDate = (dateArray) => {
+    if (!dateArray) return "";
+    const day = +dateArray[2] < 10 ? `0${dateArray[2]}` : `${dateArray[2]}`
+    const month = +dateArray[1] < 10 ? `0${dateArray[1]}` : `${dateArray[1]}`
+    return `${day}/${month}/${dateArray[0]}`
+}

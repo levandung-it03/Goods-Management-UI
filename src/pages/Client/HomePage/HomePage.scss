@@ -1,6 +1,8 @@
 /* src/styles/homepage.scss */
 
 .homepage-container {
+    overflow-y: auto;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     row-gap: 32px;
@@ -57,19 +59,19 @@
     }
 
     .grid-container {
+        margin-top: 16px;
         display: grid;
-        gap: 1.5rem; /* gap-6 */
+        gap: 1rem; /* gap-6 */
 
         @media (min-width: 768px) {
             grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
         }
     }
 
-    .profile-dialog {
-        /* Add styles for ProfileDialog component here if needed */
+    .inventory-chart {
+        margin-top: 16px;
     }
-
-    .statistics {
-        /* Add styles for Statistics component here if needed */
+    .goods-trend-chart {
+        margin-top: 16px;
     }
 }

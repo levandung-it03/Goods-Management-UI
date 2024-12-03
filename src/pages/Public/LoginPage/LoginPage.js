@@ -65,25 +65,6 @@ function LoginPage() {
                     </div>
                     <Button type="submit" text="Login" />
                 </FormRHF>
-                <div className="divider-container center">
-                    <div className="divider-line"></div>
-                    <span className="divider-text"> or login with </span>
-                    <div className="divider-line"></div>
-                </div>
-                <div className="login-social">
-                    <button className="google-btn center" onClick={() => {}}>
-                        <img src="https://img.icons8.com/color/40/google-logo.png" alt="google-logo" />
-                        <span>Login with google</span>
-                    </button>
-                    <button className="facebook-btn center" onClick={() => {}}>
-                        <img src="https://img.icons8.com/fluency/48/facebook-new.png" alt="facebook-new" />
-                        <span>Login with facebook</span>
-                    </button>
-                </div>
-                <div className="register center">
-                    Don't have an account yet?
-                    <Link to="/register">Register</Link>
-                </div>
             </div>
         </div>
     );
