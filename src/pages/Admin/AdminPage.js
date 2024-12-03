@@ -4,6 +4,7 @@ import { FormatterDict, Table } from '@reusable/TableHMCompos/TableHMCompos';
 import { InputBuilder } from '@reusable/FormHMCompos/FormHMCompos';
 import { AdminService } from '@services/adminService';
 import Dialog from '@reusable/Dialog/Dialog';
+import { notification, Tooltip } from "antd";
 
 function AdminPage() {
     const [totalClients, setTotalClients] = useState(10);
@@ -36,7 +37,7 @@ function AdminPage() {
         () =>
             FormatterDict.TableComponents({
                 tableInfo: {
-                    title: 'Users',
+                    title: 'Clients',
                     primaryKeyName: 'userId',
                     columnsInfo: [
                         FormatterDict.ColumnInfo('userId', 'Id', {
@@ -45,24 +46,31 @@ function AdminPage() {
                         }),
                         FormatterDict.ColumnInfo('status', 'Status', null, 
                             (rowData) => 
-                            <button
-                                onClick={async () => {
-                                    const newStatus = (rowData["status"] === "Active" ? "Inactive" : "Active");
-                                    rowData["status"] = newStatus;
-                                    alert("User status updated")
-                                    await AdminService.updateClientStatus(rowData["userId"], newStatus);
-                                    await fetchTotalActiveClient();
-                                    await fetchTotalInactiveClient();
-                                }}
-                                style={{
-                                    padding: "5px",
-                                    width: "90%",
-                                    background: "white",
-                                    border: "1px solid black"
-                                }}
-                            >
-                                {rowData["status"]}
-                            </button>
+                            <Tooltip title={`Change status to ${(rowData["status"] === "Active" ? "Inactive" : "Active")}`}>
+                                <button
+                                    onClick={async () => {
+                                        const newStatus = (rowData["status"] === "Active" ? "Inactive" : "Active");
+                                        rowData["status"] = newStatus;
+                                        notification.open({
+                                            message: `Client's status is now ${newStatus.toLowerCase()}`,
+                                            description: "Notification from application.",
+                                            duration: 1.5,
+                                        });
+                                        await AdminService.updateClientStatus(rowData["userId"], newStatus);
+                                        await fetchTotalActiveClient();
+                                        await fetchTotalInactiveClient();
+                                    }}
+                                    style={{
+                                        padding: "5px",
+                                        width: "90%",
+                                        background: "white",
+                                        border: "1px solid black",
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    {rowData["status"]}
+                                </button>
+                            </Tooltip>
                         ),
                         FormatterDict.ColumnInfo('email', 'Email', {
                             name: 'email',

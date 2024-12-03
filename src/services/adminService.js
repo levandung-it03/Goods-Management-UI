@@ -1,6 +1,7 @@
 import { UtilAxios } from '@reusable/Utils';
 import { springService } from '@src/configs/AxiosConfig';
 import { formatArrayToTime, formatArrayToDate } from '@src/utils/formatters';
+import { notification } from "antd";
 
 const ADMIN_PREFIX_PART = process.env.REACT_APP_SPRING_ADMIN_PREFIX_PART;
 
@@ -12,7 +13,11 @@ export class AdminService {
             );
             return response.data;
         } catch (error) {
-            console.error("Lỗi khi lấy thông tin người dùng:", error);
+            notification.error({
+                message: `${error.response.body.message}`,
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             throw error.response ? error.response.data : error;
         }
     }
@@ -24,7 +29,11 @@ export class AdminService {
             );
             return response.data;
         } catch (error) {
-            console.error("Lỗi khi lấy tổng số người dùng:", error);
+            notification.error({
+                message: `${error.response.body.message}`,
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             throw error.response ? error.response.data : error;
         }
     }
@@ -36,7 +45,11 @@ export class AdminService {
             );
             return response.data;
         } catch (error) {
-            console.error("Lỗi khi lấy tổng số người dùng:", error);
+            notification.error({
+                message: `${error.response.body.message}`,
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             throw error.response ? error.response.data : error;
         }
     }
@@ -48,7 +61,11 @@ export class AdminService {
             );
             return response.data;
         } catch (error) {
-            console.error("Lỗi khi lấy tổng số người dùng:", error);
+            notification.error({
+                message: `${error.response.body.message}`,
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             throw error.response ? error.response.data : error;
         }
     }
@@ -70,10 +87,13 @@ export class AdminService {
                 d.phone = d.phone || nullValueDisplayText
             })
             
-            console.log("🚀 ~ AdminService ~ getClientPage ~ response.data:", response.data)
             return response.data;
         } catch (error) {
-            console.error(error);
+            notification.error({
+                message: `${error.response.body.message}`,
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             throw error.response ? error.response.data : error;
         }
     }
@@ -81,9 +101,18 @@ export class AdminService {
     static async createClient(formData) {
         try {
             const response = await springService.post(`${ADMIN_PREFIX_PART}/v1/create-new-client`, formData);
+            notification.success({
+                message: "New client created successfully",
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             return response.data;
         } catch (error) {
-            console.error(error);
+            notification.error({
+                message: `${error.response.body.message}`,
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             throw error.response ? error.response.data : error;
         }
     }
@@ -93,7 +122,11 @@ export class AdminService {
             const response = await springService.patch(`${ADMIN_PREFIX_PART}/v1/update-client-status/${userId}?status=${status}`);
             return response.data;
         } catch (error) {
-            console.error(error);
+            notification.error({
+                message: `${error.response.body.message}`,
+                description: "Notification from application.",
+                duration: 1.5,
+            });
             throw error.response ? error.response.data : error;
         }
     }
