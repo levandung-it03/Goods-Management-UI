@@ -1,3 +1,29 @@
+.client-statistics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 1rem 10rem;
+    border-bottom: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: large;
+}
+
+.statistics-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.value {
+    font-size: 2rem;
+    color: #333;
+}
+
 .client-list .handmade-table-wrapper {
     .table-header,
     .table-body {
@@ -5,27 +31,46 @@
             .table-cell-checkbox {
                 display: flex;
                 justify-content: center;
-                width: 66px;
+                width: 50px;
             }
             .table-cell {
                 font-size: 15px;
                 padding: 6px 0 6px 6px;
                 &:nth-of-type(2) {
                     flex: none;
-                    width: 100px;
+                    width: 70px;
                 }
                 &:nth-of-type(3) {
                     flex: none;
-                    width: 150px;
+                    width: 100px;
                 }
                 &:nth-of-type(4) {
                     flex: none;
-                    width: 700px;
+                    width: 200px;
                 }
-
-                // &:nth-of-type(5) {
+                &:nth-of-type(5) {
+                    flex: none;
+                    width: 170px;
+                }
+                &:nth-of-type(6) {
+                    flex: none;
+                    width: 150px;
+                }
+                &:nth-of-type(7) {
+                    flex: none;
+                    width: 250px;
+                }
+                &:nth-of-type(8) {
+                    flex: none;
+                    width: 120px;
+                }
+                &:nth-of-type(9) {
+                    flex: none;
+                    width: 120px;
+                }
+                // &:nth-of-type(10) {
                 //     flex: none;
-                //     width: 180px;
+                //     width: 150px;
                 // }
             }
             .handmade-form.table-updating-form {

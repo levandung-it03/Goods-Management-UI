@@ -17,8 +17,7 @@ const publicRoutes = [
 ];
 
 const adminRoutes = [
-    { path: '/admin', component: ManageGoods, layout: AdminSidebarLayout },
-    { path: '/admin/clients', component: AdminPage, layout: AdminSidebarLayout },
+    { path: "/admin", component: AdminPage, layout: AdminSidebarLayout },
 ];
 
 const userRoutes = [
