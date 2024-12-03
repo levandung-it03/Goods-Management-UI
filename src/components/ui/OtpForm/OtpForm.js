@@ -29,13 +29,11 @@ function OtpForm({ email, otpExpiredTime = 0, back, action }) {
     };
 
     const handleClick = async (e) => {
-        const otpValues = otpRefs.current.map((ref) => ref.value).join('');
-        const response = await action({ email, otpCode: otpValues });
-        console.log({ email, otpCode: otpValues });
-        if (response.httpStatusCode) {
-            // dispatch(addToast('OTP is correct', 'success'));
-        } else {
-            // dispatch(addToast('OTP is incorrect', 'error'));
+        try {
+            const otpValues = otpRefs.current.map((ref) => ref.value).join('');
+            const response = await action({ email, otpCode: otpValues });
+            console.log({ email, otpCode: otpValues }, response);
+        } catch (error) {
             e.preventDefault();
         }
     };
@@ -56,7 +54,7 @@ function OtpForm({ email, otpExpiredTime = 0, back, action }) {
 
     return (
         <div className="otp-form">
-            <div className={'title'}>OTP</div>
+            <div className="title">OTP</div>
             <div className="otp-fields center">
                 {Array(4)
                     .fill(0)

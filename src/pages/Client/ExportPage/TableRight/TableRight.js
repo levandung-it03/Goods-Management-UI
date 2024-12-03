@@ -7,8 +7,10 @@ import { UserGoodsService } from '@services/GoodsService';
 import { checkIsBlank, checkMaxValue, checkMinValue } from '@src/utils/validators';
 import './TableRight.scss';
 import { UserExportService } from '@services/ExportService';
+import { useNavigate } from 'react-router-dom';
 
 function TableRight({ data }) {
+    const navigate = useNavigate()
     const [receiver, setReceiver] = useState('');
     const [error, setError] = useState({});
     const tableDetail = useTable({
@@ -110,6 +112,7 @@ function TableRight({ data }) {
                 const response = await UserExportService.createExportBill(formData);
                 if (response.httpStatusCode === 200) {
                     alert(response.message);
+                    navigate('/')
                 }
             } catch (error) {
                 console.log('Error create export bill');
