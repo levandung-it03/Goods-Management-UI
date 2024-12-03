@@ -115,6 +115,9 @@ function AdminPage() {
                     sortingFields: [
                         FormatterDict.SortingField('userId', 'Id'),
                         FormatterDict.SortingField('email', 'Email'),
+                        FormatterDict.SortingField('firstName', 'First name'),
+                        FormatterDict.SortingField('lastName', 'Last name'),
+                        FormatterDict.SortingField('dob', 'Date of birth'),
                     ],
                 },
                 apiServices: {
