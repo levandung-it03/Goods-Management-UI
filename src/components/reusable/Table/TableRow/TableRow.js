@@ -1,9 +1,10 @@
 import { cloneElement, memo, useEffect, useMemo } from 'react';
 
 function TableRow({ columns, row, createRowProps, setRowState, tableMode }) {
-    const props = useMemo(() => {
-        if (createRowProps && setRowState) return createRowProps(row, setRowState(row.id));
-    }, [createRowProps, setRowState, row]);
+    const { createCellProps, ...props } = useMemo(
+        () => (createRowProps && setRowState ? createRowProps(row, setRowState(row.id)) : {}),
+        [createRowProps, setRowState, row],
+    );
     const { isInserting, isEditing, isAdding } = row.rowState || {};
 
     useEffect(() => {
@@ -29,18 +30,24 @@ function TableRow({ columns, row, createRowProps, setRowState, tableMode }) {
             {columns.map((col, index) => {
                 return (
                     <div key={index} className={`table-cell ${col.disabled ? 'disabled' : ''}`}>
-                        {cloneElement(col.cell(row.rowData), {
-                            ...(isAdding
-                                ? {
-                                      name: col.accessorKey,
-                                      id: col.accessorKey,
-                                  }
-                                : {
-                                      name: isAdding ? col.accessorKey : `rows[${row.rowIndex}].${col.accessorKey}`,
-                                      id: isAdding ? col.accessorKey : `rows[${row.rowIndex}].${col.accessorKey}`,
-                                      disabled: !(tableMode.enableEdit || isEditing),
-                                  }),
-                        })}
+                        {col.cell ? (
+                            cloneElement(col.cell(row.rowData), {
+                                ...(isAdding
+                                    ? {
+                                          name: col.accessorKey,
+                                          id: col.accessorKey,
+                                      }
+                                    : {
+                                          name: `rows[${row.rowIndex}].${col.accessorKey}`,
+                                          id: `rows[${row.rowIndex}].${col.accessorKey}`,
+                                          disabled: !(tableMode.enableEdit || isEditing),
+                                          ...(createCellProps ? createCellProps(col) : {}),
+                                      }),
+                            })
+                        ) : (
+                            // <span>{(createCellProps ? createCellProps(col) : {}).defaultValue || row.rowData[col.accessorKey]}</span>
+                            <span>{createCellProps ? createCellProps(col).defaultValue : row.rowData[col.accessorKey]}</span>
+                        )}
                     </div>
                 );
             })}

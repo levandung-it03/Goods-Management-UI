@@ -165,19 +165,13 @@
                     }
                 }
             }
-            // .row-wrapper:last-child {
-            //     .table-row {
-            //         border-bottom: none;
-            //     }
-            // }
             .add-row-wrapper {
-                .form-add-row {
-                    .table-row {
-                        border-top: 1px solid;
-                    }
+                box-shadow: 0px -0.8px 0px #aaa;
+                border-bottom: 1px solid #aaa;
+                .table-row {
+                    border-bottom: none;
                 }
                 .add-row {
-                    border-top: 1px solid;
                     cursor: pointer;
                     color: #aaa;
                     transition: all 0.2s ease;
