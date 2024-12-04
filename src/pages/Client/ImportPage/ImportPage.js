@@ -120,7 +120,7 @@ function ImportPage() {
                 navigate('/');
             }
         } catch (error) {
-            console.log('Error create export bill');
+            console.log('Error create import bill');
         }
     }, [tableData]);
 

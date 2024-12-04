@@ -177,6 +177,8 @@ function TableRight({ data, isLock, setIsLock }) {
         };
     }, [data, isLock, isStreaming, setTableCustomData, tableFormMethods]);
 
+    console.log(!Object.values(error).every((value) => !value));
+
     return (
         <>
             <Table
@@ -186,7 +188,7 @@ function TableRight({ data, isLock, setIsLock }) {
                 tableDetail={tableDetail}
                 noDataText="Add and Lock Goods List Information to see this table data"
             />
-            <Button disabled={!isStreaming} text="Submit" onClick={handleSubmit} />
+            <Button disabled={!isStreaming || !Object.values(error).every((value) => !value)} text="Submit" onClick={handleSubmit} />
         </>
     );
 }
