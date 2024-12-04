@@ -14,16 +14,24 @@
     }
     .container {
         font-size: 1.4rem;
-        width: min(440px, 90%);
+        width: min(480px, 90%);
+        min-height: 50vh;
         padding: 20px 40px;
         background-color: rgba(#fff, 1);
         border-radius: 20px;
         box-shadow: 1px 1px 20px 1px black;
         .title {
             text-align: center;
+            margin-top: 10px;
             margin-bottom: 20px;
             font-size: 3.2rem;
             font-weight: bold;
+        }
+        .description {
+            color: #aaa;
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
         }
         .login-form {
             .ui-btn {
@@ -61,45 +69,6 @@
                 a {
                     color: #aaa;
                 }
-            }
-        }
-        .divider-container {
-            width: 60%;
-            margin: 10px auto;
-            .divider-line {
-                flex: 1;
-                border-top: 1px solid #aaa;
-            }
-            .divider-text {
-                padding: 0 10px;
-                color: #aaa;
-            }
-        }
-        .login-social button {
-            min-width: 200px;
-            margin: 10px auto;
-            padding: 8px;
-            border-radius: 20px;
-            cursor: pointer;
-            border: 2px solid rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-            background-color: transparent;
-            img {
-                width: 20px;
-                height: 20px;
-                margin-right: 10px;
-            }
-            &:hover {
-                background-color: rgba(#000, 0.1);
-            }
-        }
-
-        .register {
-            margin-left: 4px;
-            color: #aaa;
-            a {
-                color: #333;
-                margin-left: 4px;
             }
         }
     }

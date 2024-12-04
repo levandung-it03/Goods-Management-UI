@@ -7,7 +7,7 @@ export const capitalizeWords = (str) =>
 
 export const trimWords = (str) => str.trim();
 export const formatCurrency = (value) =>
-    new Intl.NumberFormat("vi-VN").format(value);
+    new Intl.NumberFormat("vi-VN").format(Number(value));
 export const formatTime = (time) => {
     // time là số giây
     const minutes = Math.floor(time / 60);

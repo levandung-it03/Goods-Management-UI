@@ -8,9 +8,10 @@ import { checkIsBlank, checkMaxValue, checkMinValue } from '@src/utils/validator
 import './TableRight.scss';
 import { UserExportService } from '@services/ExportService';
 import { useNavigate } from 'react-router-dom';
+import { showToast } from '@src/utils/helpers';
 
-function TableRight({ data }) {
-    const navigate = useNavigate()
+function TableRight({ data, isLock, setIsLock }) {
+    const navigate = useNavigate();
     const [receiver, setReceiver] = useState('');
     const [error, setError] = useState({});
     const tableDetail = useTable({
@@ -112,7 +113,7 @@ function TableRight({ data }) {
                 const response = await UserExportService.createExportBill(formData);
                 if (response.httpStatusCode === 200) {
                     alert(response.message);
-                    navigate('/')
+                    navigate('/');
                 }
             } catch (error) {
                 console.log('Error create export bill');
@@ -123,7 +124,6 @@ function TableRight({ data }) {
     useEffect(() => {
         let controller;
         if (isStreaming) {
-            setTableCustomData(data);
             controller = new AbortController();
             const signal = controller.signal;
 
@@ -133,6 +133,7 @@ function TableRight({ data }) {
                     const response = await UserGoodsService.fluxGoodsQuantityPreparation({
                         goodsFromWarehouseIds: data.map((r) => r.warehouseGoodsId),
                     });
+                    setTableCustomData(data);
                     if (response && response.httpStatusCode === 200) {
                         // Get flux data
                         const streamResponse = await UserGoodsService.fluxGoodsQuantity(signal);
@@ -157,6 +158,11 @@ function TableRight({ data }) {
                 } catch (error) {
                     if (error.name === 'AbortError') {
                         console.log('Fetch aborted.');
+                    } else {
+                        console.log(error);
+                        setIsLock(false);
+                        setTableCustomData([]);
+                        showToast(error.message, 'error');
                     }
                 }
             };
@@ -169,7 +175,7 @@ function TableRight({ data }) {
                 controller.abort();
             }
         };
-    }, [data, isStreaming, setTableCustomData, tableFormMethods]);
+    }, [data, isLock, isStreaming, setTableCustomData, tableFormMethods]);
 
     return (
         <>

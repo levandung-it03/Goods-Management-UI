@@ -8,7 +8,7 @@ export default function WarehouseGoodsDialog({ goodsId }) {
     const primaryKeyName = "warehouseGoodsId";
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
-            title: 'Manage Goods Table',
+            title: 'Manage Warehouse Table',
             primaryKeyName: primaryKeyName,
             columnsInfo: [
                 FormatterDict.ColumnInfo('warehouseGoodsId', 'Warehouse Goods Id'),

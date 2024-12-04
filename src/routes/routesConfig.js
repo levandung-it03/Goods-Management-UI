@@ -7,8 +7,8 @@ import { AdminSidebarLayout, UserSidebarLayout } from '@src/layout/SidebarLayout
 import ImportPage from '@src/pages/Client/ImportPage/ImportPage';
 import ManageSupplier from '@src/pages/Client/ManageSupplier/ManageSupplier';
 import ManageWarehouse from '@src/pages/Client/ManageWarehouse/ManageWarehouse';
-import ManageImportBill from '@src/pages/Client/MangeImportBill/ManageImportBills';
-import ManageExportBill from '@src/pages/Client/MangeExportBill/ManageExportBills';
+import ManageImportBill from '@src/pages/Client/ManageImportBill/ManageImportBills';
+import ManageExportBill from '@src/pages/Client/ManageExportBill/ManageExportBills';
 import ForgotPasswordPage from '@src/pages/Public/ForgotPasswordPage/ForgotPasswordPage';
 
 const publicRoutes = [

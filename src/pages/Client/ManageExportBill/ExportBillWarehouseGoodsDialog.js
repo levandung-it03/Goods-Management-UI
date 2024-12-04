@@ -1,18 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
-import './ImportBillWarehouseGoodsDialog.scss';
+import './ExportBillWarehouseGoodsDialog.scss';
 import { FormatterDict, Table } from '@reusable/TableHMCompos/TableHMCompos';
 import { InputBuilder } from '@reusable/FormHMCompos/FormHMCompos';
-import { UserImportService } from '@services/ImportService';
+import { UserExportService } from '@services/ExportService';
 import { formatCurrency } from '@src/utils/formatters';
 
-export default function ImportBillWarehouseGoodsDialog({ importBillId }) {
+export default function ExportBillWarehouseGoodsDialog({ exportBillId }) {
     const primaryKeyName = "warehouseGoodsId";
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
-            title: 'Manage Goods Table',
+            title: 'Manage Export Bill',
             primaryKeyName: primaryKeyName,
             columnsInfo: [
-                FormatterDict.ColumnInfo('importBillWarehouseGoodsId', 'Bill Warehouse Goods Id'),
+                FormatterDict.ColumnInfo('exportBillWarehouseGoodsId', 'Bill Warehouse Goods Id'),
                 FormatterDict.ColumnInfo('goodsId', 'Goods Id'),
                 FormatterDict.ColumnInfo('goodsName', 'Goods Name'),
                 FormatterDict.ColumnInfo('unitPrice', 'Unit Price'),
@@ -21,7 +21,7 @@ export default function ImportBillWarehouseGoodsDialog({ importBillId }) {
                 FormatterDict.ColumnInfo('goodsQuantity', 'Goods Quantity'),
             ],
             filterFields: [
-                FormatterDict.FilterField('importBillWarehouseGoodsId', 'Bill Warehouse Goods Id', InputBuilder({ type: 'number' })),
+                FormatterDict.FilterField('exportBillWarehouseGoodsId', 'Bill Warehouse Goods Id', InputBuilder({ type: 'number' })),
                 FormatterDict.FilterField('goodsId', 'Goods Id', InputBuilder({ type: 'number' })),
                 FormatterDict.FilterField('goodsName', 'Goods Name', InputBuilder({ type: 'text' })),
                 FormatterDict.FilterField('unitPrice', 'Unit Price', InputBuilder({ type: 'number' })),
@@ -30,7 +30,7 @@ export default function ImportBillWarehouseGoodsDialog({ importBillId }) {
                 FormatterDict.FilterField('goodsQuantity', 'Goods Quantity', InputBuilder({ type: 'number' })),
             ],
             sortingFields: [
-                FormatterDict.SortingField('importBillWarehouseGoodsId', 'Bill Warehouse Goods Id'),
+                FormatterDict.SortingField('exportBillWarehouseGoodsId', 'Bill Warehouse Goods Id'),
                 FormatterDict.SortingField('goodsId', 'Goods Id'),
                 FormatterDict.SortingField('goodsName', 'Goods Name'),
                 FormatterDict.SortingField('unitPrice', 'Unit Price'),
@@ -41,33 +41,33 @@ export default function ImportBillWarehouseGoodsDialog({ importBillId }) {
         },
         apiServices: {
             GET_service: {
-                moreParams: { importBillId },
-                action: UserImportService.getImportBillWarehouseGoods
+                moreParams: { exportBillId },
+                action: UserExportService.getExportBillWarehouseGoods
             },
         },
-    }), [primaryKeyName, importBillId]);
+    }), [primaryKeyName, exportBillId]);
 
-    const [totalPrice, setTotalPrice] = useState(1000000)
+    const [totalPrice, setTotalPrice] = useState(0)
     useEffect(()=>{
         const fetchTotalrice = async()=>{
             try {
                 // call api
-                const response = await UserImportService.getTotalImportPrice(importBillId)
-                setTotalPrice(response.data.totalPrice)
+                const response = await UserExportService.getTotalExportPrice(exportBillId)
+                setTotalPrice(response.data)
             } catch (error) {
                 console.log(error);
             }
         }
         fetchTotalrice()
-    },[importBillId])
+    },[exportBillId])
 
     return (
-        <div className="import-bill-warehouse-goods-dialog">
+        <div className="export-bill-warehouse-goods-dialog">
             <Table
                 tableComponents={tableComponents}
                 tableModes={FormatterDict.TableModes(false, false, false, false, false)}
             />
-            <div className="total-price">Total Import Price: {formatCurrency(totalPrice)}đ</div>
+            <div className="total-price">Total Export Price: {totalPrice}đ</div>
         </div>
     );
 }

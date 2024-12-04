@@ -7,8 +7,7 @@ import { ChevronDown, Trash2 } from 'lucide-react';
 import Button from '@ui/Button/Button';
 import { UserGoodsService } from '@services/GoodsService';
 
-function TableLeft({ setData }) {
-    const [isLock, setIsLock] = useState(false);
+function TableLeft({ setData, isLock, setIsLock }) {
     const tableDetail = useTable({
         data: [],
         pageSize: 11,

@@ -32,6 +32,7 @@ function LoginPage() {
             </div>
             <div className="container">
                 <div className="title">Login</div>
+                <div className="description">Enter your credentials to access the goods management system</div>
                 <FormRHF className="login-form flex-col" onSubmit={handleSubmit}>
                     <InputField
                         name="email"

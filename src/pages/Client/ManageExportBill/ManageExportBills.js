@@ -13,7 +13,7 @@ export default function ManageExportBill() {
 
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
-            title: 'Manage Goods Table',
+            title: 'Manage Export Bill',
             primaryKeyName: primaryKeyName,
             columnsInfo: [
                 FormatterDict.ColumnInfo('exportBillId', 'Export Bill Id'),

@@ -13,7 +13,7 @@ export default function ManageImportBill() {
 
     const tableComponents = useMemo(() => FormatterDict.TableComponents({
         tableInfo: {
-            title: 'Manage Goods Table',
+            title: 'Manage Import Bill',
             primaryKeyName: primaryKeyName,
             columnsInfo: [
                 FormatterDict.ColumnInfo('importBillId', 'Import Bill Id'),
