@@ -245,6 +245,7 @@ function CustomWarehouseSelect({ methods, name, id, disabled }) {
             const handleClickOutside = (e) => {
                 if (selectRef.current && !selectRef.current.contains(e.target)) {
                     setIsOpen(false);
+                    methods.setValue(name, '');
                 }
             };
             document.addEventListener('click', handleClickOutside);

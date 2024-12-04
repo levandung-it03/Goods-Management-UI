@@ -1,6 +1,6 @@
 import { UtilAxios, UtilMethods } from '@reusable/Utils';
 import { springService } from '@src/configs/AxiosConfig';
-import { cookieHelpers } from '@src/utils/helpers';
+import { cookieHelpers, showToast } from '@src/utils/helpers';
 
 const USER_PREFIX_PART = process.env.REACT_APP_SPRING_USER_PREFIX_PART;
 
@@ -96,8 +96,7 @@ export class UserGoodsService {
             if (response.status === 200) UtilMethods.showToast(response.data.message, 'success');
             return response.data;
         } catch (error) {
-            console.error(error);
-            throw error.response ? error.response.data : error;
+            if (error.response.data.message) showToast(error.response.data.message, 'error');
         }
     }
 
@@ -107,8 +106,7 @@ export class UserGoodsService {
             if (response.status === 200) UtilMethods.showToast(response.data.message, 'success');
             return response.data;
         } catch (error) {
-            console.error(error);
-            throw error.response ? error.response.data : error;
+            if (error.response.data.message) showToast(error.response.data.message, 'error');
         }
     }
 
@@ -118,8 +116,7 @@ export class UserGoodsService {
             if (response.status === 200) UtilMethods.showToast(response.data.message, 'success');
             return response.data;
         } catch (error) {
-            console.error(error);
-            throw error.response ? error.response.data : error;
+            if (error.response.data.message) showToast(error.response.data.message, 'error');
         }
     }
 }
